@@ -100,6 +100,7 @@ namespace BattleInfoPlugin.Models
 				if (this._FirstFleet == value)
 					return;
 				this._FirstFleet = value;
+				Settings.Default.FirstIsCritical = this._FirstFleet.CriticalCheck();
 				this.RaisePropertyChanged();
 			}
 		}
@@ -118,6 +119,7 @@ namespace BattleInfoPlugin.Models
 				if (this._SecondFleet == value)
 					return;
 				this._SecondFleet = value;
+				Settings.Default.SecondIsCritical = this._SecondFleet.CriticalCheck();
 				this.RaisePropertyChanged();
 			}
 		}
@@ -239,6 +241,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps);
 
 			this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+			Settings.Default.FirstIsCritical = this.FirstFleet.IsCritical;
 
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 		}
@@ -272,11 +275,13 @@ namespace BattleInfoPlugin.Models
 				data.api_kouku.GetFirstFleetDamages(),
 				data.api_kouku2.GetFirstFleetDamages()
 				);
+			Settings.Default.FirstIsCritical = this.FirstFleet.IsCritical;
 
 			this.SecondFleet.CalcDamages(
 				data.api_kouku.GetSecondFleetDamages(),
 				data.api_kouku2.GetSecondFleetDamages()
 				);
+			Settings.Default.SecondIsCritical = this.SecondFleet.IsCritical;
 
 			this.Enemies.CalcDamages(
 				data.api_support_info.GetEnemyDamages(),
@@ -302,6 +307,7 @@ namespace BattleInfoPlugin.Models
 				data.api_hougeki2.GetFriendDamages(),
 				data.api_hougeki3.GetFriendDamages()
 				);
+			Settings.Default.FirstIsCritical = this.FirstFleet.IsCritical;
 
 			this.SecondFleet.CalcDamages(
 				data.api_kouku.GetSecondFleetDamages(),
@@ -309,6 +315,7 @@ namespace BattleInfoPlugin.Models
 				data.api_hougeki1.GetFriendDamages(),
 				data.api_raigeki.GetFriendDamages()
 				);
+			Settings.Default.SecondIsCritical = this.SecondFleet.IsCritical;
 
 			this.Enemies.CalcDamages(
 				data.api_support_info.GetEnemyDamages(),
@@ -338,6 +345,7 @@ namespace BattleInfoPlugin.Models
 				data.api_hougeki1.GetFriendDamages(),
 				data.api_hougeki2.GetFriendDamages()
 				);
+			Settings.Default.FirstIsCritical = this.FirstFleet.IsCritical;
 
 			this.SecondFleet.CalcDamages(
 				data.api_kouku.GetSecondFleetDamages(),
@@ -345,6 +353,7 @@ namespace BattleInfoPlugin.Models
 				data.api_hougeki3.GetFriendDamages(),
 				data.api_raigeki.GetFriendDamages()
 				);
+			Settings.Default.SecondIsCritical = this.SecondFleet.IsCritical;
 
 			this.Enemies.CalcDamages(
 				data.api_support_info.GetEnemyDamages(),
@@ -370,6 +379,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
 			this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+			Settings.Default.SecondIsCritical = this.SecondFleet.IsCritical;
 
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 		}
@@ -383,6 +393,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
 			this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+			Settings.Default.SecondIsCritical = this.SecondFleet.IsCritical;
 
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 
@@ -406,6 +417,7 @@ namespace BattleInfoPlugin.Models
 				data.api_hougeki2.GetFriendDamages(),
 				data.api_raigeki.GetFriendDamages()
 				);
+			Settings.Default.FirstIsCritical = this.FirstFleet.IsCritical;
 
 			this.Enemies.CalcDamages(
 				data.api_kouku.GetEnemyDamages(),
@@ -427,6 +439,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps);
 
 			this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+			Settings.Default.FirstIsCritical = this.FirstFleet.IsCritical;
 
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 		}
@@ -443,6 +456,7 @@ namespace BattleInfoPlugin.Models
 				data.api_kouku.GetFirstFleetDamages(),
 				data.api_kouku2.GetFirstFleetDamages()
 				);
+			Settings.Default.FirstIsCritical = this.FirstFleet.IsCritical;
 
 			this.Enemies.CalcDamages(
 				data.api_support_info.GetEnemyDamages(),    //将来的に増える可能性を想定して追加しておく
@@ -470,6 +484,7 @@ namespace BattleInfoPlugin.Models
 				data.api_hougeki2.GetFriendDamages(),
 				data.api_raigeki.GetFriendDamages()
 				);
+			Settings.Default.FirstIsCritical = this.FirstFleet.IsCritical;
 
 			this.Enemies.CalcDamages(
 				data.api_support_info.GetEnemyDamages(),
@@ -552,20 +567,6 @@ namespace BattleInfoPlugin.Models
 					: new MembersShipData[0],
 				this.SecondFleet != null ? this.SecondFleet.Formation : Formation.없음,
 				organization.Fleets[2].Name);
-			if (this.FirstFleet.Ships
-				.Where(x => !x.Situation.HasFlag(ShipSituation.DamageControlled))
-				.Where(x => !x.Situation.HasFlag(ShipSituation.Evacuation))
-				.Where(x => !x.Situation.HasFlag(ShipSituation.Tow))
-				.Any(x => x.Situation.HasFlag(ShipSituation.HeavilyDamaged)))
-				Settings.Default.FirstIsCritical = true;
-			else Settings.Default.FirstIsCritical = false;
-			if (this.SecondFleet.Ships
-				.Where(x => !x.Situation.HasFlag(ShipSituation.DamageControlled))
-				.Where(x => !x.Situation.HasFlag(ShipSituation.Evacuation))
-				.Where(x => !x.Situation.HasFlag(ShipSituation.Tow))
-				.Any(x => x.Situation.HasFlag(ShipSituation.HeavilyDamaged)))
-				Settings.Default.SecondIsCritical = true;
-			else Settings.Default.SecondIsCritical = false;
 		}
 
 		private void UpdateMaxHP(int[] api_maxhps, int[] api_maxhps_combined = null)

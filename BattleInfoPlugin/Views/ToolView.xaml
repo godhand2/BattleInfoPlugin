@@ -120,12 +120,50 @@
             <views:Fleet Grid.Column="2" Grid.Row="1"
                          Margin="0,6,0,0"
                          DataContext="{Binding Enemies}"/>
-
-            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
-                      HorizontalAlignment="Right"
-                      Content="전투가 끝나고 알림"
-                      IsChecked="{Binding IsNotifierEnabled}"
-                      Margin="10, 0"/>
+			<StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
+						Orientation="Horizontal"
+						HorizontalAlignment="Right">
+				<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+						   Text="{Binding Data.Cell}"
+						   Margin="0,0,5,0"
+						   Padding="10,2"
+						   Foreground="White">
+					<TextBlock.Style>
+						<Style TargetType="TextBlock">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="자원획득">
+									<Setter Property="Background" Value="#FF3FBD2B"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="소용돌이">
+									<Setter Property="Background" Value="#FFA33CEA"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="적군조우">
+									<Setter Property="Background" Value="#FFF01717"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="보스전">
+									<Setter Property="Background" Value="#FFD40C0C"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="기분탓">
+									<Setter Property="Background" Value="#FF0A8AB9"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Style>
+				</TextBlock>
+				<CheckBox HorizontalAlignment="Right"
+						  VerticalAlignment="Center"
+						  Content="전투가 끝나고 알림"
+						  IsChecked="{Binding IsNotifierEnabled}"
+						  Margin="10, 0"/>
+			</StackPanel>
+			
+				
+            
         </Grid>
     </ScrollViewer>
 </UserControl>

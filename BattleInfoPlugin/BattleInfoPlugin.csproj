@@ -131,6 +131,7 @@
     <Compile Include="Models\AttackType.cs" />
     <Compile Include="Models\BattleData.cs" />
     <Compile Include="Models\BattleSituation.cs" />
+    <Compile Include="Models\CellEvent.cs" />
     <Compile Include="Models\CellType.cs" />
     <Compile Include="Models\FleetDamages.cs" />
     <Compile Include="Models\FleetData.cs" />

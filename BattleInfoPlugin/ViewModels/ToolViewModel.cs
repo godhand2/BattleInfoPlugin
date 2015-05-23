@@ -23,6 +23,18 @@ namespace BattleInfoPlugin.ViewModels
             }
         }
 
+		public string Cell
+		{
+			get
+			{
+				if (this.Data != null)
+				{
+					return this.Data.Cell.ToString();
+				}
+				else return CellEvent.없음.ToString();
+			}
+		}
+
         public string BattleSituation
         {
             get
@@ -130,6 +142,10 @@ namespace BattleInfoPlugin.ViewModels
                     () => this.Data.UpdatedTime,
                     (_, __) => this.RaisePropertyChanged(() => this.UpdatedTime)
                 },
+				{
+					()=>this.Data.Cell,
+					(_,__)=>this.RaisePropertyChanged(()=>this.Cell)
+				},
                 {
                     () => this.Data.BattleSituation,
                     (_, __) => this.RaisePropertyChanged(() => this.BattleSituation)

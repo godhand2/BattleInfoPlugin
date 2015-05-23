@@ -41,6 +41,8 @@ namespace BattleInfoPlugin.Models.Repositories
 
         public Master()
         {
+			Settings.Default.FirstIsCritical = false;
+			Settings.Default.SecondIsCritical = false;
             this.MapAreas = new ConcurrentDictionary<int, MapArea>();
             this.MapInfos = new ConcurrentDictionary<int, MapInfo>();
             this.MapCells = new ConcurrentDictionary<int, MapCell>();

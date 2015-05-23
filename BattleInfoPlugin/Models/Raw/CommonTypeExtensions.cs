@@ -98,7 +98,7 @@ namespace BattleInfoPlugin.Models.Raw
         {
             return kouku != null && kouku.api_stage1 != null
                 ? (AirSupremacy) kouku.api_stage1.api_disp_seiku
-                : AirSupremacy.航空戦なし;
+                : AirSupremacy.항공전없음;
         }
 
         #endregion

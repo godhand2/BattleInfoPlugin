@@ -54,7 +54,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="戦闘情報"
+                    <TextBlock Text="전투정보"
                                Style="{DynamicResource HeaderTextStyleKey}"
                                Margin="0,0,20,0"
                                Grid.Column="0"
@@ -63,7 +63,7 @@
                                Style="{DynamicResource DefaultTextStyleKey}"
                                Grid.Column="1"
                                Grid.Row="0"/>
-                    <TextBlock Grid.Column="1"
+					<TextBlock Grid.Column="1"
                                Grid.Row="1"
                                Style="{DynamicResource DefaultTextStyleKey}">
                         <Run Text="{Binding Data.Name, Mode=OneWay}"/>
@@ -75,7 +75,42 @@
                         <Run Text="{Binding FriendAirSupremacy, Mode=OneWay}"
                              FontSize="12"
                              Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-                    </TextBlock>
+					</TextBlock>
+					<TextBlock Text="{Binding Data.Cell, Mode=OneWay}"
+							   Grid.Column="1"
+							   Grid.RowSpan="2"
+							   VerticalAlignment="Center"
+							   HorizontalAlignment="Right"
+							   Margin="0,0,10,0"
+							   Padding="12,2">
+							<TextBlock.Style>
+								<Style TargetType="TextBlock">
+									<Style.Triggers>
+									<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="자원획득">
+										<Setter Property="Background" Value="#FF3FBD2B"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="소용돌이">
+										<Setter Property="Background" Value="#FFA33CEA"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="적군조우">
+										<Setter Property="Background" Value="#FFF01717"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="보스전">
+										<Setter Property="Background" Value="#FFD40C0C"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding Data.Cell}"
+												 Value="기분탓">
+										<Setter Property="Background" Value="#FF0A8AB9"/>
+									</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</TextBlock.Style>
+						</TextBlock>
+					
                 </Grid>
             </Border>
 
@@ -93,7 +128,7 @@
 
             <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
                       HorizontalAlignment="Right"
-                      Content="戦闘終了通知"
+                      Content="창이 비활성화상태일때 전투가 종료되면 알림"
                       IsChecked="{Binding IsNotifierEnabled}"
                       Margin="10, 0"/>
         </Grid>

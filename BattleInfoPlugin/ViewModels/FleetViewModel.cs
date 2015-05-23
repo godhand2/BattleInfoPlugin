@@ -87,7 +87,7 @@ namespace BattleInfoPlugin.ViewModels
                 this._FormationSource = value;
                 this.RaisePropertyChanged();
 
-                this.FleetFormation = value != Formation.なし ? value.ToString() : "";
+                this.FleetFormation = value != Formation.없음 ? value.ToString() : "";
             }
         }
         #endregion
@@ -96,7 +96,7 @@ namespace BattleInfoPlugin.ViewModels
         {
         }
 
-        public FleetViewModel(string name, ShipData[] data = null, Formation formation = Formation.なし)
+        public FleetViewModel(string name, ShipData[] data = null, Formation formation = Formation.없음)
         {
             this.Name = name;
             this.Fleet = data;

@@ -25,17 +25,25 @@ namespace BattleInfoPlugin.ViewModels
         {
             get
             {
-                return this.Data != null && this.Data.BattleSituation != Models.BattleSituation.なし
+                return this.Data != null && this.Data.BattleSituation != Models.BattleSituation.없음
                     ? this.Data.BattleSituation.ToString()
                     : "";
             }
         }
-
+		public string Cell
+		{
+			get
+			{
+				return this.Data != null && this.Data.Cell != Models.CellEvent.오류
+					? this.Data.Cell.ToString()
+					: "";
+			}
+		}
         public string FriendAirSupremacy
         {
             get
             {
-                return this.Data != null && this.Data.FriendAirSupremacy != AirSupremacy.航空戦なし
+                return this.Data != null && this.Data.FriendAirSupremacy != AirSupremacy.항공전없음
                     ? this.Data.FriendAirSupremacy.ToString()
                     : "";
             }
@@ -115,9 +123,9 @@ namespace BattleInfoPlugin.ViewModels
 
         public ToolViewModel(BattleData data, BattleEndNotifier notifier)
         {
-            this.FirstFleet = new FleetViewModel("自艦隊");
-            this.SecondFleet = new FleetViewModel("護衛艦隊");
-            this.Enemies = new FleetViewModel("敵艦隊");
+            this.FirstFleet = new FleetViewModel("아군함대");
+            this.SecondFleet = new FleetViewModel("호위함대");
+            this.Enemies = new FleetViewModel("적함대");
 
             this.notifier = notifier;
 
@@ -133,6 +141,10 @@ namespace BattleInfoPlugin.ViewModels
                     () => this.Data.BattleSituation,
                     (_, __) => this.RaisePropertyChanged(() => this.BattleSituation)
                 },
+				{
+                    () => this.Data.Cell,
+                    (_, __) => this.RaisePropertyChanged(() => this.Cell)
+				},
                 {
                     () => this.Data.FriendAirSupremacy,
                     (_, __) => this.RaisePropertyChanged(() => this.FriendAirSupremacy)

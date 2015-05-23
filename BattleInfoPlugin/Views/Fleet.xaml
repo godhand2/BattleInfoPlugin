@@ -152,7 +152,7 @@
                                   Margin="3,2,3,0">
                                 <Border Background="{DynamicResource FleetRepairingBrushKey}"
                                         Opacity=".4" />
-                                <TextBlock Text="退避済"
+                                <TextBlock Text="퇴피완료"
                                            Style="{DynamicResource EmphaticTextStyleKey}"
                                            HorizontalAlignment="Center" />
                             </Grid>
@@ -163,7 +163,7 @@
                                   Margin="3,2,3,0">
                                 <Border Background="{DynamicResource FleetRepairingBrushKey}"
                                         Opacity=".4" />
-                                <TextBlock Text="退避済"
+                                <TextBlock Text="퇴피완료"
                                            Style="{DynamicResource EmphaticTextStyleKey}"
                                            HorizontalAlignment="Center" />
                             </Grid>

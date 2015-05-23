@@ -5,9 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:views="clr-namespace:BattleInfoPlugin.Views"
              xmlns:converters="clr-namespace:BattleInfoPlugin.Views.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
              d:DesignHeight="350"
-             d:DesignWidth="560"
+             d:DesignWidth="640"
              d:DataContext="{d:DesignData /SampleData/ToolViewModelSampleData.xaml}">
 
     <UserControl.Resources>
@@ -19,6 +22,15 @@
             <converters:AddDoubleValueConverter x:Key="HeightConverter" Value="-8"/>
         </ResourceDictionary>
     </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}"
+                                     MessageKey="Show/EnemyWindow">
+            <l:TransitionInteractionMessageAction Mode="NewOrActive"
+                                                  WindowType="views:EnemyWindow"
+                                                  IsOwned="False" />
+        </l:InteractionMessageTrigger>
+    </i:Interaction.Triggers>
 
     <!-- 親に縦だけAutoなScrollViewerがいるので、自前でScrollBarを出したいなら
          ViewPortサイズからMargin削った分をサイズに設定する必要がある -->
@@ -48,7 +60,9 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -63,7 +77,7 @@
                                Style="{DynamicResource DefaultTextStyleKey}"
                                Grid.Column="1"
                                Grid.Row="0"/>
-					<TextBlock Grid.Column="1"
+                    <TextBlock Grid.Column="1"
                                Grid.Row="1"
                                Style="{DynamicResource DefaultTextStyleKey}">
                         <Run Text="{Binding Data.Name, Mode=OneWay}"/>
@@ -75,42 +89,23 @@
                         <Run Text="{Binding FriendAirSupremacy, Mode=OneWay}"
                              FontSize="12"
                              Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-					</TextBlock>
-					<TextBlock Text="{Binding Data.Cell, Mode=OneWay}"
-							   Grid.Column="1"
-							   Grid.RowSpan="2"
-							   VerticalAlignment="Center"
-							   HorizontalAlignment="Right"
-							   Margin="0,0,10,0"
-							   Padding="12,2">
-							<TextBlock.Style>
-								<Style TargetType="TextBlock">
-									<Style.Triggers>
-									<DataTrigger Binding="{Binding Data.Cell}"
-												 Value="자원획득">
-										<Setter Property="Background" Value="#FF3FBD2B"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding Data.Cell}"
-												 Value="소용돌이">
-										<Setter Property="Background" Value="#FFA33CEA"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding Data.Cell}"
-												 Value="적군조우">
-										<Setter Property="Background" Value="#FFF01717"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding Data.Cell}"
-												 Value="보스전">
-										<Setter Property="Background" Value="#FFD40C0C"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding Data.Cell}"
-												 Value="기분탓">
-										<Setter Property="Background" Value="#FF0A8AB9"/>
-									</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</TextBlock.Style>
-						</TextBlock>
-					
+                    </TextBlock>
+
+
+                    <Button Grid.Column="3"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Content="해역정보"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,10,3">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <ei:CallMethodAction TargetObject="{Binding}"
+                                                     MethodName="OpenEnemyWindow"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
                 </Grid>
             </Border>
 
@@ -128,7 +123,7 @@
 
             <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
                       HorizontalAlignment="Right"
-                      Content="창이 비활성화상태일때 전투가 종료되면 알림"
+                      Content="전투가 끝나고 알림"
                       IsChecked="{Binding IsNotifierEnabled}"
                       Margin="10, 0"/>
         </Grid>

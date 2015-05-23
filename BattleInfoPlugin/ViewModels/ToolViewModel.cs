@@ -1,7 +1,9 @@
 ﻿using System;
 using BattleInfoPlugin.Models;
+using BattleInfoPlugin.Models.Notifiers;
 using Livet;
 using Livet.EventListeners;
+using Livet.Messaging;
 
 namespace BattleInfoPlugin.ViewModels
 {
@@ -30,15 +32,6 @@ namespace BattleInfoPlugin.ViewModels
                     : "";
             }
         }
-		public string Cell
-		{
-			get
-			{
-				return this.Data != null && this.Data.Cell != Models.CellEvent.오류
-					? this.Data.Cell.ToString()
-					: "";
-			}
-		}
         public string FriendAirSupremacy
         {
             get
@@ -141,10 +134,6 @@ namespace BattleInfoPlugin.ViewModels
                     () => this.Data.BattleSituation,
                     (_, __) => this.RaisePropertyChanged(() => this.BattleSituation)
                 },
-				{
-                    () => this.Data.Cell,
-                    (_, __) => this.RaisePropertyChanged(() => this.Cell)
-				},
                 {
                     () => this.Data.FriendAirSupremacy,
                     (_, __) => this.RaisePropertyChanged(() => this.FriendAirSupremacy)
@@ -161,15 +150,16 @@ namespace BattleInfoPlugin.ViewModels
                     () => this.Data.Enemies,
                     (_, __) => this.Enemies.Fleet = this.Data.Enemies
                 },
-                {
-                    () => this.Data.FriendFormation,
-                    (_, __) => this.FirstFleet.FormationSource = this.Data.FriendFormation
-                },
-                {
-                    () => this.Data.NextEnemyFormation,
-                    (_, __) => this.Enemies.FormationSource = this.Data.NextEnemyFormation
-                },
             });
+        }
+
+        public void OpenEnemyWindow()
+        {
+            var message = new TransitionMessage("Show/EnemyWindow")
+            {
+                TransitionViewModel = new EnemyWindowViewModel(this.Data.GetMapEnemies(), this.Data.GetCellTypes())
+            };
+            this.Messenger.RaiseAsync(message);
         }
     }
 }

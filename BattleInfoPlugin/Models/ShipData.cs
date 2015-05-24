@@ -247,11 +247,11 @@ namespace BattleInfoPlugin.Models
         {
             get
             {
-                return this.Count(Type2.주포) == 2 && this.Count(Type2.철갑탄) == 1 ? AttackType.주주컷인
-                    : this.Count(Type2.주포) == 1 && this.Count(Type2.부포) == 1 && this.Count(Type2.철갑탄) == 1 ? AttackType.주철컷인
-                    : this.Count(Type2.주포) == 1 && this.Count(Type2.부포) == 1 && this.Count(Type2.전탐) == 1 ? AttackType.주뢰컷인
-                    : this.Count(Type2.주포) >= 1 && this.Count(Type2.부포) >= 1 ? AttackType.주부컷인
-                    : this.Count(Type2.주포) >= 2 ? AttackType.연격
+                return this.HasScout() && this.Count(Type2.주포) == 2 && this.Count(Type2.철갑탄) == 1 ? AttackType.주주컷인
+                    : this.HasScout() && this.Count(Type2.주포) == 1 && this.Count(Type2.부포) == 1 && this.Count(Type2.철갑탄) == 1 ? AttackType.주철컷인
+                    : this.HasScout() && this.Count(Type2.주포) == 1 && this.Count(Type2.부포) == 1 && this.Count(Type2.전탐) == 1 ? AttackType.주전컷인
+                    : this.HasScout() && this.Count(Type2.주포) >= 1 && this.Count(Type2.부포) >= 1 ? AttackType.주부컷인
+                    : this.HasScout() && this.Count(Type2.주포) >= 2 ? AttackType.연격
                     : AttackType.통상;
             }
         }
@@ -262,9 +262,9 @@ namespace BattleInfoPlugin.Models
             {
                 return this.Count(Type2.어뢰) >= 2 ? AttackType.뇌격컷인
                     : this.Count(Type2.주포) >= 3 ? AttackType.주주주컷인
-                    : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) >= 1 ? AttackType.주주부컷인
-                    : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 1 ? AttackType.주주뢰컷인
-                    : this.Count(Type2.주포) == 1 && this.Count(Type2.어뢰) == 1 ? AttackType.주주뢰컷인
+                    : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) >= 1 ? AttackType.주부컷인
+                    : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 1 ? AttackType.주뢰컷인
+                    : this.Count(Type2.주포) == 1 && this.Count(Type2.어뢰) == 1 ? AttackType.주뢰컷인
                     : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 0 ? AttackType.연격
                     : this.Count(Type2.주포) == 1 && this.Count(Type2.부포) >= 1 && this.Count(Type2.어뢰) == 0 ? AttackType.연격
                     : this.Count(Type2.주포) == 0 && this.Count(Type2.부포) >= 2 && this.Count(Type2.어뢰) <= 1 ? AttackType.연격
@@ -287,6 +287,14 @@ namespace BattleInfoPlugin.Models
         public static int Count(this ShipData data, Type2 type2)
         {
             return data.Slots.Count(x => x.Type2 == type2);
+        }
+
+        public static bool HasScout(this ShipData data)
+        {
+            return data.Slots
+                .Where(x => x.Source.Type == SlotItemType.水上偵察機
+                            || x.Source.Type == SlotItemType.水上爆撃機)
+                .Any(x => 0 < x.Current);
         }
     }
 

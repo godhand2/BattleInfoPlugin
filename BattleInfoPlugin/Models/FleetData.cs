@@ -29,6 +29,23 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
+		#region AttackGauge変更通知プロパティ
+		private string _AttackGauge;
+
+		public string AttackGauge
+		{
+			get
+			{ return this._AttackGauge; }
+			set
+			{
+				if (this._AttackGauge == value)
+					return;
+				this._AttackGauge = value;
+				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
+
 		#region IsCritical変更通知プロパティ
 		private bool _IsCritical;
 
@@ -41,7 +58,39 @@ namespace BattleInfoPlugin.Models
 				if (this._IsCritical == value)
 					return;
 				this._IsCritical = value;
-				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
+
+		#region TotalDamaged変更通知プロパティ
+		private int _TotalDamaged;
+
+		public int TotalDamaged
+		{
+			get
+			{ return this._TotalDamaged; }
+			set
+			{
+				if (value == 0) this.SinkCount = 0;
+				if (this._TotalDamaged == value)
+					return;
+				this._TotalDamaged = value;
+			}
+		}
+		#endregion
+
+		#region SinkCount変更通知プロパティ
+		private int _SinkCount;
+
+		public int SinkCount
+		{
+			get
+			{ return this._SinkCount; }
+			set
+			{
+				if (this._SinkCount == value)
+					return;
+				this._SinkCount = value;
 			}
 		}
 		#endregion
@@ -139,7 +188,6 @@ namespace BattleInfoPlugin.Models
 				.ToList()
 				.ForEach(x => setter(x.s, x.v));
 		}
-
 		/// <summary>
 		/// ダメージ適用
 		/// </summary>
@@ -151,20 +199,35 @@ namespace BattleInfoPlugin.Models
 			{
 				fleet.Ships.SetValues(damage.ToArray(), (s, d) => s.NowHP -= d);
 			}
+
+			if (fleet.Ships == null) return;
 			foreach (var item in fleet.Ships)
 			{
-				if ((item.HP.Current / (double)item.HP.Maximum) <= 0.25)
+				if (!item.Situation.HasFlag(ShipSituation.Evacuation) && !item.Situation.HasFlag(ShipSituation.Tow))
 				{
-					if (!item.Situation.HasFlag(ShipSituation.DamageControlled) &&
-						!item.Situation.HasFlag(ShipSituation.Evacuation) &&
-						!item.Situation.HasFlag(ShipSituation.Tow))
+					int tempHP = item.NowHP;
+					if (item.NowHP < 0) tempHP = 0;
+					fleet.TotalDamaged += (item.BeforeNowHP - tempHP);
+				}
+				if (item.NowHP <= 0) fleet.SinkCount++;
+			}
+			foreach (var item in fleet.Ships)//데미지 총합 합계
+			{
+				if (item.MaxHP > 0)
+				{
+					if ((item.NowHP / (double)item.MaxHP) <= 0.25)
 					{
-						fleet.IsCritical = true;
-						break;
+						if (!item.Situation.HasFlag(ShipSituation.DamageControlled) &&
+							!item.Situation.HasFlag(ShipSituation.Evacuation) &&
+							!item.Situation.HasFlag(ShipSituation.Tow))
+						{
+							fleet.IsCritical = true;
+							break;
+						}
+						else fleet.IsCritical = false;
 					}
 					else fleet.IsCritical = false;
 				}
-				else fleet.IsCritical = false;
 			}
 		}
 		public static bool CriticalCheck(this FleetData fleet)

@@ -12,11 +12,13 @@
                    xmlns:localconv="clr-namespace:BattleInfoPlugin.Views.Converters"
                    xmlns:local="clr-namespace:BattleInfoPlugin.Views.Controls"
                    xmlns:enemies="clr-namespace:BattleInfoPlugin.ViewModels.Enemies"
+                   xmlns:kcvv="http://schemes.grabacr.net/winfx/2015/kancolleviewer/converters"
+                   xmlns:kcvc="http://schemes.grabacr.net/winfx/2015/kancolleviewer/controls"
                    mc:Ignorable="d" 
                    Title="해역정보"
-                   Width="1000"
-                   Height="900"
-                   FontSize="12"
+                   Width="950"
+                   Height="650"
+                   FontSize="11"
                    Background="{DynamicResource ThemeBrushKey}"
                    Foreground="{DynamicResource ActiveForegroundBrushKey}"
                    IsRestoringWindowPlacement="True"
@@ -35,7 +37,7 @@
             <localconv:BrTagToNewLineConverter x:Key="BrTagToNewLineConverter"/>
             <localconv:AdditionalNameColorConverter x:Key="AdditionalNameColorConverter"/>
             <localconv:AttackTypeToDisplayTextConverter x:Key="AttackTypeConverter"/>
-            <converters:HasFlagConverter x:Key="HasFlagConverter"/>
+            <!--<kcvv:HasFlagConverter x:Key="HasFlagConverter"/>-->
 
             <CollectionViewSource x:Key="EnemyMapsSource"
                                   Source="{Binding EnemyMaps}">
@@ -174,15 +176,19 @@
                 </Grid.RowDefinitions>
 
 				<Expander Grid.Row="0"
-                      Header="해역정보"
+						  BorderBrush="Gray"
+						  BorderThickness="1"
+						  Margin="5,2"
+                      Header="선택해역 지도정보"
                       Background="{DynamicResource ThemeBrushKey}"
-                      IsExpanded="True">
+                      IsExpanded="False">
 					<Expander.Style>
 						<Style/>
 					</Expander.Style>
 					<Expander.HeaderTemplate>
 						<DataTemplate>
 							<TextBlock Text="{Binding}"
+									   FontSize="18"
                                    Style="{DynamicResource DefaultTextStyleKey}"
                                    Margin="5">
 							</TextBlock>
@@ -397,7 +403,7 @@
                             </GroupStyle.ContainerStyle>
                         </GroupStyle>
                         <!--Fleet Group-->
-                        <GroupStyle>
+                        <!--<GroupStyle>
                             <GroupStyle.ContainerStyle>
                                 <Style TargetType="{x:Type GroupItem}">
                                     <Setter Property="Template">
@@ -521,7 +527,7 @@
                                                             </TextBlock>
                                                         </StackPanel>
 
-                                                        <!--Ships-->
+                                                        --><!--Ships--><!--
                                                         <ItemsPresenter Grid.Column="1"/>
                                                     </Grid>
 
@@ -535,7 +541,7 @@
                                     </Setter>
                                 </Style>
                             </GroupStyle.ContainerStyle>
-                        </GroupStyle>
+                        </GroupStyle>-->
                     </ItemsControl.GroupStyle>
                     <!--Ship Template-->
                     <ItemsControl.ItemTemplate>
@@ -582,6 +588,7 @@
                                         <ColumnDefinition Width="Auto" MinWidth="28" SharedSizeGroup="Luck" />
                                         <ColumnDefinition Width="Auto" MinWidth="130" SharedSizeGroup="AttackType" />
                                         <ColumnDefinition/>
+
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock Grid.Column="0"
@@ -740,10 +747,10 @@
                                                         <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition/>
                                                     </Grid.ColumnDefinitions>
-                                                    <controls:SlotItemIcon Grid.Column="0"
+                                                    <!--<kcvc:SlotItemIcon Grid.Column="0"
                                                                            Type="{Binding Source.IconType, Mode=OneWay}"
                                                                            Width="14"
-                                                                           Height="14" />
+                                                                           Height="14" />-->
                                                     <TextBlock Grid.Column="1"
                                                                Foreground="{DynamicResource ActiveForegroundBrushKey}"
                                                                Style="{DynamicResource DefaultTextStyleKey}"

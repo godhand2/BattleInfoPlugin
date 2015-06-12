@@ -12,7 +12,8 @@
                    xmlns:localconv="clr-namespace:BattleInfoPlugin.Views.Converters"
                    xmlns:local="clr-namespace:BattleInfoPlugin.Views.Controls"
                    xmlns:enemies="clr-namespace:BattleInfoPlugin.ViewModels.Enemies"
-                   xmlns:kcvv="http://schemes.grabacr.net/winfx/2015/kancolleviewer/converters"
+                   xmlns:behaviors="clr-namespace:BattleInfoPlugin.Views.Behaviors"
+				   xmlns:kcvv="http://schemes.grabacr.net/winfx/2015/kancolleviewer/converters"
                    xmlns:kcvc="http://schemes.grabacr.net/winfx/2015/kancolleviewer/controls"
                    mc:Ignorable="d" 
                    Title="해역정보"
@@ -37,7 +38,10 @@
             <localconv:BrTagToNewLineConverter x:Key="BrTagToNewLineConverter"/>
             <localconv:AdditionalNameColorConverter x:Key="AdditionalNameColorConverter"/>
             <localconv:AttackTypeToDisplayTextConverter x:Key="AttackTypeConverter"/>
-            <!--<kcvv:HasFlagConverter x:Key="HasFlagConverter"/>-->
+            <localconv:FleetBackgroundConverter x:Key="FleetBackgroundConverter"
+                                                Background1="{StaticResource ThemeBrushKey}"
+                                                Background2="{StaticResource SemiactiveBackgroundBrushKey}"/>
+            <kcvv:HasFlagConverter x:Key="HasFlagConverter"/>
 
             <CollectionViewSource x:Key="EnemyMapsSource"
                                   Source="{Binding EnemyMaps}">
@@ -195,7 +199,7 @@
 						</DataTemplate>
 					</Expander.HeaderTemplate>
 					<Grid DataContext="{Binding Source={StaticResource EnemyMapsSource}}"
-                      Background="{DynamicResource BackgroundBrushKey}">
+						  Background="{DynamicResource BackgroundBrushKey}">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition/>
@@ -245,6 +249,7 @@
                                    TextWrapping="Wrap"/>
 						</StackPanel>
 
+						<!-- Map Data Not Found メッセージ -->
 						<StackPanel Grid.Column="1"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
@@ -271,6 +276,7 @@
                                    Style="{DynamicResource DefaultTextStyleKey}"/>
 						</StackPanel>
 
+						<!-- Required Assembly Not Found メッセージ -->
 						<StackPanel Grid.Column="1"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
@@ -299,6 +305,7 @@
                                   PanningMode="Both">
 							<Canvas Width="768"
                                 Height="435">
+								<!-- マップイメージ -->
 								<Image Source="{Binding /MapImage}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
@@ -306,7 +313,7 @@
                                    Height="435"
                                    Margin="0"
                                    />
-
+								<!-- セルアイコン -->
 								<ItemsControl ItemsSource="{Binding /CellPoints}"
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Center"
@@ -328,7 +335,12 @@
 									<ItemsControl.ItemTemplate>
 										<DataTemplate>
 											<local:Cell Text="{Binding Key}"
-                                                    CellIconNumber="{Binding Value.Item2}"/>
+                                                    CellIconNumber="{Binding Value.Item2}">
+												<i:Interaction.Behaviors>
+													<behaviors:ScrollToCellBehavior ScrollTargetName="EnemiesDataScrollViewer"
+																					ParentElement="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type metro:MetroWindow}}}"/>
+												</i:Interaction.Behaviors>
+											</local:Cell>
 										</DataTemplate>
 									</ItemsControl.ItemTemplate>
 								</ItemsControl>
@@ -336,8 +348,8 @@
 						</ScrollViewer>
 					</Grid>
 				</Expander>
-                
-                <!-- 仮想化するとスクロールが重い。どうするか。 -->
+
+				<!-- 仮想化するとスクロールが重いのでやめた。。 -->
                 <ItemsControl ItemsSource="{Binding Source={StaticResource EnemiesSource}}"
                               Grid.IsSharedSizeScope="True"
                               VirtualizingPanel.IsVirtualizingWhenGrouping="False"
@@ -347,7 +359,8 @@
                     <ItemsControl.Template>
                         <ControlTemplate>
                             <Border Background="{DynamicResource ThemeBrushKey}">
-                                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                <ScrollViewer x:Name="EnemiesDataScrollViewer"
+                                              VerticalScrollBarVisibility="Auto"
                                               HorizontalScrollBarVisibility="Auto"
                                               PanningMode="Both">
                                     <ItemsPresenter/>
@@ -403,14 +416,20 @@
                             </GroupStyle.ContainerStyle>
                         </GroupStyle>
                         <!--Fleet Group-->
-                        <!--<GroupStyle>
+                        <GroupStyle>
                             <GroupStyle.ContainerStyle>
                                 <Style TargetType="{x:Type GroupItem}">
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                <StackPanel DataContext="{Binding Name}">
-                                                    <Grid>
+                                                <StackPanel>
+                                                    <StackPanel.Background>
+                                                        <MultiBinding Converter="{StaticResource FleetBackgroundConverter}">
+                                                            <Binding Path="Name"/>
+                                                            <Binding Path="Name" RelativeSource="{RelativeSource PreviousData}"/>
+                                                        </MultiBinding>
+                                                    </StackPanel.Background>
+                                                    <Grid DataContext="{Binding Name}">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="Auto" SharedSizeGroup="EnemyName"/>
                                                             <ColumnDefinition/>
@@ -527,21 +546,21 @@
                                                             </TextBlock>
                                                         </StackPanel>
 
-                                                        --><!--Ships--><!--
+                                                        <!--Ships-->
                                                         <ItemsPresenter Grid.Column="1"/>
                                                     </Grid>
 
                                                     <Rectangle Height="1"
                                                                Style="{DynamicResource SeparatorRectangleStyleKey}"
                                                                Opacity="1"
-                                                               Margin="10,-1,10,0" />
+                                                               Margin="0,-1,10,0" />
                                                 </StackPanel>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
                                 </Style>
                             </GroupStyle.ContainerStyle>
-                        </GroupStyle>-->
+                        </GroupStyle>
                     </ItemsControl.GroupStyle>
                     <!--Ship Template-->
                     <ItemsControl.ItemTemplate>
@@ -588,7 +607,6 @@
                                         <ColumnDefinition Width="Auto" MinWidth="28" SharedSizeGroup="Luck" />
                                         <ColumnDefinition Width="Auto" MinWidth="130" SharedSizeGroup="AttackType" />
                                         <ColumnDefinition/>
-
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock Grid.Column="0"
@@ -747,10 +765,10 @@
                                                         <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition/>
                                                     </Grid.ColumnDefinitions>
-                                                    <!--<kcvc:SlotItemIcon Grid.Column="0"
+                                                    <kcvc:SlotItemIcon Grid.Column="0"
                                                                            Type="{Binding Source.IconType, Mode=OneWay}"
                                                                            Width="14"
-                                                                           Height="14" />-->
+                                                                           Height="14" />
                                                     <TextBlock Grid.Column="1"
                                                                Foreground="{DynamicResource ActiveForegroundBrushKey}"
                                                                Style="{DynamicResource DefaultTextStyleKey}"

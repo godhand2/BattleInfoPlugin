@@ -41,8 +41,6 @@ namespace BattleInfoPlugin.Models.Repositories
 
         public Master()
         {
-			Settings.Default.FirstIsCritical = false;
-			Settings.Default.SecondIsCritical = false;
             this.MapAreas = new ConcurrentDictionary<int, MapArea>();
             this.MapInfos = new ConcurrentDictionary<int, MapInfo>();
             this.MapCells = new ConcurrentDictionary<int, MapCell>();
@@ -76,7 +74,9 @@ namespace BattleInfoPlugin.Models.Repositories
         private void Reload()
         {
             //deserialize
-            var path = Environment.CurrentDirectory + "\\" + Settings.Default.MasterDataFilePath;
+			string MainFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+			var path = Path.Combine(MainFolder, Settings.Default.MasterDataFilePath);
+
             if (!File.Exists(path)) return;
 
             using (var stream = Stream.Synchronized(new FileStream(path, FileMode.OpenOrCreate)))
@@ -91,8 +91,9 @@ namespace BattleInfoPlugin.Models.Repositories
 
         private void Save()
         {
-            //serialize
-            var path = Environment.CurrentDirectory + "\\" + Settings.Default.MasterDataFilePath;
+			//serialize
+			string MainFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+			var path = Path.Combine(MainFolder, Settings.Default.MasterDataFilePath);
             using (var stream = Stream.Synchronized(new FileStream(path, FileMode.OpenOrCreate)))
             {
                 serializer.WriteObject(stream, this);

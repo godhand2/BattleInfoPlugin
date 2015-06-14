@@ -39,7 +39,6 @@
     <Reference Include="Desktop.Metro, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>KanColleViewerAssemblies\Desktop.Metro.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="FiddlerCore4">
       <HintPath>..\packages\FiddlerCore.4.5.1.0\lib\net40\FiddlerCore4.dll</HintPath>
@@ -49,10 +48,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DependentAssemblies\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="KanColleViewer, Version=3.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="KanColleViewer, Version=3.8.2.179, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>KanColleViewerAssemblies\KanColleViewer.exe</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="KanColleViewer.Composition">
       <HintPath>KanColleViewerAssemblies\KanColleViewer.Composition.dll</HintPath>
@@ -60,10 +58,9 @@
     <Reference Include="KanColleViewer.Controls">
       <HintPath>KanColleViewerAssemblies\KanColleViewer.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="KanColleWrapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="KanColleWrapper, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>KanColleViewerAssemblies\KanColleWrapper.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Livet">
       <HintPath>..\packages\LivetCask.1.1.0.0\lib\net45\Livet.dll</HintPath>
@@ -98,9 +95,6 @@
     <Reference Include="System.Reactive.Linq">
       <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -124,7 +118,6 @@
     <Compile Include="Models\AttackType.cs" />
     <Compile Include="Models\BattleData.cs" />
     <Compile Include="Models\BattleSituation.cs" />
-    <Compile Include="Models\CellEvent.cs" />
     <Compile Include="Models\CellType.cs" />
     <Compile Include="Models\FleetDamages.cs" />
     <Compile Include="Models\FleetData.cs" />
@@ -166,8 +159,8 @@
     <Compile Include="ViewModels\FleetViewModel.cs" />
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="Views\Behaviors\ScrollToCellBehavior.cs" />
-    <Compile Include="Views\Controls\Cell.cs" />
     <Compile Include="Views\Converters\AddDoubleValueConverter.cs" />
+    <Compile Include="Views\Controls\Cell.cs" />
     <Compile Include="Views\Converters\AdditionalNameColorConverter.cs" />
     <Compile Include="Views\Converters\AttackTypeToDisplayTextConverter.cs" />
     <Compile Include="Views\Converters\BrTagToNewLineConverter.cs" />
@@ -233,8 +226,13 @@
     <Content Include="DependentAssemblies\ICSharpCode.SharpZipLib.dll" />
     <Content Include="DependentAssemblies\SwfFormat.dll" />
     <Content Include="KanColleViewerAssemblies\Desktop.Metro.dll" />
+    <Content Include="KanColleViewerAssemblies\KanColleViewer.Composition.dll" />
+    <Content Include="KanColleViewerAssemblies\KanColleViewer.Controls.dll" />
     <Content Include="KanColleViewerAssemblies\KanColleViewer.exe" />
     <Content Include="KanColleViewerAssemblies\KanColleWrapper.dll" />
+    <Content Include="KanColleViewerAssemblies\MetroRadiance.Chrome.dll" />
+    <Content Include="KanColleViewerAssemblies\MetroRadiance.Core.dll" />
+    <Content Include="KanColleViewerAssemblies\MetroRadiance.dll" />
   </ItemGroup>
   <ItemGroup>
     <DesignData Include="SampleData\FleetViewModelSampleData.xaml" />

@@ -49,6 +49,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 			Settings.Default.SecondIsCritical = false;
 			Grabacr07.KanColleViewer.Models.NotifierHost.ClearCriticalStatus();
 		}
+
 		private void Notify(bool IsPractice = false)
 		{
 			var isActive = DispatcherHelper.UIDispatcher.Invoke(() => Application.Current.MainWindow.IsActive);
@@ -58,9 +59,8 @@ namespace BattleInfoPlugin.Models.Notifiers
 					"전투종료",
 					"전투가 종료되었습니다!",
 					() => App.ViewModelRoot.Activate());
-
 			if (Settings.Default.FirstIsCritical || Settings.Default.SecondIsCritical)
-				if(!IsPractice)
+				if (!IsPractice)
 					Grabacr07.KanColleViewer.Models.NotifierHost.CriticalNotify();
 		}
 	}

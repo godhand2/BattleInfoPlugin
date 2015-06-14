@@ -173,7 +173,7 @@ namespace BattleInfoPlugin.Models.Raw
         public static FleetDamages GetFriendDamages(this object[] damages, object[] df_list)
         {
             return damages
-                .ToDecimalArray()
+                .ToIntArray()
                 .ToSortedDamages(df_list.ToIntArray())
                 .GetFriendData(0)
                 .ToFleetDamages();
@@ -188,7 +188,7 @@ namespace BattleInfoPlugin.Models.Raw
         public static FleetDamages GetEnemyDamages(this object[] damages, object[] df_list)
         {
             return damages
-                .ToDecimalArray()
+                .ToIntArray()
                 .ToSortedDamages(df_list.ToIntArray())
                 .GetEnemyData(0)
                 .ToFleetDamages();
@@ -201,20 +201,12 @@ namespace BattleInfoPlugin.Models.Raw
         /// </summary>
         /// <param name="damages">api_damage</param>
         /// <returns></returns>
-		private static int[] ToIntArray(this object[] damages)
-		{
-			return damages
-				.Where(x => x is Array)
-				.Select(x => ((Array)x).Cast<object>())
-				.SelectMany(x => x.Select(Convert.ToInt32))
-				.ToArray();
-		}
-        private static decimal[] ToDecimalArray(this object[] damages)
+        private static int[] ToIntArray(this object[] damages)
         {
             return damages
                 .Where(x => x is Array)
                 .Select(x => ((Array)x).Cast<object>())
-                .SelectMany(x => x.Select(Convert.ToDecimal))
+                .SelectMany(x => x.Select(Convert.ToInt32))
                 .ToArray();
         }
 
@@ -225,26 +217,15 @@ namespace BattleInfoPlugin.Models.Raw
         /// <param name="damages">api_damage</param>
         /// <param name="dfList">api_df_list</param>
         /// <returns></returns>
-        private static int[] ToSortedDamages(this decimal[] damages, int[] dfList)
+        private static int[] ToSortedDamages(this int[] damages, int[] dfList)
         {
-			var temp = decimalToInt(damages);
-
-			var zip = temp.Zip(dfList, (da, df) => new { df, da });
+            var zip = damages.Zip(dfList, (da, df) => new { df, da });
             var ret = new int[12];
             foreach (var d in zip.Where(d => 0 < d.df)) {
                 ret[d.df - 1] += d.da;
             }
             return ret;
         }
-		private static int[] decimalToInt(decimal[] damages)
-		{
-			List<int> temp=new List<int>();
-			for (int i = 0; i < damages.Count(); i++)
-			{
-				temp.Add(Convert.ToInt32(damages[i]));
-			}
-			return temp.ToArray();
-		}
 
         #endregion
 

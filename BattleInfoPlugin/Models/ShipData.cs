@@ -101,7 +101,7 @@ namespace BattleInfoPlugin.Models
             set
             {
                 if (this._NowHP == value)
-					return;
+                    return;
                 this._NowHP = value;
                 this.RaisePropertyChanged();
                 this.RaisePropertyChanged(() => this.HP);
@@ -109,7 +109,7 @@ namespace BattleInfoPlugin.Models
         }
         #endregion
 
-		#region OldNowHP変更通知プロパティ
+		#region BeforeNowHP変更通知プロパティ
 		private int _BeforeNowHP;
 		public int BeforeNowHP
 		{
@@ -276,7 +276,7 @@ namespace BattleInfoPlugin.Models
             {
                 return this.Count(Type2.어뢰) >= 2 ? AttackType.뇌격컷인
                     : this.Count(Type2.주포) >= 3 ? AttackType.주주주컷인
-                    : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) >= 1 ? AttackType.주부컷인
+                    : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) >= 1 ? AttackType.주주부컷인
                     : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 1 ? AttackType.주뢰컷인
                     : this.Count(Type2.주포) == 1 && this.Count(Type2.어뢰) == 1 ? AttackType.주뢰컷인
                     : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 0 ? AttackType.연격

@@ -150,8 +150,7 @@ namespace BattleInfoPlugin.Models
 		public int AirSuperiorityRequirements { get { return this.AirSuperiorityPotential * 3 / 2; } }
 		public int AirSupremacyRequirements { get { return this.AirSuperiorityPotential * 3; } }
 
-		public FleetData()
-			: this(new ShipData[0], Formation.없음, "")
+		public FleetData() : this(new ShipData[0], Formation.없음, "")
 		{
 		}
 

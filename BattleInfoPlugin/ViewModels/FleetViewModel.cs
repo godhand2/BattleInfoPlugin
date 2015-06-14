@@ -6,25 +6,25 @@ using Livet.EventListeners;
 
 namespace BattleInfoPlugin.ViewModels
 {
-    public class FleetViewModel : ViewModel
-    {
+	public class FleetViewModel : ViewModel
+	{
 
-        #region Name変更通知プロパティ
-        private string _Name;
+		#region Name変更通知プロパティ
+		private string _Name;
 
-        public string Name
-        {
-            get
-            { return this._Name; }
-            set
-            { 
-                if (this._Name == value)
-                    return;
-                this._Name = value;
-                this.RaisePropertyChanged();
-            }
-        }
-        #endregion
+		public string Name
+		{
+			get
+			{ return this._Name; }
+			set
+			{
+				if (this._Name == value)
+					return;
+				this._Name = value;
+				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
 
 
 		#region FleetGauge変更通知プロパティ
@@ -33,7 +33,7 @@ namespace BattleInfoPlugin.ViewModels
 		{
 			get
 			{
-				return (this.Fleet != null && this.Fleet.AttackGauge != null)
+				return (this.Fleet != null && this.Fleet.AttackGauge != string.Empty)
 				  ? this.Fleet.AttackGauge
 				  : string.Empty;
 			}
@@ -41,67 +41,68 @@ namespace BattleInfoPlugin.ViewModels
 		#endregion
 
 
-        #region Fleet変更通知プロパティ
-        private FleetData _Fleet;
+		#region Fleet変更通知プロパティ
+		private FleetData _Fleet;
 
-        public FleetData Fleet
-        {
-            get
-            { return this._Fleet; }
-            set
-            {
-                if (this._Fleet == value)
-                    return;
-                this._Fleet = value;
-                this.RaisePropertyChanged();
+		public FleetData Fleet
+		{
+			get
+			{ return this._Fleet; }
+			set
+			{
+				if (this._Fleet == value)
+					return;
+				this._Fleet = value;
+				this.RaisePropertyChanged();
 
-                this.RaisePropertyChanged(() => this.FleetFormation);
+				this.RaisePropertyChanged(() => this.FleetFormation);
 				this.RaisePropertyChanged(() => this.IsVisible);
 				this.RaisePropertyChanged(() => this.FleetGauge);
 
-                this.Name = !string.IsNullOrWhiteSpace(value.Name)
-                    ? value.Name
-                    : this.defaultName;
-            }
-        }
-        #endregion
+				this.Name = !string.IsNullOrWhiteSpace(value.Name)
+					? value.Name
+					: this.defaultName;
+			}
+		}
+		#endregion
 
 
-        #region IsVisible変更通知プロパティ
+		#region IsVisible変更通知プロパティ
 
-        public bool IsVisible
-        {
-            get
-            { return this.Fleet != null && this.Fleet.Ships.Count() != 0; }
-        }
-        #endregion
+		public bool IsVisible
+		{
+			get
+			{ return this.Fleet != null && this.Fleet.Ships.Count() != 0; }
+		}
+		#endregion
 
 
-        #region FleetFormation変更通知プロパティ
+		#region FleetFormation変更通知プロパティ
 
-        public string FleetFormation
-        {
-            get
-            {
-                return (this.Fleet != null && this.Fleet.Formation != Formation.없음)
-                      ? this.Fleet.Formation.ToString()
-                      : "";
-            }
-        }
+		public string FleetFormation
+		{
+			get
+			{
+				return (this.Fleet != null && this.Fleet.Formation != Formation.없음)
+					  ? this.Fleet.Formation.ToString()
+					  : "";
+			}
+		}
 
-        #endregion
+		#endregion
 
-        public FleetViewModel() : this("")
-        {
-        }
+		public FleetViewModel()
+			: this("")
+		{
+		}
 
-        public FleetViewModel(string name, FleetData fleet = null)
-        {
-            this.Name = name;
-            this.Fleet = fleet;
-            this.defaultName = name;
-        }
+		public FleetViewModel(string name, FleetData fleet = null)
+		{
+			this.Name = name;
+			this.Fleet = fleet;
+			this.defaultName = name;
+		}
 
-        private readonly string defaultName;
-    }
+		private readonly string defaultName;
+	}
 }

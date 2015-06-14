@@ -429,10 +429,6 @@ namespace BattleInfoPlugin.Models
 		{
 			this.Name = "연습 - 주간전";
 
-			this.FirstFleet = new FleetData();
-			this.SecondFleet = new FleetData();
-			this.Enemies = new FleetData();
-
 			this.UpdateFleets(data.api_dock_id, data.api_ship_ke, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
@@ -720,7 +716,7 @@ namespace BattleInfoPlugin.Models
 					decimal gG = Convert.ToDecimal(GreenGauge);
 					decimal rG = Convert.ToDecimal(RedGauge);
 
-					var CalcPercent = Math.Round(gG / rG, 1, MidpointRounding.AwayFromZero);
+					var CalcPercent = Math.Round(gG / rG, 2, MidpointRounding.AwayFromZero);
 					if (CalcPercent >= 2.5m)
 						IsOverDamage = true;//2.5배 초과 데미지
 					else if (CalcPercent > 1m)

@@ -41,7 +41,6 @@ namespace BattleInfoPlugin.Models
 				if (this._AttackGauge == value)
 					return;
 				this._AttackGauge = value;
-				this.RaisePropertyChanged();
 			}
 		}
 		#endregion

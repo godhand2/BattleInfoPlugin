@@ -197,7 +197,6 @@ namespace BattleInfoPlugin.Models
 			{
 				fleet.Ships.SetValues(damage.ToArray(), (s, d) => s.NowHP -= d);
 			}
-
 			if (fleet.Ships == null) return;
 			foreach (var item in fleet.Ships)
 			{

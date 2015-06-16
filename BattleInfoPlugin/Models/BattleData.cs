@@ -551,6 +551,8 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateFriendFleets(this.CurrentDeckId);
 			if (Settings.Default.FirstIsCritical || Settings.Default.SecondIsCritical) Grabacr07.KanColleViewer.Models.NotifierHost.CriticalNotify();
+			if (this.FirstFleet != null) this.FirstFleet.TotalDamaged = 0;
+			if (this.SecondFleet != null) this.SecondFleet.TotalDamaged = 0;
 		}
 
 		private void UpdateFleets(

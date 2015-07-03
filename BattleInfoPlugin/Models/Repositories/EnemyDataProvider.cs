@@ -153,7 +153,7 @@ namespace BattleInfoPlugin.Models.Repositories
 							this.GetEnemyFormationFromId(enemy),
 							KanColleClient.Current.Translations.GetTranslation(
 								this.GetEnemyNameFromId(enemy),
-								Grabacr07.KanColleWrapper.Models.TranslationType.OperationSortie)
+								Grabacr07.KanColleWrapper.Models.TranslationType.OperationSortie, false)
 							))));
 		}
 

@@ -3,6 +3,7 @@ using System.Linq;
 using BattleInfoPlugin.Models;
 using Livet;
 using Livet.EventListeners;
+using Grabacr07.KanColleWrapper;
 
 namespace BattleInfoPlugin.ViewModels
 {
@@ -98,7 +99,7 @@ namespace BattleInfoPlugin.ViewModels
 
 		public FleetViewModel(string name, FleetData fleet = null)
 		{
-			this.Name = name;
+			this.Name = KanColleClient.Current.Translations.GetTranslation(name, Grabacr07.KanColleWrapper.Models.TranslationType.OperationSortie, true);
 			this.Fleet = fleet;
 			this.defaultName = name;
 		}

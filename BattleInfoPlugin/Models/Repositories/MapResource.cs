@@ -104,7 +104,7 @@ namespace BattleInfoPlugin.Models.Repositories
 
 		public static bool HasMapSwf(this MapInfo map)
 		{
-			var filePath = Path.Combine(mapDir,map.MapAreaId.ToString("00") + "_" + map.IdInEachMapArea.ToString("00") + ".swf");
+			var filePath = Path.Combine(mapDir, map.MapAreaId.ToString("00") + "_" + map.IdInEachMapArea.ToString("00") + ".swf");
 
 			return File.Exists(filePath);
 
@@ -113,7 +113,7 @@ namespace BattleInfoPlugin.Models.Repositories
 		public static SwfCompilationUnit ToSwf(this MapInfo map)
 		{
 			var filePath = Path.Combine(mapDir, map.MapAreaId.ToString("00") + "_" + map.IdInEachMapArea.ToString("00") + ".swf");
-			
+
 			if (!File.Exists(filePath)) return null;
 			var reader = new SwfReader(File.ReadAllBytes(filePath));
 			return new SwfCompilationUnit(reader);
@@ -122,13 +122,15 @@ namespace BattleInfoPlugin.Models.Repositories
 		public static Point FindPoint(this IEnumerable<PlaceObject2Tag> places, int num)
 		{
 			return places
-				.Single(p => p.Name == "line" + num)
+				.SingleOrDefault(p => p.Name == "line" + num)
 				.ToPoint();
 		}
 
 		public static Point ToPoint(this PlaceObject2Tag tag)
 		{
-			return new Point(tag.Matrix.TranslateX / 20, tag.Matrix.TranslateY / 20);
+			return tag != null
+				? new Point(tag.Matrix.TranslateX / 20, tag.Matrix.TranslateY / 20)
+				: default(Point);
 		}
 
 		public static BitmapFrame ToBitmapFrame(this DefineBitsTag tag)

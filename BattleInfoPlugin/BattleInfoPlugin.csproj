@@ -157,6 +157,7 @@
     <Compile Include="ViewModels\Enemies\EnemyShipViewModel.cs" />
     <Compile Include="ViewModels\EnemyWindowViewModel.cs" />
     <Compile Include="ViewModels\FleetViewModel.cs" />
+    <Compile Include="ViewModels\ToolPopupViewModel.cs" />
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="Views\Behaviors\ScrollToCellBehavior.cs" />
     <Compile Include="Views\Converters\AddDoubleValueConverter.cs" />
@@ -170,6 +171,12 @@
     </Compile>
     <Compile Include="Views\Fleet.xaml.cs">
       <DependentUpon>Fleet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ToolIcon.xaml.cs">
+      <DependentUpon>ToolIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ToolPopup.xaml.cs">
+      <DependentUpon>ToolPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ToolView.xaml.cs">
       <DependentUpon>ToolView.xaml</DependentUpon>
@@ -190,6 +197,14 @@
     <Page Include="Views\Fleet.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ToolIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ToolPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ToolView.xaml">
       <Generator>MSBuild:Compile</Generator>

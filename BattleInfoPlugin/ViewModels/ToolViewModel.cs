@@ -173,6 +173,15 @@ namespace BattleInfoPlugin.ViewModels
             });
 		}
 
+		public void ShowPreviewPopUp()
+		{
+			var message = new TransitionMessage("Show/ToolPopup")
+			{
+				TransitionViewModel = new ToolPopupViewModel()
+			};
+			this.Messenger.RaiseAsync(message);
+		}
+
 		public void OpenEnemyWindow()
 		{
 			var message = new TransitionMessage("Show/EnemyWindow")

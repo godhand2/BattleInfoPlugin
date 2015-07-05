@@ -177,7 +177,7 @@ namespace BattleInfoPlugin.ViewModels
 		{
 			var message = new TransitionMessage("Show/ToolPopup")
 			{
-				TransitionViewModel = new ToolPopupViewModel()
+				TransitionViewModel = new ToolViewModel()
 			};
 			this.Messenger.RaiseAsync(message);
 		}

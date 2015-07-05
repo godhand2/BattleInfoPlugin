@@ -17,7 +17,7 @@
 		<livet:InteractionMessageTrigger Messenger="{Binding Messenger}"
 										 MessageKey="Show/ToolPopup">
 			<livet:TransitionInteractionMessageAction Mode="NewOrActive"
-													  WindowType="views:ToolPopup"
+													  WindowType="views:ToolView"
 													  IsOwned="False" />
 		</livet:InteractionMessageTrigger>
 	</i:Interaction.Triggers>

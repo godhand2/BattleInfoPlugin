@@ -100,7 +100,8 @@
                             Content="해역정보"
                             VerticalAlignment="Stretch"
                             HorizontalAlignment="Right"
-                            Margin="0,0,10,3">
+                            Margin="0,0,10,3"
+							IsEnabled="False">
 						<i:Interaction.Triggers>
 							<i:EventTrigger EventName="Click">
 								<ei:CallMethodAction TargetObject="{Binding}"

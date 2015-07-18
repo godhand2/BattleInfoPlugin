@@ -350,16 +350,16 @@ namespace BattleInfoPlugin.Models
             this.Situation = this.Source.Situation;
             this.NowHP = this.Source.HP.Current;
             this.MaxHP = this.Source.HP.Maximum;
-            this.Slots = this.Source.Slots
-                .Where(s => s!= null)
-                .Where(s => s.Equipped)
-                .Select(s => new ShipSlotData(s)).ToArray();
+			//this.Slots = this.Source.Slots
+			//	.Where(s => s!= null)
+			//	.Where(s => s.Equipped)
+			//	.Select(s => new ShipSlotData(s)).ToArray();
 
-            this.Firepower = this.Source.Firepower.Current;
-            this.Torpedo = this.Source.Torpedo.Current;
-            this.AA = this.Source.AA.Current;
-            this.Armer = this.Source.Armer.Current;
-            this.Luck = this.Source.Luck.Current;
+			//this.Firepower = this.Source.Firepower.Current;
+			//this.Torpedo = this.Source.Torpedo.Current;
+			//this.AA = this.Source.AA.Current;
+			//this.Armer = this.Source.Armer.Current;
+			//this.Luck = this.Source.Luck.Current;
         }
     }
 
@@ -401,13 +401,14 @@ namespace BattleInfoPlugin.Models
             var m = Plugin.RawStart2.api_mst_ship.Single(x => x.api_id == this.Source.Id);
             this.AdditionalName = isEnemyID ? m.api_yomi : "";
             this.TypeName = this.Source.ShipType.Name;
+
             this.NowHP = this.Source.HP;
             this.MaxHP = this.Source.HP;
-            this.Firepower = this.Source.MaxFirepower;
-            this.Torpedo = this.Source.MaxTorpedo;
-            this.AA = this.Source.MaxAA;
-            this.Armer = this.Source.MaxArmer;
-            this.Luck = m.api_luck[0];
+			//this.Firepower = this.Source.MaxFirepower;
+			//this.Torpedo = this.Source.MaxTorpedo;
+			//this.AA = this.Source.MaxAA;
+			//this.Armer = this.Source.MaxArmer;
+			//this.Luck = m.api_luck[0];
         }
     }
 }

@@ -44,7 +44,7 @@ namespace BattleInfoPlugin.Models.Repositories
             this.MapAreas = new ConcurrentDictionary<int, MapArea>();
             this.MapInfos = new ConcurrentDictionary<int, MapInfo>();
             this.MapCells = new ConcurrentDictionary<int, MapCell>();
-            this.Reload();
+            //this.Reload();
         }
 
         public void Update(kcsapi_start2 start2)
@@ -57,7 +57,7 @@ namespace BattleInfoPlugin.Models.Repositories
             foreach (var key in infos.Keys) this.MapInfos.AddOrUpdate(key, infos[key], (k, v) => infos[k]);
             foreach (var key in cells.Keys) this.MapCells.AddOrUpdate(key, cells[key], (k, v) => cells[k]);
 
-            this.Save();
+            //this.Save();
         }
 
         //private static void UpdateMasterTable<T>(IDictionary<int, T> target, Dictionary<int, T> source)

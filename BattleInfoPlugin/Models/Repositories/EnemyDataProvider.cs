@@ -71,7 +71,7 @@ namespace BattleInfoPlugin.Models.Repositories
 
 		public EnemyDataProvider()
 		{
-			this.Reload();
+			//this.Reload();
 			if (this.EnemyDictionary == null) this.EnemyDictionary = new Dictionary<int, int[]>();
 			if (this.EnemyFormation == null) this.EnemyFormation = new Dictionary<int, Formation>();
 			if (this.EnemySlotItems == null) this.EnemySlotItems = new Dictionary<int, int[][]>();
@@ -90,7 +90,7 @@ namespace BattleInfoPlugin.Models.Repositories
 		public FleetData GetNextEnemyFleet(map_start_next startNext)
 		{
 			if (startNext.api_enemy == null) return new FleetData();
-			this.Reload();
+			//this.Reload();
 			return new FleetData(
 				this.GetNextEnemies(startNext),
 				this.GetNextEnemyFormation(startNext),
@@ -107,7 +107,7 @@ namespace BattleInfoPlugin.Models.Repositories
 			this.UpdateMapRoute(startNext);
 			this.UpdateMapCellData(startNext);
 
-			this.Save();
+			//this.Save();
 		}
 
 		public void UpdateBattleTypes<T>(T battleApi)
@@ -122,7 +122,7 @@ namespace BattleInfoPlugin.Models.Repositories
 			else
 				this.MapCellBattleTypes[mapInfo][this.currentStartNext.api_no] = battleTypeName;
 
-			this.Save();
+			//this.Save();
 		}
 
 		public void UpdateEnemyName(battle_result result)
@@ -134,12 +134,12 @@ namespace BattleInfoPlugin.Models.Repositories
 				this.EnemyNames[this.currentEnemyID] = result.api_enemy_info.api_deck_name;
 			else
 				this.EnemyNames.Add(this.currentEnemyID, result.api_enemy_info.api_deck_name);
-			this.Save();
+			//this.Save();
 		}
 
 		public Dictionary<MapInfo, Dictionary<MapCell, Dictionary<int, FleetData>>> GetMapEnemies()
 		{
-			this.Reload();
+			//this.Reload();
 			return this.MapEnemyData.ToDictionary(
 				info => Master.Current.MapInfos[info.Key],
 				info => info.Value.ToDictionary(
@@ -159,13 +159,13 @@ namespace BattleInfoPlugin.Models.Repositories
 
 		public Dictionary<int, Dictionary<int, string>> GetMapCellBattleTypes()
 		{
-			this.Reload();
+			//this.Reload();
 			return this.MapCellBattleTypes;
 		}
 
 		public Dictionary<int, List<MapCellData>> GetMapCellDatas()
 		{
-			this.Reload();
+			//this.Reload();
 			return this.MapCellDatas;
 		}
 
@@ -320,7 +320,7 @@ namespace BattleInfoPlugin.Models.Repositories
 			else
 				this.EnemyLevels.Add(this.currentEnemyID, api_ship_lv);
 
-			this.Save();
+			//this.Save();
 		}
 
 		private void Reload()

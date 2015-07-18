@@ -158,11 +158,6 @@ namespace BattleInfoPlugin.Models
 				if (this._RankResult == value)
 					return;
 				this._RankResult = value;
-				#region DEBUG
-#if DEBUG
-				MessageBox.Show(value.ToString());
-#endif
-				#endregion
 				this.RaisePropertyChanged();
 			}
 		}

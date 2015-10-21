@@ -105,7 +105,7 @@
                                 <Run Text="{Binding LostCount, Mode=OneWay, StringFormat=(-{0})}"/>
                             </TextBlock>
                         </StackPanel>
-                        <TextBlock Text="なし"
+                        <TextBlock Text="없음"
                                    Style="{DynamicResource EmphaticTextStyleKey}"
                                    FontSize="12"
                                    Visibility="{Binding IsHappen, Converter={StaticResource FalseToVisibleConverter}}"/>

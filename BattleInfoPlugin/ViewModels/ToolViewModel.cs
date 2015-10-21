@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BattleInfoPlugin.Models;
 using BattleInfoPlugin.Models.Notifiers;
 using Livet;
@@ -7,179 +8,186 @@ using Livet.Messaging;
 
 namespace BattleInfoPlugin.ViewModels
 {
-	public class ToolViewModel : ViewModel
-	{
-		private readonly BattleEndNotifier notifier = new BattleEndNotifier();
+    public class ToolViewModel : ViewModel
+    {
+        private readonly BattleEndNotifier notifier;
 
-		private readonly BattleData battleData = new BattleData();
+        private BattleData BattleData { get; } = new BattleData();
 
-		public string UpdatedTime
-		{
-			get
-			{
-				return this.battleData != null && this.battleData.UpdatedTime != default(DateTimeOffset)
-					? this.battleData.UpdatedTime.ToString("yyyy/MM/dd HH:mm:ss")
-					: "No Data";
-			}
-		}
+        public string BattleName
+            => this.BattleData?.Name ?? "";
 
-		public string BattleSituation
-		{
-			get
-			{
-				return this.battleData != null && this.battleData.BattleSituation != Models.BattleSituation.없음
-					? this.battleData.BattleSituation.ToString()
-					: "";
-			}
-		}
+        public string UpdatedTime
+            => this.BattleData != null && this.BattleData.UpdatedTime != default(DateTimeOffset)
+                ? this.BattleData.UpdatedTime.ToString("yyyy/MM/dd HH:mm:ss")
+                : "No Data";
 
-		public string FriendAirSupremacy
-		{
-			get
-			{
-				return this.battleData != null && this.battleData.FriendAirSupremacy != AirSupremacy.항공전없음
-					? this.battleData.FriendAirSupremacy.ToString()
-					: "";
-			}
-		}
+        public string BattleSituation
+            => this.BattleData != null && this.BattleData.BattleSituation != Models.BattleSituation.なし
+                ? this.BattleData.BattleSituation.ToString()
+                : "";
 
-		public string Cell
-		{
-			get
-			{
-				return this.battleData.Cell.ToString();
-			}
-		}
+        public string FriendAirSupremacy
+            => this.BattleData != null && this.BattleData.FriendAirSupremacy != AirSupremacy.航空戦なし
+                ? this.BattleData.FriendAirSupremacy.ToString()
+                : "";
 
-		public string RankResult
-		{
-			get
-			{
-				return this.battleData.RankResult.ToString();
-			}
-		}
+        public string DropShipName
+            => this.BattleData?.DropShipName;
 
-		#region FirstFleet変更通知プロパティ
-		private FleetViewModel _FirstFleet;
+        public AirCombatResult[] AirCombatResults
+            => this.BattleData?.AirCombatResults ?? new AirCombatResult[0];
+        
 
-		public FleetViewModel FirstFleet
-		{
-			get
-			{ return this._FirstFleet; }
-			set
-			{
-				if (this._FirstFleet == value)
-					return;
-				this._FirstFleet = value;
-				this.RaisePropertyChanged();
-			}
-		}
-		#endregion
+        #region FirstFleet変更通知プロパティ
+        private FleetViewModel _FirstFleet;
+
+        public FleetViewModel FirstFleet
+        {
+            get
+            { return this._FirstFleet; }
+            set
+            { 
+                if (this._FirstFleet == value)
+                    return;
+                this._FirstFleet = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
 
 
-		#region SecondFleet変更通知プロパティ
-		private FleetViewModel _SecondFleet;
+        #region SecondFleet変更通知プロパティ
+        private FleetViewModel _SecondFleet;
 
-		public FleetViewModel SecondFleet
-		{
-			get
-			{ return this._SecondFleet; }
-			set
-			{
-				if (this._SecondFleet == value)
-					return;
-				this._SecondFleet = value;
-				this.RaisePropertyChanged();
-			}
-		}
-		#endregion
-
-
-		#region Enemies変更通知プロパティ
-		private FleetViewModel _Enemies;
-
-		public FleetViewModel Enemies
-		{
-			get
-			{ return this._Enemies; }
-			set
-			{
-				if (this._Enemies == value)
-					return;
-				this._Enemies = value;
-				this.RaisePropertyChanged();
-			}
-		}
-		#endregion
+        public FleetViewModel SecondFleet
+        {
+            get
+            { return this._SecondFleet; }
+            set
+            { 
+                if (this._SecondFleet == value)
+                    return;
+                this._SecondFleet = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
 
 
-		#region IsNotifierEnabled変更通知プロパティ
-		// ここ以外で変更しないのでModel変更通知は受け取らない雑対応
-		public bool IsNotifierEnabled
-		{
-			get
-			{ return this.notifier.IsEnabled; }
-			set
-			{
-				if (this.notifier.IsEnabled == value)
-					return;
-				this.notifier.IsEnabled = value;
-				this.RaisePropertyChanged();
-			}
-		}
-		#endregion
+        #region Enemies変更通知プロパティ
+        private FleetViewModel _Enemies;
+
+        public FleetViewModel Enemies
+        {
+            get
+            { return this._Enemies; }
+            set
+            { 
+                if (this._Enemies == value)
+                    return;
+                this._Enemies = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
 
 
-		public ToolViewModel()
-		{
-			this.FirstFleet = new FleetViewModel("아군함대");
-			this.SecondFleet = new FleetViewModel("호위함대");
-			this.Enemies = new FleetViewModel("적함대");
-
-			this.CompositeDisposable.Add(new PropertyChangedEventListener(this.battleData)
+        #region IsNotifierEnabled変更通知プロパティ
+        // ここ以外で変更しないのでModel変更通知は受け取らない雑対応
+        public bool IsNotifierEnabled
+        {
+            get
+            { return this.notifier.IsEnabled; }
+            set
             {
-				{
-                    () => this.battleData.Cell,
-                    (_, __) => this.RaisePropertyChanged(() => this.Cell)
+                if (this.notifier.IsEnabled == value)
+                    return;
+                this.notifier.IsEnabled = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+
+        #region IsNotifyOnlyWhenInactive変更通知プロパティ
+        // ここ以外で変更しないのでModel変更通知は受け取らない雑対応
+        public bool IsNotifyOnlyWhenInactive
+        {
+            get
+            { return this.notifier.IsNotifyOnlyWhenInactive; }
+            set
+            {
+                if (this.notifier.IsNotifyOnlyWhenInactive == value)
+                    return;
+                this.notifier.IsNotifyOnlyWhenInactive = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+
+        public ToolViewModel(Plugin plugin)
+        {
+            this.notifier = new BattleEndNotifier(plugin);
+            this._FirstFleet = new FleetViewModel("自艦隊");
+            this._SecondFleet = new FleetViewModel("護衛艦隊");
+            this._Enemies = new FleetViewModel("敵艦隊");
+
+            this.CompositeDisposable.Add(new PropertyChangedEventListener(this.BattleData)
+            {
+                {
+                    () => this.BattleData.Name,
+                    (_, __) => this.RaisePropertyChanged(() => this.BattleName)
                 },
                 {
-                    () => this.battleData.UpdatedTime,
+                    () => this.BattleData.UpdatedTime,
                     (_, __) => this.RaisePropertyChanged(() => this.UpdatedTime)
                 },
                 {
-                    () => this.battleData.BattleSituation,
+                    () => this.BattleData.BattleSituation,
                     (_, __) => this.RaisePropertyChanged(() => this.BattleSituation)
                 },
                 {
-                    () => this.battleData.FriendAirSupremacy,
+                    () => this.BattleData.FriendAirSupremacy,
                     (_, __) => this.RaisePropertyChanged(() => this.FriendAirSupremacy)
                 },
                 {
-                    () => this.battleData.FirstFleet,
-                    (_, __) => this.FirstFleet.Fleet = this.battleData.FirstFleet
+                    () => this.BattleData.AirCombatResults,
+                    (_, __) =>
+                    {
+                        this.RaisePropertyChanged(() => this.AirCombatResults);
+                        this.FirstFleet.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.First)).ToArray();
+                        this.SecondFleet.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.Second)).ToArray();
+                        this.Enemies.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.Enemy)).ToArray();
+                    }
                 },
                 {
-                    () => this.battleData.SecondFleet,
-                    (_, __) => this.SecondFleet.Fleet = this.battleData.SecondFleet
+                    () => this.BattleData.DropShipName,
+                    (_, __) => this.RaisePropertyChanged(() => this.DropShipName)
                 },
                 {
-                    () => this.battleData.Enemies,
-                    (_, __) => this.Enemies.Fleet = this.battleData.Enemies
+                    () => this.BattleData.FirstFleet,
+                    (_, __) => this.FirstFleet.Fleet = this.BattleData.FirstFleet
                 },
-				{
-                    () => this.battleData.RankResult,
-                    (_, __) => this.RaisePropertyChanged(() => this.RankResult)
+                {
+                    () => this.BattleData.SecondFleet,
+                    (_, __) => this.SecondFleet.Fleet = this.BattleData.SecondFleet
+                },
+                {
+                    () => this.BattleData.Enemies,
+                    (_, __) => this.Enemies.Fleet = this.BattleData.Enemies
                 },
             });
-		}
+        }
 
-		public void OpenEnemyWindow()
-		{
-			var message = new TransitionMessage("Show/EnemyWindow")
-			{
-				TransitionViewModel = new EnemyWindowViewModel()
-			};
-			this.Messenger.RaiseAsync(message);
-		}
-	}
+        public void OpenEnemyWindow()
+        {
+            var message = new TransitionMessage("Show/EnemyWindow")
+            {
+                TransitionViewModel = new EnemyWindowViewModel()
+            };
+            this.Messenger.RaiseAsync(message);
+        }
+    }
 }

@@ -12,22 +12,18 @@ using Livet.EventListeners;
 using Livet.Messaging.Windows;
 
 using BattleInfoPlugin.Models;
+using System.Windows;
 
 namespace BattleInfoPlugin.ViewModels.Enemies
 {
     public class EnemyFleetViewModel : ViewModel
     {
-        public int Key { get; set; }
+        public string Key { get; set; }
 
         public string Name
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(this.Fleet.Name)
-                    ? this.Fleet.Name
-                    : "？？？";
-            }
-        }
+            => !string.IsNullOrWhiteSpace(this.Fleet.Name)
+                ? this.Fleet.Name
+                : "？？？";
 
         public FleetData Fleet { get; set; }
 
@@ -52,5 +48,23 @@ namespace BattleInfoPlugin.ViewModels.Enemies
         #endregion
 
         public EnemyCellViewModel ParentCell { get; set; }
+
+        public void DeleteEnemy()
+        {
+            System.Diagnostics.Debug.WriteLine($"DeleteEnemy:{this.Key}");
+            if (MessageBoxResult.OK != MessageBox.Show(
+                $"{this.Name}(key:{this.Key})のデータを削除してよろしいですか？",
+                "確認",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Question))
+                return;
+
+            this.ParentCell.ParentMap.WindowViewModel.RemoveEnemy(this.Key);
+        }
+
+        public void CopyIdToClipboard()
+        {
+            Clipboard.SetText(this.Key);
+        }
     }
 }

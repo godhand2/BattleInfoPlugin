@@ -14,12 +14,13 @@ using Livet.Messaging.Windows;
 
 using BattleInfoPlugin.Models;
 using BattleInfoPlugin.Models.Repositories;
-using Grabacr07.KanColleViewer.ViewModels;
 
 namespace BattleInfoPlugin.ViewModels.Enemies
 {
     public class EnemyMapViewModel : TabItemViewModel
     {
+        public EnemyWindowViewModel WindowViewModel { get; set; }
+
         public MapInfo Info { get; set; }
 
         public List<MapCellData> CellDatas { get; set; }
@@ -39,31 +40,28 @@ namespace BattleInfoPlugin.ViewModels.Enemies
                 {
                     val.ParentMap = this;
                 }
+                this.RaisePropertyChanged();
+                this.RaisePropertyChanged(nameof(this.EnemyShips));
             }
         }
 
         #endregion
 
         public IEnumerable<EnemyShipViewModel> EnemyShips
-        {
-            get
-            {
-                return this.EnemyCells.SelectMany(x => x.EnemyFleets).SelectMany(x => x.EnemyShips);
-            }
-        }
+            => this.EnemyCells.SelectMany(x => x.EnemyFleets).SelectMany(x => x.EnemyShips);
 
-        public BitmapSource MapImage { get { return MapResource.GetMapImage(this.Info); } }
+        public BitmapSource MapImage => MapResource.GetMapImage(this.Info);
 
-        public bool HasImage { get { return this.MapImage != null; } }
+        public bool HasImage => this.MapImage != null;
 
-        public bool ExistsMapAssembly { get { return MapResource.ExistsAssembly; } }
+        public bool ExistsMapAssembly => MapResource.ExistsAssembly;
 
         public IDictionary<string, Tuple<Point, int>> CellPoints
         {
             get
             {
                 return MapResource.GetMapCellPoints(this.Info)
-                    .Where(kvp => kvp.Value != default(Point))  //座標データがないものを除去 e.g. 6-3-13
+                    .Where(kvp => kvp.Value != default(Point)) //座標データがないものを除去 e.g. 6-3-13
                     .GroupBy(kvp => kvp.Value) //重複ポイントを除去
                     .Select(g => g.OrderBy(x => x.Key).First())
                     .ToDictionary(
@@ -76,7 +74,8 @@ namespace BattleInfoPlugin.ViewModels.Enemies
         private int GetCellColorNo(int idInEachMapInfo)
         {
             var data = this.CellDatas.SingleOrDefault(x => x.No == idInEachMapInfo);
-            if (data != default(MapCellData)) return data.EventId;
+            if (data != default(MapCellData) && data.EventId == 6)
+                return 1;  // 気のせいマスは何もなかったことに
             return Master.Current.MapCells
                 .Select(c => c.Value)
                 .Single(c => c.IdInEachMapInfo == idInEachMapInfo && c.MapInfoId == this.Info.Id)
@@ -92,14 +91,8 @@ namespace BattleInfoPlugin.ViewModels.Enemies
             protected set { throw new NotImplementedException(); }
         }
 
-        public string MapNo
-        {
-            get { return this.Info.MapAreaId + "-" + this.Info.IdInEachMapArea; }
-        }
+        public string MapNo => this.Info.MapAreaId + "-" + this.Info.IdInEachMapArea;
 
-        public string RequiredDefeatCount
-        {
-            get { return 21 < this.Info.MapAreaId ? "Event" : this.Info.RequiredDefeatCount.ToString(); }
-        }
+        public string RequiredDefeatCount => 21 < this.Info.MapAreaId ? "Event" : this.Info.RequiredDefeatCount.ToString();
     }
 }

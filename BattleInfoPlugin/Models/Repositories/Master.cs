@@ -16,6 +16,8 @@ namespace BattleInfoPlugin.Models.Repositories
     public class Master
     {
         private static readonly DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Master));
+        private static readonly object margeLock = new object();
+        private static readonly object saveLoadLock = new object();
 
         private static Master _Current;
 
@@ -44,7 +46,7 @@ namespace BattleInfoPlugin.Models.Repositories
             this.MapAreas = new ConcurrentDictionary<int, MapArea>();
             this.MapInfos = new ConcurrentDictionary<int, MapInfo>();
             this.MapCells = new ConcurrentDictionary<int, MapCell>();
-            //this.Reload();
+            this.Reload();
         }
 
         public void Update(kcsapi_start2 start2)
@@ -57,7 +59,7 @@ namespace BattleInfoPlugin.Models.Repositories
             foreach (var key in infos.Keys) this.MapInfos.AddOrUpdate(key, infos[key], (k, v) => infos[k]);
             foreach (var key in cells.Keys) this.MapCells.AddOrUpdate(key, cells[key], (k, v) => cells[k]);
 
-            //this.Save();
+            this.Save();
         }
 
         //private static void UpdateMasterTable<T>(IDictionary<int, T> target, Dictionary<int, T> source)
@@ -70,33 +72,68 @@ namespace BattleInfoPlugin.Models.Repositories
         //            target.Add(sourceKey, source[sourceKey]);
         //    }
         //}
+        
+        public Task<bool> Merge(string path)
+        {
+            return Task.Run(() =>
+            {
+                if (!File.Exists(path)) return false;
+
+                lock (margeLock)
+                {
+                    using (var stream = Stream.Synchronized(new FileStream(path, FileMode.Open, FileAccess.Read)))
+                    {
+                        var obj = serializer.ReadObject(stream) as Master;
+                        if (obj == null) return false;
+                        this.MapAreas = new ConcurrentDictionary<int, MapArea>(this.MapAreas.Merge(obj.MapAreas));
+                        this.MapInfos = new ConcurrentDictionary<int, MapInfo>(this.MapInfos.Merge(obj.MapInfos));
+                        this.MapCells = new ConcurrentDictionary<int, MapCell>(this.MapCells.Merge(obj.MapCells));
+                    }
+                    this.Save();
+                }
+
+                return true;
+            });
+        }
 
         private void Reload()
         {
             //deserialize
-			string MainFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-			var path = Path.Combine(MainFolder, Settings.Default.MasterDataFilePath);
-
-            if (!File.Exists(path)) return;
-
-            using (var stream = Stream.Synchronized(new FileStream(path, FileMode.OpenOrCreate)))
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.MasterDataFilePath);
+            lock (saveLoadLock)
             {
-                var obj = serializer.ReadObject(stream) as Master;
-                if (obj == null) return;
-                this.MapAreas = obj.MapAreas;
-                this.MapInfos = obj.MapInfos;
-                this.MapCells = obj.MapCells;
+                if (!File.Exists(path)) return;
+                using (var stream = Stream.Synchronized(new FileStream(path, FileMode.Open, FileAccess.Read)))
+                {
+                    var obj = serializer.ReadObject(stream) as Master;
+                    if (obj == null) return;
+                    this.MapAreas = obj.MapAreas;
+                    this.MapInfos = obj.MapInfos;
+                    this.MapCells = obj.MapCells;
+                }
             }
         }
 
         private void Save()
         {
-			//serialize
-			string MainFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-			var path = Path.Combine(MainFolder, Settings.Default.MasterDataFilePath);
-            using (var stream = Stream.Synchronized(new FileStream(path, FileMode.OpenOrCreate)))
+            //serialize
+            lock (saveLoadLock)
             {
-                serializer.WriteObject(stream, this);
+                var i = 0;
+                string tempPath;
+                do
+                {
+                    tempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"_{i++}_{Settings.Default.MasterDataFilePath}");
+                } while (File.Exists(tempPath));
+                using (var stream = Stream.Synchronized(new FileStream(tempPath, FileMode.Create, FileAccess.Write)))
+                {
+                    serializer.WriteObject(stream, this);
+                }
+
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.MasterDataFilePath);
+                if (File.Exists(path))
+                    File.Delete(path);
+                File.Move(tempPath, path);
             }
         }
     }

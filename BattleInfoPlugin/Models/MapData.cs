@@ -4,28 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BattleInfoPlugin.Models.Repositories;
+using System.IO;
+using BattleInfoPlugin.Properties;
 
 namespace BattleInfoPlugin.Models
 {
     public class MapData
     {
-        private readonly EnemyDataProvider provider = new EnemyDataProvider();
+        public EnemyDataProvider EnemyData { get; } = new EnemyDataProvider();
 
-        public IReadOnlyDictionary<MapInfo, Dictionary<MapCell, Dictionary<int, FleetData>>> GetMapEnemies()
+        public IReadOnlyDictionary<MapInfo, Dictionary<MapCell, Dictionary<string, FleetData>>> GetMapEnemies()
         {
-            return this.provider.GetMapEnemies();
+            return this.EnemyData.GetMapEnemies();
         }
 
         public IReadOnlyDictionary<int, List<MapCellData>> GetCellDatas()
         {
-            return this.provider.GetMapCellDatas();
+            return this.EnemyData.GetMapCellDatas();
         }
 
         public IReadOnlyDictionary<MapCell, CellType> GetCellTypes()
         {
             var cells = Master.Current.MapCells.Select(c => c.Value);
-            var cellDatas = this.provider.GetMapCellDatas();
-            return this.provider.GetMapCellBattleTypes()
+            var cellDatas = this.EnemyData.GetMapCellDatas();
+            return this.EnemyData.GetMapCellBattleTypes()
                 .SelectMany(x => x.Value, (x, y) => new
                 {
                     cell = cells.Single(c => c.MapInfoId == x.Key && c.IdInEachMapInfo == y.Key),
@@ -47,5 +49,44 @@ namespace BattleInfoPlugin.Models
             if (data == default(MapCellData)) return CellType.None;
             return data.EventId.ToCellType();
         }
+
+        public void Merge(string[] filePathList)
+        {
+            foreach (var filePath in filePathList)
+            {
+                Action<Task<bool>> continuationAction = x =>
+                {
+                    try
+                    {
+                        var result = x.Result;
+                        if (result)
+                            MergeResult?.Invoke(result, $"マージに成功しました。 : {filePath}");
+                        else
+                            MergeResult?.Invoke(result, $"マージに失敗しました。 : {filePath}");
+                    }
+                    catch (Exception)
+                    {
+                        MergeResult?.Invoke(false, $"マージに失敗しました。 : {filePath}");
+                    }
+                };
+
+                var info = new FileInfo(filePath);
+                if (info.Name == Settings.Default.EnemyDataFilePath)
+                {
+                    this.EnemyData.Merge(filePath)
+                        .ContinueWith(continuationAction, TaskScheduler.FromCurrentSynchronizationContext());
+                }else if (info.Name == Settings.Default.MasterDataFilePath)
+                {
+                    Master.Current.Merge(filePath)
+                        .ContinueWith(continuationAction, TaskScheduler.FromCurrentSynchronizationContext());
+                }
+                else
+                {
+                    MergeResult?.Invoke(false, "マージ対象のファイル名ではありません。");
+                }
+            }
+        }
+
+        public event Action<bool, string> MergeResult;
     }
 }

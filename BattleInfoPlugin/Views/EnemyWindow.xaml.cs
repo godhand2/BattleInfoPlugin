@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
-using Grabacr07.KanColleViewer.Views;
 using MetroRadiance.Controls;
+using BattleInfoPlugin.ViewModels;
 
 namespace BattleInfoPlugin.Views
 {
@@ -21,11 +21,23 @@ namespace BattleInfoPlugin.Views
         public EnemyWindow()
         {
             this.InitializeComponent();
-            this.InitializeComponent();
-            WeakEventManager<MainWindow, EventArgs>.AddHandler(
-                MainWindow.Current,
+            WeakEventManager<Window, EventArgs>.AddHandler(
+                Application.Current.MainWindow,
                 "Closed",
                 (_, __) => this.Close());
+        }
+        private void Window_Drop(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop, true))
+                return;
+
+            if (MessageBoxResult.OK != MessageBox.Show("ドロップしたファイルをマージしますか？", "確認", MessageBoxButton.OKCancel, MessageBoxImage.Question))
+                return;
+
+            var filePathList = ((string[])e.Data.GetData(DataFormats.FileDrop, true));
+            var vm = this.DataContext as EnemyWindowViewModel;
+            if (vm == null) return;
+            vm.Merge(filePathList);
         }
     }
 }

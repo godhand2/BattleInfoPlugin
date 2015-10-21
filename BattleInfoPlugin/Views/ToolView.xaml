@@ -8,214 +8,135 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-			 MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}, Mode=OneWay}" 
+             xmlns:models="clr-namespace:BattleInfoPlugin.Models"
+             Background="{DynamicResource ThemeBrushKey}"
+             Foreground="{DynamicResource ActiveForegroundBrushKey}"
              mc:Ignorable="d" 
-             d:DesignHeight="350"
-             d:DesignWidth="640"
+             d:DesignHeight="530"
+             d:DesignWidth="720"
              d:DataContext="{d:DesignData /SampleData/ToolViewModelSampleData.xaml}">
 
-	<UserControl.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="../Styles/PluginStyle.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
-			<converters:AddDoubleValueConverter x:Key="WidthConverter" Value="-16"/>
-			<converters:AddDoubleValueConverter x:Key="HeightConverter" Value="-8"/>
-		</ResourceDictionary>
-	</UserControl.Resources>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/PluginStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
-	<i:Interaction.Triggers>
-		<l:InteractionMessageTrigger Messenger="{Binding Messenger}"
+    <i:Interaction.Triggers>
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}"
                                      MessageKey="Show/EnemyWindow">
-			<l:TransitionInteractionMessageAction Mode="NewOrActive"
+            <l:TransitionInteractionMessageAction Mode="NewOrActive"
                                                   WindowType="views:EnemyWindow"
                                                   IsOwned="False" />
-		</l:InteractionMessageTrigger>
-	</i:Interaction.Triggers>
+        </l:InteractionMessageTrigger>
+    </i:Interaction.Triggers>
 
-	<!-- 親に縦だけAutoなScrollViewerがいるので、自前でScrollBarを出したいなら
-         ViewPortサイズからMargin削った分をサイズに設定する必要がある -->
-	<ScrollViewer VerticalScrollBarVisibility="Auto"
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Auto"
-                  PanningMode="Both"
-                  Width="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},
-                                  Path=ViewportWidth, Converter={StaticResource WidthConverter}}"
-                  Height="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer},
-                                   Path=ViewportHeight, Converter={StaticResource HeightConverter}}">
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition/>
-				<RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
+                  PanningMode="Both">
+        <Grid Margin="8,4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <DockPanel Grid.Row="0">
+                <TextBlock Text="戦闘情報"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource HeaderTextStyleKey}"
+                           Margin="0,0,10,0"/>
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="190"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-			<Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"
-                    BorderThickness="0,0,0,1"
-                    BorderBrush="{DynamicResource ActiveBorderBrushKey}">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition/>
-						<ColumnDefinition Width="Auto"/>
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition/>
-						<RowDefinition/>
-					</Grid.RowDefinitions>
-					<TextBlock Text="전투정보"
-                               Style="{DynamicResource HeaderTextStyleKey}"
-                               Margin="0,0,20,0"
-                               Grid.Column="0"
-                               Grid.Row="0"/>
-					<TextBlock Text="{Binding UpdatedTime}"
-                               Style="{DynamicResource DefaultTextStyleKey}"
-                               Grid.Column="1"
-                               Grid.Row="0"/>
-					<TextBlock Grid.Column="1"
-                               Grid.Row="1"
-                               Style="{DynamicResource DefaultTextStyleKey}">
-                        <Run Text="{Binding Data.Name, Mode=OneWay}"/>
-                        <Run Text=" "/>
-                        <Run Text="{Binding BattleSituation, Mode=OneWay}"
-                             FontSize="12"
-                             Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-                        <Run Text=" "/>
-                        <Run Text="{Binding FriendAirSupremacy, Mode=OneWay}"
-                             FontSize="12"
-                             Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-					</TextBlock>
+                        <StackPanel Grid.Column="1"
+                                    Margin="0,0,10,0">
+                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+                                <Run Text="戦闘種別:"/>
+                                <Run Text="{Binding BattleName, Mode=OneWay}"
+                                     FontSize="12"
+                                     Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+                            </TextBlock>
+                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+                                <Run Text="交戦形態:"/>
+                                <Run Text="{Binding BattleSituation, Mode=OneWay}"
+                                     FontSize="12"
+                                     Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+                            </TextBlock>
+                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+                                <Run Text="制空結果:"/>
+                                <Run Text="{Binding FriendAirSupremacy, Mode=OneWay}"
+                                     FontSize="12"
+                                     Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+                            </TextBlock>
+                        </StackPanel>
 
 
-					<Button Grid.Column="3"
-                            Grid.Row="0"
-                            Grid.RowSpan="2"
-                            Content="해역정보"
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Right"
-                            Margin="0,0,10,3"
-							IsEnabled="False">
-						<i:Interaction.Triggers>
-							<i:EventTrigger EventName="Click">
-								<ei:CallMethodAction TargetObject="{Binding}"
-                                                     MethodName="OpenEnemyWindow"/>
-							</i:EventTrigger>
-						</i:Interaction.Triggers>
-					</Button>
-				</Grid>
-			</Border>
-			<Grid Grid.ColumnSpan="4" Grid.Row="1">
-				<TextBlock Padding="10,5"
-						   FontWeight="ExtraBold"
-						   FontSize="18"
-						   TextAlignment="Center"
-						   Text="{Binding RankResult}">
-					<TextBlock.Style>
-						<Style TargetType="TextBlock">
-							<Style.Triggers>
-								<DataTrigger Binding="{Binding RankResult}"
-												 Value="에러">
-									<Setter Property="Foreground" Value="Red"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}"
-												 Value="없음">
-									<Setter Property="Foreground" Value="Transparent"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}"
-												 Value="완전승리S">
-									<Setter Property="Foreground" Value="#FFFFE558"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}"
-												 Value="S승리">
-									<Setter Property="Foreground" Value="Gold"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}"
-												 Value="A승리">
-									<Setter Property="Foreground" Value="#FFD10000"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}"
-												 Value="B승리">
-									<Setter Property="Foreground" Value="#FFD43353"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}"
-												 Value="패배">
-									<Setter Property="Foreground" Value="#FF42428F"/>
-								</DataTrigger>
-							</Style.Triggers>
-						</Style>
-					</TextBlock.Style>
-				</TextBlock>
-				<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
-						   Margin="10,4"
-						   Padding="10,2"
-						   Foreground="White">
-					<TextBlock.Style>
-						<Style TargetType="TextBlock">
-							<Style.Triggers>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="0">
-									<Setter Property="Text" Value=""/>
-									<Setter Property="Background" Value="Transparent"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="2">
-									<Setter Property="Background" Value="#FF3FBD2B"/>
-									<Setter Property="Text" Value="자원획득"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="3">
-									<Setter Property="Background" Value="#FFA33CEA"/>
-									<Setter Property="Text" Value="소용돌이"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="4">
-									<Setter Property="Background" Value="#FFF01717"/>
-									<Setter Property="Text" Value="적군조우"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="31">
-									<Setter Property="Background" Value="#FFF01717"/>
-									<Setter Property="Text" Value="적군조우"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="5">
-									<Setter Property="Background" Value="#FFD40C0C"/>
-									<Setter Property="Text" Value="보스전"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="6">
-									<Setter Property="Background" Value="#FF0A8AB9"/>
-									<Setter Property="Text" Value="기분탓"/>
-								</DataTrigger>
-							</Style.Triggers>
-						</Style>
-					</TextBlock.Style>
-				</TextBlock>
-			</Grid>
-			<views:Fleet Grid.Column="0" Grid.Row="2"
-                         Margin="0,6,0,0"
-                         DataContext="{Binding FirstFleet}"/>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+                                <Run Text="更新日時:"/>
+                                <Run Text="{Binding UpdatedTime, Mode=OneWay}"
+                                     FontSize="12"
+                                     Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+                            </TextBlock>
+                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+                                <Run Text="ドロップ:"/>
+                                <Run Text="{Binding DropShipName, Mode=OneWay}"
+                                     FontSize="12"
+                                     Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+                            </TextBlock>
+                        </StackPanel>
 
-			<views:Fleet Grid.Column="1" Grid.Row="2"
-                         Margin="0,6,0,0"
-                         DataContext="{Binding SecondFleet}"/>
+                        <Button Grid.Column="3"
+                                Content="既知の敵一覧"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Right"
+                                Margin="0,3,4,0">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <ei:CallMethodAction TargetObject="{Binding}"
+                                                         MethodName="OpenEnemyWindow"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
+                    
+                    <Rectangle Height="1"
+                               Margin="3, 4"
+                               Style="{DynamicResource SeparatorRectangleStyleKey}" />
+                </StackPanel>
+            </DockPanel>
 
-			<views:Fleet Grid.Column="2" Grid.Row="2"
-                         Margin="0,6,0,0"
-                         DataContext="{Binding Enemies}"/>
-			
-			<CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4"
-                      HorizontalAlignment="Right"
-						  Content="화면이 비활성화되어있을때 전투가 끝나면 알림"
-						  IsChecked="{Binding IsNotifierEnabled}"
-						  Margin="10, 0"/>
-		</Grid>
-	</ScrollViewer>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="1">
+                <views:Fleet Margin="0,6,0,0"
+                             DataContext="{Binding FirstFleet}"/>
+
+                <views:Fleet Margin="0,6,0,0"
+                             DataContext="{Binding SecondFleet}"/>
+
+                <views:Fleet Margin="0,6,0,0"
+                             DataContext="{Binding Enemies}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <CheckBox Content="戦闘終了通知"
+                          IsChecked="{Binding IsNotifierEnabled}"
+                          Margin="0,0,10,0"/>
+                <CheckBox Content="非アクティブ時のみ通知"
+                          IsChecked="{Binding IsNotifyOnlyWhenInactive}"
+                          Margin="0,0,10,0"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

@@ -41,12 +41,12 @@ namespace BattleInfoPluginTest
         [TestMethod]
         public void GetDoubleDamageTest()
         {
-            var data = new decimal[]
+            var data = new double[]
             {
                 -1,
                 0,
                 73,
-                9.1m,
+                9.1,
                 4,
                 0,
                 15,

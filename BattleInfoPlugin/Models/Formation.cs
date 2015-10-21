@@ -6,26 +6,26 @@ namespace BattleInfoPlugin.Models
     public enum Formation
     {
         [EnumMember]
-        불명 = -1,
+        不明 = -1,
         [EnumMember]
-        없음 = 0,
+        なし = 0,
         [EnumMember]
-        단종진 = 1,
+        単縦陣 = 1,
         [EnumMember]
-        복종진 = 2,
+        複縦陣 = 2,
         [EnumMember]
-        윤형진 = 3,
+        輪形陣 = 3,
         [EnumMember]
-        제형진 = 4,
+        梯形陣 = 4,
         [EnumMember]
-        단횡진 = 5,
+        単横陣 = 5,
         [EnumMember]
-        대잠진형 = 11,
+        対潜陣形 = 11,
         [EnumMember]
-        전방진형 = 12,
+        前方陣形 = 12,
         [EnumMember]
-        윤형진형 = 13,
+        輪形陣形 = 13,
         [EnumMember]
-        전투진형 = 14,
+        戦闘陣形 = 14,
     }
 }

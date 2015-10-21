@@ -123,7 +123,7 @@ namespace BattleInfoPlugin.Models
 
 
         #region FriendAirSupremacy変更通知プロパティ
-        private AirSupremacy _FriendAirSupremacy = AirSupremacy.航空戦なし;
+        private AirSupremacy _FriendAirSupremacy = AirSupremacy.항공전없음;
 
         public AirSupremacy FriendAirSupremacy
         {
@@ -235,7 +235,7 @@ namespace BattleInfoPlugin.Models
 
         public void Update(battle_midnight_battle data)
         {
-            this.Name = "通常 - 夜戦";
+            this.Name = "통상 - 야전";
 
             this.UpdateFleets(data.api_deck_id, data);
             this.UpdateMaxHP(data.api_maxhps);
@@ -248,7 +248,7 @@ namespace BattleInfoPlugin.Models
 
         public void Update(battle_midnight_sp_midnight data)
         {
-            this.Name = "通常 - 開幕夜戦";
+            this.Name = "통상 - 개막야전";
 
             this.UpdateFleets(data.api_deck_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps);
@@ -258,12 +258,12 @@ namespace BattleInfoPlugin.Models
 
             this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 
-            this.FriendAirSupremacy = AirSupremacy.航空戦なし;
+            this.FriendAirSupremacy = AirSupremacy.항공전없음;
         }
 
         public void Update(combined_battle_airbattle data)
         {
-            this.Name = "連合艦隊 - 航空戦 - 昼戦";
+            this.Name = "연합함대 - 항공전 - 주간";
 
             this.UpdateFleets(data.api_deck_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
@@ -287,13 +287,13 @@ namespace BattleInfoPlugin.Models
 
             this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy(); //航空戦2回目はスルー
 
-            this.AirCombatResults = data.api_kouku.ToResult("1回目/")
-                            .Concat(data.api_kouku2.ToResult("2回目/")).ToArray();
+            this.AirCombatResults = data.api_kouku.ToResult("첫번째/")
+                            .Concat(data.api_kouku2.ToResult("두번째/")).ToArray();
         }
 
         public void Update(combined_battle_battle data)
         {
-            this.Name = "連合艦隊 - 機動部隊 - 昼戦";
+            this.Name = "연합함대 - 기동부대 - 주간";
 
             this.UpdateFleets(data.api_deck_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
@@ -329,7 +329,7 @@ namespace BattleInfoPlugin.Models
 
         public void Update(combined_battle_battle_water data)
         {
-            this.Name = "連合艦隊 - 水上部隊 - 昼戦";
+            this.Name = "연합함대 - 수상함대 - 주간";
 
             this.UpdateFleets(data.api_deck_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
@@ -365,7 +365,7 @@ namespace BattleInfoPlugin.Models
 
         public void Update(combined_battle_midnight_battle data)
         {
-            this.Name = "連合艦隊 - 夜戦";
+            this.Name = "연합함대 - 야전";
 
             this.UpdateFleets(data.api_deck_id, data);
             this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
@@ -378,7 +378,7 @@ namespace BattleInfoPlugin.Models
 
         public void Update(combined_battle_sp_midnight data)
         {
-            this.Name = "連合艦隊 - 開幕夜戦";
+            this.Name = "연합함대 - 개막야전";
 
             this.UpdateFleets(data.api_deck_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
@@ -388,14 +388,14 @@ namespace BattleInfoPlugin.Models
 
             this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 
-            this.FriendAirSupremacy = AirSupremacy.航空戦なし;
+            this.FriendAirSupremacy = AirSupremacy.항공전없음;
         }
 
         public void Update(practice_battle data)
         {
             this.Clear();
 
-            this.Name = "演習 - 昼戦";
+            this.Name = "연습 - 주간";
 
             this.UpdateFleets(data.api_dock_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps);
@@ -424,7 +424,7 @@ namespace BattleInfoPlugin.Models
 
         public void Update(practice_midnight_battle data)
         {
-            this.Name = "演習 - 夜戦";
+            this.Name = "연습 - 야전";
 
             this.UpdateFleets(data.api_deck_id, data);
             this.UpdateMaxHP(data.api_maxhps);
@@ -437,7 +437,7 @@ namespace BattleInfoPlugin.Models
 
         private void Update(sortie_airbattle data)
         {
-            this.Name = "航空戦 - 昼戦";
+            this.Name = "항공전 - 주간";
 
             this.UpdateFleets(data.api_dock_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps);
@@ -456,13 +456,13 @@ namespace BattleInfoPlugin.Models
 
             this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy(); // 航空戦2回目はスルー
             
-            this.AirCombatResults = data.api_kouku.ToResult("1回目/")
-                            .Concat(data.api_kouku2.ToResult("2回目/")).ToArray();
+            this.AirCombatResults = data.api_kouku.ToResult("첫번째/")
+                            .Concat(data.api_kouku2.ToResult("두번째/")).ToArray();
         }
 
         private void Update(sortie_battle data)
         {
-            this.Name = "通常 - 昼戦";
+            this.Name = "통상 - 주간";
 
             this.UpdateFleets(data.api_dock_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps);
@@ -517,7 +517,7 @@ namespace BattleInfoPlugin.Models
             
             this.Enemies = new FleetData(
                 data.ToMastersShipDataArray(),
-                this.Enemies?.Formation ?? Formation.なし,
+                this.Enemies?.Formation ?? Formation.없음,
                 this.Enemies?.Name ?? "",
                 FleetType.Enemy);
 
@@ -536,14 +536,14 @@ namespace BattleInfoPlugin.Models
             var organization = KanColleClient.Current.Homeport.Organization;
             this.FirstFleet = new FleetData(
                 organization.Fleets[deckID].Ships.Select(s => new MembersShipData(s)).ToArray(),
-                this.FirstFleet?.Formation ?? Formation.なし,
+                this.FirstFleet?.Formation ?? Formation.없음,
                 organization.Fleets[deckID].Name,
                 FleetType.First);
             this.SecondFleet = new FleetData(
                 organization.Combined && deckID == 1
                     ? organization.Fleets[2].Ships.Select(s => new MembersShipData(s)).ToArray()
                     : new MembersShipData[0],
-                this.SecondFleet?.Formation ?? Formation.なし,
+                this.SecondFleet?.Formation ?? Formation.없음,
                 organization.Fleets[2].Name,
                 FleetType.Second);
         }
@@ -572,10 +572,10 @@ namespace BattleInfoPlugin.Models
             this.Name = "";
             this.DropShipName = null;
 
-            this.BattleSituation = BattleSituation.なし;
-            this.FriendAirSupremacy = AirSupremacy.航空戦なし;
+            this.BattleSituation = BattleSituation.없음;
+            this.FriendAirSupremacy = AirSupremacy.항공전없음;
             this.AirCombatResults = new AirCombatResult[0];
-            if (this.FirstFleet != null) this.FirstFleet.Formation = Formation.なし;
+            if (this.FirstFleet != null) this.FirstFleet.Formation = Formation.없음;
             this.Enemies = new FleetData();
         }
     }

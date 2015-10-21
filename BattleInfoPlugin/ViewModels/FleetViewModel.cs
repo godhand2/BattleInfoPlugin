@@ -69,7 +69,7 @@ namespace BattleInfoPlugin.ViewModels
         {
             get
             {
-                return (this.Fleet != null && this.Fleet.Formation != Formation.なし)
+                return (this.Fleet != null && this.Fleet.Formation != Formation.없음)
                       ? this.Fleet.Formation.ToString()
                       : "";
             }

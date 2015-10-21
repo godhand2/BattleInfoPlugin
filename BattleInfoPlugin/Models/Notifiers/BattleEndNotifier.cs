@@ -68,12 +68,12 @@ namespace BattleInfoPlugin.Models.Notifiers
             proxy.api_req_sortie_battleresult
                 .Subscribe(_ => this.NotifyEndOfBattle());
 
-            monitor.ConfirmPursuit += () => this.Notify(NotificationType.ConfirmPursuit, "追撃確認", "夜戦を行うかどうか選択してください。");
+            monitor.ConfirmPursuit += () => this.Notify(NotificationType.ConfirmPursuit, "추격확인", "야전을 실시할지 선택하시기 바랍니다");
         }
 
         private void NotifyEndOfBattle()
         {
-            this.Notify(NotificationType.BattleEnd, "戦闘終了", "戦闘が終了しました。");
+            this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
         }
 
         private void Notify(string type, string title, string message)

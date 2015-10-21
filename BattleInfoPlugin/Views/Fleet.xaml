@@ -145,7 +145,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel>
                                         <TextBlock>
-                                            <Run Text="火力"/>
+                                            <Run Text="화력"/>
                                             <Run Text="{Binding SumFirepower, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
                                                  Style="{DynamicResource EmphaticTextElementStyleKey}"
                                                  FontSize="12"/>
@@ -161,7 +161,7 @@
                                         </TextBlock>
 
                                         <TextBlock>
-                                            <Run Text="雷装"/>
+                                            <Run Text="뇌장"/>
                                             <Run Text="{Binding SumTorpedo, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
                                                  Style="{DynamicResource EmphaticTextElementStyleKey}"
                                                  FontSize="12"/>
@@ -177,7 +177,7 @@
                                         </TextBlock>
 
                                         <TextBlock>
-                                            <Run Text="対空"/>
+                                            <Run Text="대공"/>
                                             <Run Text="{Binding SumAA, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
                                                  Style="{DynamicResource EmphaticTextElementStyleKey}"
                                                  FontSize="12"/>
@@ -193,7 +193,7 @@
                                         </TextBlock>
 
                                         <TextBlock>
-                                            <Run Text="装甲"/>
+                                            <Run Text="장갑"/>
                                             <Run Text="{Binding SumArmer, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
                                                  Style="{DynamicResource EmphaticTextElementStyleKey}"
                                                  FontSize="12"/>
@@ -211,30 +211,30 @@
 
                                     <StackPanel>
                                         <TextBlock>
-                                            <Run Text="対潜"/>
+                                            <Run Text="대잠"/>
                                             <Run Text="{Binding SlotsASW, Mode=OneWay, StringFormat={}(+{0})}"/>
                                         </TextBlock>
                                         <TextBlock>
-                                            <Run Text="命中"/>
+                                            <Run Text="명중"/>
                                             <Run Text="{Binding SlotsHit, Mode=OneWay, StringFormat={}(+{0})}"/>
                                         </TextBlock>
                                         <TextBlock>
-                                            <Run Text="回避"/>
+                                            <Run Text="회피"/>
                                             <Run Text="{Binding SlotsEvade, Mode=OneWay, StringFormat={}(+{0})}"/>
                                         </TextBlock>
                                     </StackPanel>
                                 </StackPanel>
 
                                 <StackPanel>
-                                    <TextBlock Text="攻撃種別"/>
+                                    <TextBlock Text="공격종류"/>
                                     <TextBlock>
-                                        <Run Text="昼戦"/>
+                                        <Run Text="주간"/>
                                         <Run Text="{Binding DayAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
                                              Style="{DynamicResource EmphaticTextElementStyleKey}"
                                              FontSize="{DynamicResource DefaultFontSizeKey}"/>
                                     </TextBlock>
                                     <TextBlock>
-                                        <Run Text="夜戦"/>
+                                        <Run Text="야전"/>
                                         <Run Text="{Binding NightAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
                                              Style="{DynamicResource EmphaticTextElementStyleKey}"
                                              FontSize="{DynamicResource DefaultFontSizeKey}"/>
@@ -339,7 +339,7 @@
                                   Margin="3,2,3,0">
                                 <Border Background="{DynamicResource FleetRepairingBrushKey}"
                                         Opacity=".4" />
-                                <TextBlock Text="退避済"
+                                <TextBlock Text="대피완료"
                                            Style="{DynamicResource EmphaticTextStyleKey}"
                                            HorizontalAlignment="Center" />
                             </Grid>
@@ -350,7 +350,7 @@
                                   Margin="3,2,3,0">
                                 <Border Background="{DynamicResource FleetRepairingBrushKey}"
                                         Opacity=".4" />
-                                <TextBlock Text="退避済"
+                                <TextBlock Text="대피완료"
                                            Style="{DynamicResource EmphaticTextStyleKey}"
                                            HorizontalAlignment="Center" />
                             </Grid>
@@ -361,7 +361,7 @@
                                                        Width="14"
                                                        Visibility="{Binding IsUsedDamecon, Converter={StaticResource TrueToVisibleConverter}}"
                                                        Margin="0,0,3,0"/>
-                                <TextBlock Text="使用"
+                                <TextBlock Text="사용"
                                            Style="{DynamicResource EmphaticTextStyleKey}"
                                            FontSize="12"
                                            VerticalAlignment="Center"

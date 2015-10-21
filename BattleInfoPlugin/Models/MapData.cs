@@ -60,13 +60,13 @@ namespace BattleInfoPlugin.Models
                     {
                         var result = x.Result;
                         if (result)
-                            MergeResult?.Invoke(result, $"マージに成功しました。 : {filePath}");
+                            MergeResult?.Invoke(result, $"병합에 성공했습니다 : {filePath}");
                         else
-                            MergeResult?.Invoke(result, $"マージに失敗しました。 : {filePath}");
+                            MergeResult?.Invoke(result, $"병합에 실패했습니다 : {filePath}");
                     }
                     catch (Exception)
                     {
-                        MergeResult?.Invoke(false, $"マージに失敗しました。 : {filePath}");
+                        MergeResult?.Invoke(false, $"병합에 실패했습니다 : {filePath}");
                     }
                 };
 
@@ -82,7 +82,7 @@ namespace BattleInfoPlugin.Models
                 }
                 else
                 {
-                    MergeResult?.Invoke(false, "マージ対象のファイル名ではありません。");
+                    MergeResult?.Invoke(false, "병합대상이 없습니다");
                 }
             }
         }

@@ -15,16 +15,16 @@ namespace BattleInfoPlugin.Views.Converters
         {
             if (!(value is AttackType)) return "";
             var type = (AttackType)value;
-            return type == AttackType.カットイン主主 ? "カットイン (x1.5)"
-                : type == AttackType.カットイン主徹 ? "カットイン (x1.3)"
-                : type == AttackType.カットイン主電 ? "カットイン (x1.2)"
-                : type == AttackType.カットイン主副 ? "カットイン (x1.1)"
-                : type == AttackType.カットイン雷 ? "カットイン (x1.5 x2)"
-                : type == AttackType.カットイン主主主 ? "カットイン (x2.0)"
-                : type == AttackType.カットイン主主副 ? "カットイン (x1.75)"
-                : type == AttackType.カットイン主雷 ? "カットイン (x1.3 x2)"
-                : type == AttackType.連撃 ? "連撃 (x1.2 x2)"
-                : "通常";
+            return type == AttackType.주주컷인 ? "컷인 (x1.5)"
+                : type == AttackType.주철컷인 ? "컷인 (x1.3)"
+                : type == AttackType.주전컷인 ? "컷인 (x1.2)"
+                : type == AttackType.주부컷인 ? "컷인 (x1.1)"
+                : type == AttackType.뇌격컷인 ? "컷인 (x1.5 x2)"
+                : type == AttackType.주주주컷인 ? "컷인 (x2.0)"
+                : type == AttackType.주주부컷인 ? "컷인 (x1.75)"
+                : type == AttackType.주뢰컷인 ? "컷인 (x1.3 x2)"
+                : type == AttackType.연격 ? "연격 (x1.2 x2)"
+                : "통상";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -309,23 +309,23 @@ namespace BattleInfoPlugin.Models
         public LimitedValue HP => new LimitedValue(this.NowHP, this.MaxHP, 0);
 
         public AttackType DayAttackType
-            => this.HasScout() && this.Count(Type2.主砲) == 2 && this.Count(Type2.徹甲弾) == 1 ? AttackType.カットイン主主
-            : this.HasScout() && this.Count(Type2.主砲) == 1 && this.Count(Type2.副砲) == 1 && this.Count(Type2.徹甲弾) == 1 ? AttackType.カットイン主徹
-            : this.HasScout() && this.Count(Type2.主砲) == 1 && this.Count(Type2.副砲) == 1 && this.Count(Type2.電探) == 1 ? AttackType.カットイン主電
-            : this.HasScout() && this.Count(Type2.主砲) >= 1 && this.Count(Type2.副砲) >= 1 ? AttackType.カットイン主副
-            : this.HasScout() && this.Count(Type2.主砲) >= 2 ? AttackType.連撃
-            : AttackType.通常;
+            => this.HasScout() && this.Count(Type2.주포) == 2 && this.Count(Type2.철갑탄) == 1 ? AttackType.주주컷인
+            : this.HasScout() && this.Count(Type2.주포) == 1 && this.Count(Type2.부포) == 1 && this.Count(Type2.철갑탄) == 1 ? AttackType.주철컷인
+            : this.HasScout() && this.Count(Type2.주포) == 1 && this.Count(Type2.부포) == 1 && this.Count(Type2.전탐) == 1 ? AttackType.주전컷인
+            : this.HasScout() && this.Count(Type2.주포) >= 1 && this.Count(Type2.부포) >= 1 ? AttackType.주부컷인
+            : this.HasScout() && this.Count(Type2.주포) >= 2 ? AttackType.연격
+            : AttackType.통상;
 
         public AttackType NightAttackType
-            => this.Count(Type2.魚雷) >= 2 ? AttackType.カットイン雷
-            : this.Count(Type2.主砲) >= 3 ? AttackType.カットイン主主主
-            : this.Count(Type2.主砲) == 2 && this.Count(Type2.副砲) >= 1 ? AttackType.カットイン主主副
-            : this.Count(Type2.主砲) == 2 && this.Count(Type2.副砲) == 0 && this.Count(Type2.魚雷) == 1 ? AttackType.カットイン主雷
-            : this.Count(Type2.主砲) == 1 && this.Count(Type2.魚雷) == 1 ? AttackType.カットイン主雷
-            : this.Count(Type2.主砲) == 2 && this.Count(Type2.副砲) == 0 && this.Count(Type2.魚雷) == 0 ? AttackType.連撃
-            : this.Count(Type2.主砲) == 1 && this.Count(Type2.副砲) >= 1 && this.Count(Type2.魚雷) == 0 ? AttackType.連撃
-            : this.Count(Type2.主砲) == 0 && this.Count(Type2.副砲) >= 2 && this.Count(Type2.魚雷) <= 1 ? AttackType.連撃
-            : AttackType.通常;
+            => this.Count(Type2.어뢰) >= 2 ? AttackType.뇌격컷인
+            : this.Count(Type2.주포) >= 3 ? AttackType.주주주컷인
+            : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) >= 1 ? AttackType.주주부컷인
+            : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 1 ? AttackType.주뢰컷인
+            : this.Count(Type2.주포) == 1 && this.Count(Type2.어뢰) == 1 ? AttackType.주뢰컷인
+            : this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 0 ? AttackType.연격
+            : this.Count(Type2.주포) == 1 && this.Count(Type2.부포) >= 1 && this.Count(Type2.어뢰) == 0 ? AttackType.연격
+            : this.Count(Type2.주포) == 0 && this.Count(Type2.부포) >= 2 && this.Count(Type2.어뢰) <= 1 ? AttackType.연격
+            : AttackType.통상;
 
         public ShipData()
         {

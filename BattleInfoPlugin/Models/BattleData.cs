@@ -494,6 +494,7 @@ namespace BattleInfoPlugin.Models
 
 		public void Update(battle_result data)
 		{
+			if (data.api_get_ship?.api_ship_name == null) return;
 			this.DropShipName = KanColleClient.Current.Translations.GetTranslation(data.api_get_ship?.api_ship_name, Grabacr07.KanColleWrapper.Models.TranslationType.Ships, false);
 		}
 

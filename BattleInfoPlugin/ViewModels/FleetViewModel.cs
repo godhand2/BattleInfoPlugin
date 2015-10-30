@@ -25,11 +25,25 @@ namespace BattleInfoPlugin.ViewModels
                 this.RaisePropertyChanged();
             }
         }
-        #endregion
+		#endregion
 
 
-        #region Fleet変更通知プロパティ
-        private FleetData _Fleet;
+		#region FleetGauge変更通知プロパティ
+
+		public string FleetGauge
+		{
+			get
+			{
+				return (this.Fleet != null && this.Fleet.AttackGauge != string.Empty)
+				  ? this.Fleet.AttackGauge
+				  : string.Empty;
+			}
+		}
+		#endregion
+
+
+		#region Fleet変更通知プロパティ
+		private FleetData _Fleet;
 
         public FleetData Fleet
         {
@@ -44,8 +58,9 @@ namespace BattleInfoPlugin.ViewModels
 
                 this.RaisePropertyChanged(() => this.FleetFormation);
                 this.RaisePropertyChanged(() => this.IsVisible);
+				this.RaisePropertyChanged(() => this.FleetGauge);
 
-                this.Name = !string.IsNullOrWhiteSpace(value.Name)
+				this.Name = !string.IsNullOrWhiteSpace(value.Name)
                     ? value.Name
                     : this.defaultName;
             }

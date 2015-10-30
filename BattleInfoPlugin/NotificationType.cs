@@ -14,5 +14,9 @@ namespace BattleInfoPlugin
         /// 追撃確認時の通知を識別するための文字列を取得します。
         /// </summary>
         public static string ConfirmPursuit = $"{baseName}.{nameof(ConfirmPursuit)}";
-    }
+		/// <summary>
+		/// 
+		/// </summary>
+		public static string CriticalState = $"{baseName}.{nameof(CriticalState)}";
+	}
 }

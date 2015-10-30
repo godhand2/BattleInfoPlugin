@@ -32,7 +32,11 @@ namespace BattleInfoPlugin.ViewModels
                 ? this.BattleData.FriendAirSupremacy.ToString()
                 : "";
 
-        public string DropShipName
+		public string Cell
+			=>this.BattleData?.Cell.ToString();
+		public string RankResult
+			=>this.BattleData.RankResult.ToString();
+		public string DropShipName
             => this.BattleData?.DropShipName;
 
         public AirCombatResult[] AirCombatResults
@@ -135,8 +139,12 @@ namespace BattleInfoPlugin.ViewModels
             this._Enemies = new FleetViewModel("적함대");
 
             this.CompositeDisposable.Add(new PropertyChangedEventListener(this.BattleData)
-            {
-                {
+			{
+				{
+					() => this.BattleData.Cell,
+					(_, __) => this.RaisePropertyChanged(() => this.Cell)
+				},
+				{
                     () => this.BattleData.Name,
                     (_, __) => this.RaisePropertyChanged(() => this.BattleName)
                 },
@@ -178,7 +186,11 @@ namespace BattleInfoPlugin.ViewModels
                     () => this.BattleData.Enemies,
                     (_, __) => this.Enemies.Fleet = this.BattleData.Enemies
                 },
-            });
+				{
+					() => this.BattleData.RankResult,
+					(_, __) => this.RaisePropertyChanged(() => this.RankResult)
+				},
+			});
         }
 
         public void OpenEnemyWindow()

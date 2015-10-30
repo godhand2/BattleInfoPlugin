@@ -38,8 +38,9 @@
                   PanningMode="Both">
         <Grid Margin="8,4">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
@@ -101,8 +102,8 @@
                                 HorizontalAlignment="Right"
                                 Margin="0,3,4,0">
                             <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <ei:CallMethodAction TargetObject="{Binding}"
+								<i:EventTrigger EventName="Click">
+									<ei:CallMethodAction TargetObject="{Binding}"
                                                          MethodName="OpenEnemyWindow"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
@@ -115,8 +116,98 @@
                 </StackPanel>
             </DockPanel>
 
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="1">
+			<Grid Grid.Row="1">
+				<TextBlock Padding="10,5"
+						   FontWeight="ExtraBold"
+						   FontSize="18"
+						   TextAlignment="Center"
+						   Text="{Binding RankResult}">
+					<TextBlock.Style>
+						<Style TargetType="TextBlock">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding RankResult}"
+												 Value="에러">
+									<Setter Property="Foreground" Value="Red"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding RankResult}"
+												 Value="없음">
+									<Setter Property="Foreground" Value="Transparent"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding RankResult}"
+												 Value="완전승리S">
+									<Setter Property="Foreground" Value="#FFFFE558"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding RankResult}"
+												 Value="S승리">
+									<Setter Property="Foreground" Value="Gold"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding RankResult}"
+												 Value="A승리">
+									<Setter Property="Foreground" Value="#FFD10000"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding RankResult}"
+												 Value="B승리">
+									<Setter Property="Foreground" Value="#FFD43353"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding RankResult}"
+												 Value="패배">
+									<Setter Property="Foreground" Value="#FF42428F"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Style>
+				</TextBlock>
+				<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+						   Margin="10,4"
+						   Padding="10,2"
+						   Foreground="White">
+					<TextBlock.Style>
+						<Style TargetType="TextBlock">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Cell}"
+												 Value="0">
+									<Setter Property="Text" Value=""/>
+									<Setter Property="Background" Value="Transparent"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Cell}"
+												 Value="2">
+									<Setter Property="Background" Value="#FF3FBD2B"/>
+									<Setter Property="Text" Value="자원획득"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Cell}"
+												 Value="3">
+									<Setter Property="Background" Value="#FFA33CEA"/>
+									<Setter Property="Text" Value="소용돌이"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Cell}"
+												 Value="4">
+									<Setter Property="Background" Value="#FFF01717"/>
+									<Setter Property="Text" Value="적군조우"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Cell}"
+												 Value="31">
+									<Setter Property="Background" Value="#FFF01717"/>
+									<Setter Property="Text" Value="적군조우"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Cell}"
+												 Value="5">
+									<Setter Property="Background" Value="#FFD40C0C"/>
+									<Setter Property="Text" Value="보스전"/>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Cell}"
+												 Value="6">
+									<Setter Property="Background" Value="#FF0A8AB9"/>
+									<Setter Property="Text" Value="기분탓"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Style>
+				</TextBlock>
+			</Grid>
+
+
+			<StackPanel Orientation="Horizontal"
+                        Grid.Row="2">
                 <views:Fleet Margin="0,6,0,0"
                              DataContext="{Binding FirstFleet}"/>
 
@@ -127,7 +218,7 @@
                              DataContext="{Binding Enemies}"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="2"
+            <StackPanel Grid.Row="3"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
                 <CheckBox Content="전투종료알림"

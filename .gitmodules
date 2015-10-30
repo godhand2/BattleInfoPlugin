@@ -1,0 +1,6 @@
+[submodule "MetroRadiance"]
+	path = MetroRadiance
+	url = https://github.com/FreyYa/MetroRadiance.git
+[submodule "MetroTrilithon"]
+	path = MetroTrilithon
+	url = https://github.com/FreyYa/MetroTrilithon.git

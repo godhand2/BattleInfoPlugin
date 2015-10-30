@@ -6,93 +6,130 @@ using Grabacr07.KanColleViewer;
 using Grabacr07.KanColleViewer.Composition;
 using Grabacr07.KanColleWrapper;
 using Livet;
+using MetroRadiance;
+using BattleInfoPlugin.Models.Raw;
 
 namespace BattleInfoPlugin.Models.Notifiers
 {
-    public class BattleEndNotifier : NotificationObject
-    {
-        private static readonly Settings settings = Settings.Default;
+	public class BattleEndNotifier : NotificationObject
+	{
+		private static readonly Settings settings = Settings.Default;
 
-        private static readonly BrowserImageMonitor monitor = new BrowserImageMonitor();
+		private static readonly BrowserImageMonitor monitor = new BrowserImageMonitor();
 
-        private readonly Plugin plugin;
+		private readonly Plugin plugin;
 
-        #region IsEnabled変更通知プロパティ
+		#region IsEnabled変更通知プロパティ
 
-        public bool IsEnabled
-        {
-            get { return settings.IsEnabledBattleEndNotify; }
-            set
-            {
-                if (settings.IsEnabledBattleEndNotify == value)
-                    return;
-                settings.IsEnabledBattleEndNotify = value;
-                settings.Save();
-                this.RaisePropertyChanged();
-            }
-        }
+		public bool IsEnabled
+		{
+			get { return settings.IsEnabledBattleEndNotify; }
+			set
+			{
+				if (settings.IsEnabledBattleEndNotify == value)
+					return;
+				settings.IsEnabledBattleEndNotify = value;
+				settings.Save();
+				this.RaisePropertyChanged();
+			}
+		}
 
-        #endregion
+		#endregion
 
-        #region IsNotifyOnlyWhenInactive変更通知プロパティ
+		#region IsNotifyOnlyWhenInactive変更通知プロパティ
 
-        public bool IsNotifyOnlyWhenInactive
-        {
-            get { return settings.IsBattleEndNotifyOnlyWhenInactive; }
-            set
-            {
-                if (settings.IsBattleEndNotifyOnlyWhenInactive == value)
-                    return;
-                settings.IsBattleEndNotifyOnlyWhenInactive = value;
-                settings.Save();
-                this.RaisePropertyChanged();
-            }
-        }
+		public bool IsNotifyOnlyWhenInactive
+		{
+			get { return settings.IsBattleEndNotifyOnlyWhenInactive; }
+			set
+			{
+				if (settings.IsBattleEndNotifyOnlyWhenInactive == value)
+					return;
+				settings.IsBattleEndNotifyOnlyWhenInactive = value;
+				settings.Save();
+				this.RaisePropertyChanged();
+			}
+		}
 
-        #endregion
+		#endregion
 
-        public BattleEndNotifier(Plugin plugin)
-        {
-            this.plugin = plugin;
+		public BattleEndNotifier(Plugin plugin)
+		{
+			this.plugin = plugin;
 
-            settings.Reload();
+			settings.Reload();
 
-            var proxy = KanColleClient.Current.Proxy;
+			var proxy = KanColleClient.Current.Proxy;
 
-            proxy.api_req_combined_battle_battleresult
-                .Subscribe(_ => this.NotifyEndOfBattle());
+			proxy.api_req_combined_battle_battleresult
+				.Subscribe(_ => this.NotifyEndOfBattle());
 
-            proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_practice/battle_result")
-                .Subscribe(_ => this.NotifyEndOfBattle());
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_practice/battle_result")
+				.Subscribe(_ => this.NotifyEndOfBattle());
 
-            proxy.api_req_sortie_battleresult
-                .Subscribe(_ => this.NotifyEndOfBattle());
+			proxy.api_req_sortie_battleresult
+				.Subscribe(_ => this.NotifyEndOfBattle());
 
-            monitor.ConfirmPursuit += () => this.Notify(NotificationType.ConfirmPursuit, "추격확인", "야전을 실시할지 선택하시기 바랍니다");
-        }
+			proxy.api_req_map_start
+				.Subscribe(_ => this.IsCriticalCheck());
 
-        private void NotifyEndOfBattle()
-        {
-            this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
-        }
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/next")
+				.Subscribe(x => this.IsCriticalCheck());
 
-        private void Notify(string type, string title, string message)
-        {
-            var isActive = DispatcherHelper.UIDispatcher.Invoke(() => Application.Current.MainWindow.IsActive);
-            if (this.IsEnabled && (!isActive || !this.IsNotifyOnlyWhenInactive))
-                this.plugin.InvokeNotifyRequested(new NotifyEventArgs(type, title, message)
-                {
-                    Activated = () =>
-                    {
-                        DispatcherHelper.UIDispatcher.Invoke(() =>
-                        {
-                            var window = Application.Current.MainWindow;
-                            if (window.WindowState == WindowState.Minimized)
-                                window.WindowState = WindowState.Normal;
-                            window.Activate();
-                        });
-                    },
-                });
-        }
-    }
+			monitor.ConfirmPursuit += () => this.Notify(NotificationType.ConfirmPursuit, "추격확인", "야전을 실시할지 선택하시기 바랍니다");
+		}
+		private bool IsCriticalCheck()
+		{
+			if (Settings.Default.FirstIsCritical || Settings.Default.SecondIsCritical)
+			{
+				this.Notify(
+									NotificationType.CriticalState,
+									"대파알림",
+									"대파된 칸무스가 있습니다!",
+									true);
+				return true;
+			}
+			else return false;
+		}
+		private void NotifyEndOfBattle()
+		{
+			if (!IsCriticalCheck()) this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
+		}
+
+		private void Notify(string type, string title, string message, bool IsCritical = false)
+		{
+			var isActive = DispatcherHelper.UIDispatcher.Invoke(() => Application.Current.MainWindow.IsActive);
+			if (IsCritical)
+			{
+				ThemeService.Current.ChangeAccent(Accent.Red);
+				this.plugin.InvokeNotifyRequested(new NotifyEventArgs(type, title, message)
+				{
+					Activated = () =>
+					{
+						DispatcherHelper.UIDispatcher.Invoke(() =>
+						{
+							var window = System.Windows.Application.Current.MainWindow;
+							if (window.WindowState == WindowState.Minimized)
+								window.WindowState = WindowState.Normal;
+							window.Activate();
+						});
+					},
+				});
+			}
+			else if (this.IsEnabled && (!isActive || !this.IsNotifyOnlyWhenInactive))
+				this.plugin.InvokeNotifyRequested(new NotifyEventArgs(type, title, message)
+				{
+					Activated = () =>
+					{
+						DispatcherHelper.UIDispatcher.Invoke(() =>
+						{
+							var window = System.Windows.Application.Current.MainWindow;
+							if (window.WindowState == WindowState.Minimized)
+								window.WindowState = WindowState.Normal;
+							window.Activate();
+						});
+					},
+				});
+		}
+	}
 }

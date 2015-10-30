@@ -139,11 +139,25 @@ namespace BattleInfoPlugin.Models
                 this.RaisePropertyChanged(() => this.HP);
             }
         }
-        #endregion
+		#endregion
 
-        #region Firepower 変更通知プロパティ
+		#region BeforeNowHP変更通知プロパティ
+		private int _BeforeNowHP;
+		public int BeforeNowHP
+		{
+			get { return this._BeforeNowHP; }
+			set
+			{
+				if (this._BeforeNowHP == value)
+					return;
+				this._BeforeNowHP = value;
+			}
+		}
+		#endregion
 
-        private int _Firepower;
+		#region Firepower 変更通知プロパティ
+
+		private int _Firepower;
 
         /// <summary>
         /// 火力ステータス値を取得します。

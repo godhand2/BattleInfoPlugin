@@ -15,7 +15,13 @@
       <Value Profile="(Default)">BattleInfoPluginData</Value>
     </Setting>
     <Setting Name="IsBattleEndNotifyOnlyWhenInactive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FirstIsCritical" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SecondIsCritical" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

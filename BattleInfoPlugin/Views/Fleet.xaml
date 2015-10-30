@@ -118,7 +118,14 @@
                    Margin="3,4"
                    Style="{DynamicResource SeparatorRectangleStyleKey}"/>
 
-        <ItemsControl ItemsSource="{Binding Fleet.Ships}"
+		<TextBlock>
+			<Run Text="{Binding FleetGauge,Mode=OneWay}"/>
+		</TextBlock>
+
+		<Rectangle Height="1"
+                   Margin="3,4"
+                   Style="{DynamicResource SeparatorRectangleStyleKey}"/>
+		<ItemsControl ItemsSource="{Binding Fleet.Ships}"
                       Background="Transparent"
                       Grid.IsSharedSizeScope="True" DataContext="{Binding}"
                       Margin="3,0">

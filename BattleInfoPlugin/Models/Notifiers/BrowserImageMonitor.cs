@@ -17,6 +17,7 @@ using WebBrowser = System.Windows.Controls.WebBrowser;
 using BattleInfoPlugin.Properties;
 using Grabacr07.KanColleWrapper;
 using BattleInfoPlugin.Models.Notifiers._Internal;
+using MetroRadiance;
 
 namespace BattleInfoPlugin.Models.Notifiers
 {
@@ -26,7 +27,17 @@ namespace BattleInfoPlugin.Models.Notifiers
 
         private bool isConfirmPursuitNotified;
 
-        private bool isInCombat;
+        private bool _isInCombat;
+		private bool isInCombat
+		{
+			get { return this._isInCombat; }
+			set
+			{
+				if (this._isInCombat == value) return;
+				this._isInCombat = value;
+				if (!value) ThemeService.Current.ChangeAccent(Accent.Blue);
+			}
+		}
 
         public event Action ConfirmPursuit;
 

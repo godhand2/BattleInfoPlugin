@@ -38,9 +38,11 @@ namespace BattleInfoPlugin.Models.Repositories
 
                 try
                 {
-                    System.Reflection.Assembly.LoadFrom("SwfFormat.dll");
-                    System.Reflection.Assembly.LoadFrom("ICSharpCode.SharpZipLib.dll");
-                    _ExistsAssembly = true;
+					string MainFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+
+					System.Reflection.Assembly.LoadFrom(Path.Combine(MainFolder, "lib", "SwfFormat.dll"));
+					System.Reflection.Assembly.LoadFrom(Path.Combine(MainFolder, "lib", "ICSharpCode.SharpZipLib.dll"));
+					_ExistsAssembly = true;
                 }
                 catch (FileNotFoundException)
                 {

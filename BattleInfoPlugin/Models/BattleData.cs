@@ -712,7 +712,11 @@ namespace BattleInfoPlugin.Models
 			this.BattleSituation = BattleSituation.없음;
 			this.FriendAirSupremacy = AirSupremacy.항공전없음;
 			this.AirCombatResults = new AirCombatResult[0];
-			if (this.FirstFleet != null) this.FirstFleet.Formation = Formation.없음;
+			if (this.FirstFleet != null)
+			{
+				this.FirstFleet.TotalDamaged = 0;
+				this.FirstFleet.Formation = Formation.없음;
+			}
 			this.Enemies = new FleetData();
 			this.Cell = 0;
 		}

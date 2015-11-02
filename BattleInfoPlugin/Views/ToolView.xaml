@@ -227,7 +227,10 @@
                 <CheckBox Content="비활성화일때만 알림"
                           IsChecked="{Binding IsNotifyOnlyWhenInactive}"
                           Margin="0,0,10,0"/>
-            </StackPanel>
+				<CheckBox Content="대파된 칸무스가 있을때 알림"
+                          IsChecked="{Binding IsCriticalNotiEnabled}"
+                          Margin="0,0,10,0"/>
+			</StackPanel>
         </Grid>
     </ScrollViewer>
 </UserControl>

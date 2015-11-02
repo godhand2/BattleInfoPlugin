@@ -36,6 +36,24 @@ namespace BattleInfoPlugin.Models.Notifiers
 
 		#endregion
 
+		#region CriticalEnabled
+
+		public bool CriticalEnabled
+		{
+			get { return settings.CriticalEnabled; }
+			set
+			{
+				if (settings.CriticalEnabled == value)
+					return;
+				settings.CriticalEnabled = value;
+				settings.Save();
+				this.RaisePropertyChanged();
+			}
+		}
+
+		#endregion
+
+
 		#region IsNotifyOnlyWhenInactive変更通知プロパティ
 
 		public bool IsNotifyOnlyWhenInactive
@@ -80,6 +98,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 		}
 		private bool IsCriticalCheck()
 		{
+			if (!CriticalEnabled) return false;
 			if (Settings.Default.FirstIsCritical || Settings.Default.SecondIsCritical)
 			{
 				this.Notify(
@@ -93,13 +112,13 @@ namespace BattleInfoPlugin.Models.Notifiers
 		}
 		private void NotifyEndOfBattle()
 		{
-			if (!IsCriticalCheck()) this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
+			if (!IsCriticalCheck() || !CriticalEnabled) this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
 		}
 
 		private void Notify(string type, string title, string message, bool IsCritical = false)
 		{
 			var isActive = DispatcherHelper.UIDispatcher.Invoke(() => Application.Current.MainWindow.IsActive);
-			if (IsCritical)
+			if (IsCritical && CriticalEnabled)
 			{
 				ThemeService.Current.ChangeAccent(Accent.Red);
 				this.plugin.InvokeNotifyRequested(new NotifyEventArgs(type, title, message)

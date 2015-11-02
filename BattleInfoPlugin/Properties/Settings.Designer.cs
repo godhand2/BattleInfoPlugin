@@ -97,5 +97,17 @@ namespace BattleInfoPlugin.Properties {
                 this["SecondIsCritical"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CriticalEnabled {
+            get {
+                return ((bool)(this["CriticalEnabled"]));
+            }
+            set {
+                this["CriticalEnabled"] = value;
+            }
+        }
     }
 }

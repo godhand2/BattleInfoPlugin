@@ -94,12 +94,28 @@ namespace BattleInfoPlugin.ViewModels
                 this.RaisePropertyChanged();
             }
         }
-        #endregion
+		#endregion
 
+		
+		#region IsCriticalNotiEnabled
+		// ここ以外で変更しないのでModel変更通知は受け取らない雑対応
+		public bool IsCriticalNotiEnabled
+		{
+			get
+			{ return this.notifier.CriticalEnabled; }
+			set
+			{
+				if (this.notifier.CriticalEnabled == value)
+					return;
+				this.notifier.CriticalEnabled = value;
+				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
 
-        #region IsNotifierEnabled変更通知プロパティ
-        // ここ以外で変更しないのでModel変更通知は受け取らない雑対応
-        public bool IsNotifierEnabled
+		#region IsNotifierEnabled変更通知プロパティ
+		// ここ以外で変更しないのでModel変更通知は受け取らない雑対応
+		public bool IsNotifierEnabled
         {
             get
             { return this.notifier.IsEnabled; }

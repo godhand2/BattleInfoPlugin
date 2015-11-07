@@ -36,6 +36,21 @@ namespace BattleInfoPlugin.Models.Notifiers
 
 		#endregion
 
+		#region IsPursuit
+		public bool IsPursuit
+		{
+			get { return settings.IsPursuitEnabled; }
+			set
+			{
+				if (settings.IsPursuitEnabled == value)
+					return;
+				settings.IsPursuitEnabled = value;
+				settings.Save();
+				this.RaisePropertyChanged();
+            }
+		}
+		#endregion
+
 		#region CriticalEnabled
 
 		public bool CriticalEnabled
@@ -117,6 +132,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 
 		private void Notify(string type, string title, string message, bool IsCritical = false)
 		{
+			if (NotificationType.ConfirmPursuit == type && !IsPursuit) return;
 			var isActive = DispatcherHelper.UIDispatcher.Invoke(() => Application.Current.MainWindow.IsActive);
 			if (IsCritical && CriticalEnabled)
 			{

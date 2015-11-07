@@ -127,12 +127,27 @@ namespace BattleInfoPlugin.ViewModels
                 this.RaisePropertyChanged();
             }
         }
-        #endregion
+		#endregion
+
+		#region IsPursuitEnabled変更通知プロパティ
+		public bool IsPursuitEnabled
+		{
+			get
+			{ return this.notifier.IsEnabled; }
+			set
+			{
+				if (this.notifier.IsEnabled == value)
+					return;
+				this.notifier.IsEnabled = value;
+				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
 
 
-        #region IsNotifyOnlyWhenInactive変更通知プロパティ
-        // ここ以外で変更しないのでModel変更通知は受け取らない雑対応
-        public bool IsNotifyOnlyWhenInactive
+		#region IsNotifyOnlyWhenInactive変更通知プロパティ
+		// ここ以外で変更しないのでModel変更通知は受け取らない雑対応
+		public bool IsNotifyOnlyWhenInactive
         {
             get
             { return this.notifier.IsNotifyOnlyWhenInactive; }

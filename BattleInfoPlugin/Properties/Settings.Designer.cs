@@ -109,5 +109,17 @@ namespace BattleInfoPlugin.Properties {
                 this["CriticalEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsPursuitEnabled {
+            get {
+                return ((bool)(this["IsPursuitEnabled"]));
+            }
+            set {
+                this["IsPursuitEnabled"] = value;
+            }
+        }
     }
 }

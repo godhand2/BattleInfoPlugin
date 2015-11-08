@@ -221,16 +221,17 @@
             <StackPanel Grid.Row="3"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <CheckBox Content="전투종료알림"
+				<TextBlock Text="알림: "/>
+                <CheckBox Content="전투종료"
                           IsChecked="{Binding IsNotifierEnabled}"
                           Margin="0,0,10,0"/>
-				<CheckBox Content="야전선택알림"
+				<CheckBox Content="야전선택"
                           IsChecked="{Binding IsPursuitEnabled}"
                           Margin="0,0,10,0"/>
-				<CheckBox Content="비활성화일때만 알림"
+				<CheckBox Content="비활성화일때"
                           IsChecked="{Binding IsNotifyOnlyWhenInactive}"
                           Margin="0,0,10,0"/>
-				<CheckBox Content="대파된 칸무스가 있을때 알림"
+				<CheckBox Content="대파"
                           IsChecked="{Binding IsCriticalNotiEnabled}"
                           Margin="0,0,10,0"/>
 			</StackPanel>

@@ -137,6 +137,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 			if (IsCritical && CriticalEnabled)
 			{
 				ThemeService.Current.ChangeAccent(Accent.Red);
+				ThemeService.Current.ChangeTheme(Theme.CriticalRed);
 				this.plugin.InvokeNotifyRequested(new NotifyEventArgs(type, title, message)
 				{
 					Activated = () =>

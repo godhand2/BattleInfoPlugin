@@ -35,7 +35,11 @@ namespace BattleInfoPlugin.Models.Notifiers
 			{
 				if (this._isInCombat == value) return;
 				this._isInCombat = value;
-				if (!value) ThemeService.Current.ChangeAccent(Accent.Blue);
+				if (!value)
+				{
+					ThemeService.Current.ChangeAccent(Accent.Blue);
+					ThemeService.Current.ChangeTheme(Theme.Dark);
+				}
 			}
 		}
 

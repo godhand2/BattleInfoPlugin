@@ -8,6 +8,7 @@ using Grabacr07.KanColleWrapper;
 using Livet;
 using MetroRadiance;
 using BattleInfoPlugin.Models.Raw;
+using MetroRadiance.UI;
 
 namespace BattleInfoPlugin.Models.Notifiers
 {
@@ -137,7 +138,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 			if (IsCritical && CriticalEnabled)
 			{
 				ThemeService.Current.ChangeAccent(Accent.Red);
-				ThemeService.Current.ChangeTheme(Theme.CriticalRed);
+				ThemeService.Current.ChangeTheme(Theme.CritialRed);
 				this.plugin.InvokeNotifyRequested(new NotifyEventArgs(type, title, message)
 				{
 					Activated = () =>

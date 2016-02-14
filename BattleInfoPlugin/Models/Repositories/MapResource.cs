@@ -8,14 +8,16 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DDW.Swf;
+using BattleInfoPlugin.Properties;
+using System.Diagnostics;
 
 namespace BattleInfoPlugin.Models.Repositories
 {
     public class MapResource
     {
-        public static BitmapSource GetMapImage(MapInfo map)
+        public static BitmapSource[] GetMapImages(MapInfo map)
         {
-            return ExistsAssembly ? MapResourcePrivate.GetMapImage(map) : null;
+            return ExistsAssembly ? MapResourcePrivate.GetMapImages(map) : null;
         }
 
         public static IDictionary<int, Point> GetMapCellPoints(MapInfo map)
@@ -59,15 +61,17 @@ namespace BattleInfoPlugin.Models.Repositories
 
         private static class MapResourcePrivate
         {
-            public static BitmapSource GetMapImage(MapInfo map)
+            public static BitmapSource[] GetMapImages(MapInfo map)
             {
                 var swf = map.ToSwf();
 
                 return swf?.Tags
                     .SkipWhile(x => x.TagType != TagType.ShowFrame) //1フレーム飛ばす
                     .OfType<DefineBitsTag>()
-                    .FirstOrDefault(x => x.TagType == TagType.DefineBitsJPEG3)
-                    .ToBitmapFrame();
+                    .Where(x => x.TagType == TagType.DefineBitsJPEG3)
+                    .Select(x => x.ToBitmapFrame())
+                    .Where(x => x.Width == 768)
+                    .ToArray();
             }
 
             public static IDictionary<int, Point> GetMapCellPoints(MapInfo map)
@@ -117,20 +121,40 @@ namespace BattleInfoPlugin.Models.Repositories
 
     static class MapResourceExtensions
     {
-        private static readonly string mapDir = Properties.Settings.Default.CacheDirPath + "\\kcs\\resources\\swf\\map\\";
+        private static readonly IDictionary<int, IDictionary<int, string>> knownUrlMapping = new Dictionary<int, IDictionary<int, string>>
+        {
+            {
+                33, new Dictionary<int, string>
+                {
+                    { 1, "/kcs/resources/swf/map/gmlbign_zjwmq.swf" },
+                    { 2, "/kcs/resources/swf/map/fgyvwqymk_ekn.swf" },
+                    { 3, "/kcs/resources/swf/map/fwy_wlrdttcoc.swf" },
+                }
+            },
+        };
+
+        private static string GetMapSwfFilePath(this MapInfo map)
+        {
+            var urlMapping = Settings.Default.ResourceUrlMappingFileName.Deserialize<IDictionary<int, IDictionary<int, string>>>();
+
+            Debug.WriteLine($"FromFile:{urlMapping.GetValueOrDefault(map.MapAreaId)?.GetValueOrDefault(map.IdInEachMapArea)}");
+            Debug.WriteLine($"FromCode:{knownUrlMapping.GetValueOrDefault(map.MapAreaId)?.GetValueOrDefault(map.IdInEachMapArea)}");
+
+            var r = urlMapping?.GetValueOrDefault(map.MapAreaId)?.GetValueOrDefault(map.IdInEachMapArea)
+                ?? knownUrlMapping.GetValueOrDefault(map.MapAreaId)?.GetValueOrDefault(map.IdInEachMapArea)
+                ?? "\\kcs\\resources\\swf\\map\\" + map.MapAreaId.ToString("00") + "_" + map.IdInEachMapArea.ToString("00") + ".swf";
+            return Settings.Default.CacheDirPath + r;
+        }
 
         public static bool HasMapSwf(this MapInfo map)
         {
-            var filePath = mapDir
-                + map.MapAreaId.ToString("00") + "_" + map.IdInEachMapArea.ToString("00") + ".swf";
-            return File.Exists(filePath);
+            return File.Exists(map.GetMapSwfFilePath());
 
         }
 
         public static SwfCompilationUnit ToSwf(this MapInfo map)
         {
-            var filePath = mapDir
-                + map.MapAreaId.ToString("00") + "_" + map.IdInEachMapArea.ToString("00") + ".swf";
+            var filePath = map.GetMapSwfFilePath();
             if (!File.Exists(filePath)) return null;
             var reader = new SwfReader(File.ReadAllBytes(filePath));
             return new SwfCompilationUnit(reader);

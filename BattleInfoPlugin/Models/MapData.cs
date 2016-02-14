@@ -60,29 +60,29 @@ namespace BattleInfoPlugin.Models
                     {
                         var result = x.Result;
                         if (result)
-                            MergeResult?.Invoke(result, $"병합에 성공했습니다 : {filePath}");
+                            MergeResult?.Invoke(result, $"병합성공 : {filePath}");
                         else
-                            MergeResult?.Invoke(result, $"병합에 실패했습니다 : {filePath}");
+                            MergeResult?.Invoke(result, $"병합실패 : {filePath}");
                     }
                     catch (Exception)
                     {
-                        MergeResult?.Invoke(false, $"병합에 실패했습니다 : {filePath}");
+                        MergeResult?.Invoke(false, $"병합실패 : {filePath}");
                     }
                 };
 
                 var info = new FileInfo(filePath);
-                if (info.Name == Settings.Default.EnemyDataFilePath)
+                if (info.Name == Settings.Default.EnemyDataFileName)
                 {
                     this.EnemyData.Merge(filePath)
                         .ContinueWith(continuationAction, TaskScheduler.FromCurrentSynchronizationContext());
-                }else if (info.Name == Settings.Default.MasterDataFilePath)
+                }else if (info.Name == Settings.Default.MasterDataFileName)
                 {
                     Master.Current.Merge(filePath)
                         .ContinueWith(continuationAction, TaskScheduler.FromCurrentSynchronizationContext());
                 }
                 else
                 {
-                    MergeResult?.Invoke(false, "병합대상이 없습니다");
+                    MergeResult?.Invoke(false, "병합대상의 파일명이 아닙니다");
                 }
             }
         }

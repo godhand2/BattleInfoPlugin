@@ -25,172 +25,173 @@
                    TextOptions.TextFormattingMode="Display"
                    AllowDrop="True"
                    Drop="Window_Drop"
-                   d:DataContext="{d:DesignInstance vm:EnemyWindowViewModel, IsDesignTimeCreatable=True}">
+                   d:DataContext="{d:DesignInstance vm:EnemyWindowViewModel, IsDesignTimeCreatable=True}"
+                   metro:ThemeHelper.HasThemeResources="True">
 
-	<metro:MetroWindow.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="../Styles/PluginStyle.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
+    <metro:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/PluginStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-			<CollectionViewSource x:Key="EnemyMapsSource"
+            <CollectionViewSource x:Key="EnemyMapsSource"
                                   Source="{Binding EnemyMaps}">
-				<CollectionViewSource.GroupDescriptions>
-					<PropertyGroupDescription PropertyName="Info.MapArea"/>
-				</CollectionViewSource.GroupDescriptions>
-			</CollectionViewSource>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Info.MapArea"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
 
-			<CollectionViewSource x:Key="EnemiesSource"
+            <CollectionViewSource x:Key="EnemiesSource"
                                   Source="{Binding SelectedMap.EnemyShips}">
-				<CollectionViewSource.GroupDescriptions>
-					<PropertyGroupDescription PropertyName="ParentFleet.ParentCell"/>
-					<PropertyGroupDescription PropertyName="ParentFleet"/>
-				</CollectionViewSource.GroupDescriptions>
-			</CollectionViewSource>
-		</ResourceDictionary>
-	</metro:MetroWindow.Resources>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="ParentFleet.ParentCell"/>
+                    <PropertyGroupDescription PropertyName="ParentFleet"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+        </ResourceDictionary>
+    </metro:MetroWindow.Resources>
 
-	<i:Interaction.Triggers>
-		<i:EventTrigger EventName="ContentRendered">
-			<l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Initialize"/>
-		</i:EventTrigger>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Initialize"/>
+        </i:EventTrigger>
 
-		<!--Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます-->
-		<i:EventTrigger EventName="Closed">
-			<l:DataContextDisposeAction/>
-		</i:EventTrigger>
+        <!--Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます-->
+        <i:EventTrigger EventName="Closed">
+            <l:DataContextDisposeAction/>
+        </i:EventTrigger>
 
-		<l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="MergeResult">
-			<l:InformationDialogInteractionMessageAction/>
-		</l:InteractionMessageTrigger>
-	</i:Interaction.Triggers>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="23" />
-		</Grid.RowDefinitions>
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="MergeResult">
+            <l:InformationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="23" />
+        </Grid.RowDefinitions>
 
-		<!-- #region CaptionBar -->
-		<Border metro:MetroWindow.IsCaptionBar="True"
+        <!-- #region CaptionBar -->
+        <Border metro:MetroWindow.IsCaptionBar="True"
                 Panel.ZIndex="100">
 
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition />
-					<ColumnDefinition Width="Auto" />
-				</Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-				<controls:AppIcon Width="36"
+                <controls:AppIcon Width="36"
                                   Height="36"
                                   Background="Transparent"
                                   AnchorVisibility="Collapsed"
                                   BandVisibility="Collapsed" />
 
-				<TextBlock Grid.Column="1"
+                <TextBlock Grid.Column="1"
                            Text="적 정보 목록"
                            Style="{DynamicResource CaptionTextStyleKey}"
                            Margin="2,0,8,0" />
 
-				<metro:SystemButtons Grid.Column="2"
+                <metro:SystemButtons Grid.Column="2"
                                      HorizontalAlignment="Right"
                                      VerticalAlignment="Top" />
-			</Grid>
-		</Border>
-		<!-- #endregion -->
+            </Grid>
+        </Border>
+        <!-- #endregion -->
 
 
-		<Grid Grid.Row="1">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition/>
-			</Grid.ColumnDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-			<Expander Grid.Column="0"
+            <Expander Grid.Column="0"
                       ExpandDirection="Right"
                       Header="Maps"
                       Background="{DynamicResource ThemeBrushKey}"
                       IsExpanded="True">
-				<Expander.Style>
-					<Style/>
-				</Expander.Style>
-				<Expander.HeaderTemplate>
-					<DataTemplate>
-						<TextBlock Text="{Binding}"
+                <Expander.Style>
+                    <Style/>
+                </Expander.Style>
+                <Expander.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"
                                    Style="{DynamicResource DefaultTextStyleKey}"
                                    Margin="5">
-							<TextBlock.LayoutTransform>
-								<RotateTransform Angle="90"/>
-							</TextBlock.LayoutTransform>
-						</TextBlock>
-					</DataTemplate>
-				</Expander.HeaderTemplate>
-				<ScrollViewer VerticalScrollBarVisibility="Auto"
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="90"/>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </DataTemplate>
+                </Expander.HeaderTemplate>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
                               PanningMode="Both"
                               Background="{DynamicResource ActiveBackgroundBrushKey}">
-					<metro:TabView ItemsSource="{Binding Source={StaticResource EnemyMapsSource}}"
+                    <metro:TabView ItemsSource="{Binding Source={StaticResource EnemyMapsSource}}"
                                    SelectedItem="{Binding SelectedMap, Mode=OneWayToSource}"
                                    IsSynchronizedWithCurrentItem="True"
                                    MinWidth="90">
-						<metro:TabView.Template>
-							<ControlTemplate TargetType="{x:Type metro:TabView}">
-								<StackPanel Background="{TemplateBinding Background}">
-									<ItemsPresenter/>
-								</StackPanel>
-							</ControlTemplate>
-						</metro:TabView.Template>
-						<metro:TabView.GroupStyle>
-							<GroupStyle>
-								<GroupStyle.ContainerStyle>
-									<Style TargetType="{x:Type GroupItem}">
-										<Setter Property="Template">
-											<Setter.Value>
-												<ControlTemplate TargetType="{x:Type GroupItem}">
-													<StackPanel >
-														<Border Padding="10,7"
+                        <metro:TabView.Template>
+                            <ControlTemplate TargetType="{x:Type metro:TabView}">
+                                <StackPanel Background="{TemplateBinding Background}">
+                                    <ItemsPresenter/>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </metro:TabView.Template>
+                        <metro:TabView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <StackPanel >
+                                                        <Border Padding="10,7"
                                                                 Background="{DynamicResource ThemeBrushKey}">
-															<TextBlock Text="{Binding Name.Name}"
+                                                            <TextBlock Text="{Binding Name.Name}"
                                                                        Foreground="{DynamicResource AccentBrushKey}"
                                                                        FontSize="16"/>
-														</Border>
-														<ItemsPresenter Margin="0,0,0,16"/>
-													</StackPanel>
-												</ControlTemplate>
-											</Setter.Value>
-										</Setter>
-									</Style>
-								</GroupStyle.ContainerStyle>
-							</GroupStyle>
-						</metro:TabView.GroupStyle>
-					</metro:TabView>
-				</ScrollViewer>
-			</Expander>
+                                                        </Border>
+                                                        <ItemsPresenter Margin="0,0,0,16"/>
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </metro:TabView.GroupStyle>
+                    </metro:TabView>
+                </ScrollViewer>
+            </Expander>
 
-			<Grid Grid.Column="1">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition/>
-				</Grid.RowDefinitions>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-				<Grid Grid.Row="0"
+                <Grid Grid.Row="0"
                       DataContext="{Binding Source={StaticResource EnemyMapsSource}}"
                       Background="{DynamicResource BackgroundBrushKey}">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition/>
-					</Grid.ColumnDefinitions>
-
-					<StackPanel Grid.Column="0"
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0"
                                 Margin="0,5,5,10">
-						<StackPanel.Resources>
-							<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextStyleKey}">
-								<Setter Property="Margin" Value="5,10,5,0" />
-								<Setter Property="VerticalAlignment" Value="Bottom" />
-								<Setter Property="HorizontalAlignment" Value="Left" />
-							</Style>
-						</StackPanel.Resources>
-						<TextBlock>
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextStyleKey}">
+                                <Setter Property="Margin" Value="5,10,5,0" />
+                                <Setter Property="VerticalAlignment" Value="Bottom" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <TextBlock>
                             <Run Text="에리어 "/>
                             <Run Text="{Binding /Info.MapArea.Name, Mode=OneTime}"
                                  Style="{DynamicResource EmphaticTextElementStyleKey}"/>
@@ -223,58 +224,58 @@
                                    FontSize="12"
                                    MaxWidth="200"
                                    TextWrapping="Wrap"/>
-					</StackPanel>
+                    </StackPanel>
 
-					<!-- Map Data Not Found メッセージ -->
-					<StackPanel Grid.Column="1"
+                    <!-- Map Data Not Found メッセージ -->
+                    <StackPanel Grid.Column="1"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
-						<StackPanel.Style>
-							<Style TargetType="StackPanel">
-								<Setter Property="Visibility" Value="Collapsed"/>
-								<Style.Triggers>
-									<MultiDataTrigger>
-										<MultiDataTrigger.Conditions>
-											<Condition Binding="{Binding /HasImage}" Value="False"/>
-											<Condition Binding="{Binding /ExistsMapAssembly}" Value="True"/>
-										</MultiDataTrigger.Conditions>
-										<Setter Property="Visibility" Value="Visible"/>
-									</MultiDataTrigger>
-								</Style.Triggers>
-							</Style>
-						</StackPanel.Style>
-						<TextBlock Text="Map Data Not Found"
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding /HasImage}" Value="False"/>
+                                            <Condition Binding="{Binding /ExistsMapAssembly}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Map Data Not Found"
                                    FontSize="20"
                                    HorizontalAlignment="Center"/>
 						<TextBlock Text="・로컬에 저장된 맵 데이터가 표시됩니다"
                                    Style="{DynamicResource DefaultTextStyleKey}"/>
 						<TextBlock Text="・맵 데이터는 브라우저 캐시가 없는 상태에서 출격했을시 저장됩니다"
                                    Style="{DynamicResource DefaultTextStyleKey}"/>
-					</StackPanel>
+                    </StackPanel>
 
-					<!-- Required Assembly Not Found メッセージ -->
-					<StackPanel Grid.Column="1"
+                    <!-- Required Assembly Not Found メッセージ -->
+                    <StackPanel Grid.Column="1"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
-						<StackPanel.Style>
-							<Style TargetType="StackPanel">
-								<Setter Property="Visibility" Value="Collapsed"/>
-								<Style.Triggers>
-									<DataTrigger Binding="{Binding /ExistsMapAssembly}" Value="False">
-										<Setter Property="Visibility" Value="Visible"/>
-									</DataTrigger>
-								</Style.Triggers>
-							</Style>
-						</StackPanel.Style>
-						<TextBlock Text="Required Assembly Not Found"
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding /ExistsMapAssembly}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Required Assembly Not Found"
                                    FontSize="20"
                                    HorizontalAlignment="Center"/>
 						<TextBlock Text="・SwfFormat.dll 나 ICSharpCode.SharpZipLib.dll 를 찾을 수 없습니다"
                                    Style="{DynamicResource DefaultTextStyleKey}"/>
-					</StackPanel>
+                    </StackPanel>
 
 
-					<ScrollViewer Grid.Column="1"
+                    <ScrollViewer Grid.Column="1"
                                   Visibility="{Binding /HasImage, Converter={StaticResource TrueToVisibleConverter}}"
                                   VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Auto"
@@ -282,13 +283,30 @@
                         <Canvas Width="768"
                                 Height="435">
                             <!-- マップイメージ -->
-                            <Image Source="{Binding /MapImage}"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Width="768"
-                                   Height="435"
-                                   Margin="0"
-                                   />
+                            <ItemsControl ItemsSource="{Binding /MapImages}"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          Width="768"
+                                          Height="435"
+                                          Margin="0"
+                                          Padding="0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas Margin="0"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Width="768"
+                                               Height="435"
+                                               Margin="0"
+                                               />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                             <!-- セルアイコン -->
                             <ItemsControl ItemsSource="{Binding /CellPoints}"
                                           VerticalAlignment="Center"
@@ -444,211 +462,241 @@
 																</MenuItem>
 																<MenuItem Header="삭제">
 																	<i:Interaction.Triggers>
-																		<i:EventTrigger EventName="Click">
-																			<l:LivetCallMethodAction MethodTarget="{Binding}"
+                                                                        <i:EventTrigger EventName="Click">
+                                                                            <l:LivetCallMethodAction MethodTarget="{Binding}"
                                                                                                      MethodName="DeleteEnemy"/>
-																		</i:EventTrigger>
-																	</i:Interaction.Triggers>
-																</MenuItem>
-															</ContextMenu>
-														</Grid.ContextMenu>
+                                                                        </i:EventTrigger>
+                                                                    </i:Interaction.Triggers>
+                                                                </MenuItem>
+                                                            </ContextMenu>
+                                                        </Grid.ContextMenu>
 
-														<Grid.ColumnDefinitions>
-															<ColumnDefinition Width="Auto" SharedSizeGroup="EnemyName"/>
-															<ColumnDefinition/>
-														</Grid.ColumnDefinitions>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="EnemyName"/>
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
 
-														<StackPanel Grid.Column="0"
+                                                        <StackPanel Grid.Column="0"
                                                                     Margin="0,5,0,10">
-															<StackPanel.ToolTip>
-																<TextBlock Text="{Binding Key, StringFormat=ID:{0}}"/>
-															</StackPanel.ToolTip>
-															<StackPanel.Resources>
-																<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextStyleKey}">
-																	<Setter Property="Margin" Value="5,0" />
-																	<Setter Property="VerticalAlignment" Value="Bottom" />
-																	<Setter Property="HorizontalAlignment" Value="Left" />
-																</Style>
-															</StackPanel.Resources>
+                                                            <StackPanel.ToolTip>
+                                                                <TextBlock Text="{Binding Key, StringFormat=ID:{0}}"/>
+                                                            </StackPanel.ToolTip>
+                                                            <StackPanel.Resources>
+                                                                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextStyleKey}">
+                                                                    <Setter Property="Margin" Value="5,0" />
+                                                                    <Setter Property="VerticalAlignment" Value="Bottom" />
+                                                                    <Setter Property="HorizontalAlignment" Value="Left" />
+                                                                </Style>
+                                                            </StackPanel.Resources>
 
-															<TextBlock Text="{Binding Name}"
+                                                            <TextBlock Text="{Binding Name}"
                                                                        Style="{DynamicResource EmphaticTextStyleKey}"
                                                                        Margin="5,0"
                                                                        VerticalAlignment="Bottom"
                                                                        HorizontalAlignment="Left"
                                                                        FontSize="13"/>
-
-															<Border Background="DarkRed"
+                                                            
+                                                            <Border Background="DarkRed"
                                                                     HorizontalAlignment="Left"
                                                                     Margin="5,0"
                                                                     MinWidth="50">
-																<Border.Style>
-																	<Style TargetType="{x:Type Border}">
-																		<Setter Property="Visibility" Value="Collapsed"/>
-																		<Style.Triggers>
-																			<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=ボス}"
+                                                                <Border.Style>
+                                                                    <Style TargetType="{x:Type Border}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=ボス}"
                                                                                          Value="True">
-																				<Setter Property="Visibility"
+                                                                                <Setter Property="Visibility"
                                                                                         Value="Visible"/>
-																			</DataTrigger>
-																		</Style.Triggers>
-																	</Style>
-																</Border.Style>
-																<TextBlock Text="BOSS"
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Border.Style>
+                                                                <TextBlock Text="BOSS"
                                                                            Margin="9,2"
                                                                            HorizontalAlignment="Center"/>
-															</Border>
+                                                            </Border>
 
-															<Border Background="DarkGreen"
+                                                            <Border Background="DarkGreen"
                                                                     HorizontalAlignment="Left"
                                                                     Margin="5,0"
                                                                     MinWidth="50">
-																<Border.Style>
-																	<Style TargetType="{x:Type Border}">
-																		<Setter Property="Visibility" Value="Collapsed"/>
-																		<Style.Triggers>
+                                                                <Border.Style>
+                                                                    <Style TargetType="{x:Type Border}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
 																			<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=항공전}"
                                                                                          Value="True">
-																				<Setter Property="Visibility"
+                                                                                <Setter Property="Visibility"
                                                                                         Value="Visible"/>
-																			</DataTrigger>
-																		</Style.Triggers>
-																	</Style>
-																</Border.Style>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Border.Style>
 																<TextBlock Text="항공전"
                                                                            Margin="9,2"
                                                                            HorizontalAlignment="Center"/>
-															</Border>
+                                                            </Border>
 
-															<Border Background="#433390"
+                                                            <Border Background="#433390"
                                                                     HorizontalAlignment="Left"
                                                                     Margin="5,0"
                                                                     MinWidth="50">
-																<Border.Style>
-																	<Style TargetType="{x:Type Border}">
-																		<Setter Property="Visibility" Value="Collapsed"/>
-																		<Style.Triggers>
-																			<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=야전}"
+                                                                <Border.Style>
+                                                                    <Style TargetType="{x:Type Border}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=야전}"
                                                                                          Value="True">
-																				<Setter Property="Visibility"
+                                                                                <Setter Property="Visibility"
                                                                                         Value="Visible"/>
-																			</DataTrigger>
-																		</Style.Triggers>
-																	</Style>
-																</Border.Style>
-																<TextBlock Text="야전"
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Border.Style>
+                                                                <TextBlock Text="야전"
                                                                            Margin="9,2"
                                                                            HorizontalAlignment="Center"/>
-															</Border>
+                                                            </Border>
 
-															<TextBlock Margin="5,10,5,0">
+                                                            <Border Background="DarkGreen"
+                                                                    HorizontalAlignment="Left"
+                                                                    Margin="5,0"
+                                                                    MinWidth="50">
+                                                                <Border.Style>
+                                                                    <Style TargetType="{x:Type Border}">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=공습전}"
+                                                                                         Value="True">
+                                                                                <Setter Property="Visibility"
+                                                                                        Value="Visible"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Border.Style>
+																<TextBlock Text="공습전"
+                                                                           Margin="9,2"
+                                                                           HorizontalAlignment="Center"/>
+                                                            </Border>
+
+                                                            <TextBlock Margin="5,10,5,0">
                                                                 <Run Text="진형:"
                                                                      FontSize="12"/>
                                                                 <Run Text="{Binding Fleet.Formation, Mode=OneTime}"
                                                                      Style="{DynamicResource EmphaticTextElementStyleKey}"
                                                                      FontSize="12"/>
-															</TextBlock>
-														</StackPanel>
+                                                            </TextBlock>
 
-														<!--Ships-->
-														<ItemsPresenter Grid.Column="1"/>
-													</Grid>
+                                                            <TextBlock Margin="5,10,5,0"
+                                                                       Visibility="{Binding RankVisibility}">
+                                                                <Run Text="난이도:"
+                                                                     FontSize="12"/>
+                                                                <Run Text="{Binding Rank, Mode=OneTime}"
+                                                                     Style="{DynamicResource EmphaticTextElementStyleKey}"
+                                                                     FontSize="12"/>
+                                                            </TextBlock>
+                                                        </StackPanel>
 
-													<Rectangle Height="1"
+                                                        <!--Ships-->
+                                                        <ItemsPresenter Grid.Column="1"/>
+                                                    </Grid>
+
+                                                    <Rectangle Height="1"
                                                                Style="{DynamicResource SeparatorRectangleStyleKey}"
                                                                Opacity="1"
                                                                Margin="0,-1,10,0" />
-												</StackPanel>
-											</ControlTemplate>
-										</Setter.Value>
-									</Setter>
-								</Style>
-							</GroupStyle.ContainerStyle>
-						</GroupStyle>
-					</ItemsControl.GroupStyle>
-					<!--Ship Template-->
-					<ItemsControl.ItemTemplate>
-						<DataTemplate DataType="{x:Type enemies:EnemyShipViewModel}">
-							<StackPanel DataContext="{Binding Ship}">
-								<StackPanel.Resources>
-									<Style TargetType="{x:Type TextBlock}"
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </ItemsControl.GroupStyle>
+                    <!--Ship Template-->
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type enemies:EnemyShipViewModel}">
+                            <StackPanel DataContext="{Binding Ship}">
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type TextBlock}"
                                            BasedOn="{StaticResource DefaultTextStyleKey}">
-										<Setter Property="Margin" Value="5,0" />
-										<Setter Property="VerticalAlignment" Value="Bottom" />
-										<Setter Property="HorizontalAlignment" Value="Left" />
-									</Style>
+                                        <Setter Property="Margin" Value="5,0" />
+                                        <Setter Property="VerticalAlignment" Value="Bottom" />
+                                        <Setter Property="HorizontalAlignment" Value="Left" />
+                                    </Style>
 
-									<Style TargetType="{x:Type TextBlock}"
+                                    <Style TargetType="{x:Type TextBlock}"
                                            BasedOn="{StaticResource EmphaticTextStyleKey}"
                                            x:Key="ValueTextStyle">
-										<Setter Property="Margin" Value="5,0" />
-										<Setter Property="VerticalAlignment" Value="Bottom" />
-										<Setter Property="HorizontalAlignment" Value="Left" />
-									</Style>
-								</StackPanel.Resources>
-								<Rectangle Height="1"
+                                        <Setter Property="Margin" Value="5,0" />
+                                        <Setter Property="VerticalAlignment" Value="Bottom" />
+                                        <Setter Property="HorizontalAlignment" Value="Left" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Rectangle Height="1"
                                            Style="{DynamicResource SeparatorRectangleStyleKey}"
                                            Opacity="1"
                                            Margin="10,-1,10,0" />
 
-								<Grid HorizontalAlignment="Left"
+                                <Grid HorizontalAlignment="Left"
                                       Margin="0,3">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="Auto"/>
-										<RowDefinition Height="Auto"/>
-										<RowDefinition MinHeight="0"/>
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" MinWidth="130" SharedSizeGroup="Name" />
-										<ColumnDefinition Width="Auto" MinWidth="37" SharedSizeGroup="Lv" />
-										<ColumnDefinition Width="Auto" MinWidth="37" SharedSizeGroup="HP" />
-										<ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="Attack" />
-										<ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="Tropedo" />
-										<ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="AA" />
-										<ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="Armer" />
-										<ColumnDefinition Width="Auto" MinWidth="44" SharedSizeGroup="ASW" />
-										<ColumnDefinition Width="Auto" MinWidth="44" SharedSizeGroup="Hit" />
-										<ColumnDefinition Width="Auto" MinWidth="44" SharedSizeGroup="Evade" />
-										<ColumnDefinition Width="Auto" MinWidth="130" SharedSizeGroup="AttackType" />
-										<ColumnDefinition/>
-									</Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition MinHeight="0"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" MinWidth="130" SharedSizeGroup="Name" />
+                                        <ColumnDefinition Width="Auto" MinWidth="37" SharedSizeGroup="Lv" />
+                                        <ColumnDefinition Width="Auto" MinWidth="37" SharedSizeGroup="HP" />
+                                        <ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="Attack" />
+                                        <ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="Tropedo" />
+                                        <ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="AA" />
+                                        <ColumnDefinition Width="Auto" MinWidth="96" SharedSizeGroup="Armer" />
+                                        <ColumnDefinition Width="Auto" MinWidth="44" SharedSizeGroup="ASW" />
+                                        <ColumnDefinition Width="Auto" MinWidth="44" SharedSizeGroup="Hit" />
+                                        <ColumnDefinition Width="Auto" MinWidth="44" SharedSizeGroup="Evade" />
+                                        <ColumnDefinition Width="Auto" MinWidth="130" SharedSizeGroup="AttackType" />
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
 
-									<StackPanel Grid.Column="0"
+                                    <StackPanel Grid.Column="0"
                                                 Grid.Row="0"
                                                 Grid.RowSpan="3">
-										<TextBlock Text="{Binding Id, StringFormat=ID:{0}, Mode=OneTime}"
+                                        <TextBlock Text="{Binding Id, StringFormat=ID:{0}, Mode=OneTime}"
                                                    FontSize="11"/>
-										<TextBlock>
+                                        <TextBlock>
                                             <Run Text="{Binding Name, Mode=OneTime}"
                                                  Style="{DynamicResource EmphaticTextElementStyleKey}" />
                                             <Run Text="{Binding AdditionalName, Mode=OneTime}"
                                                  Foreground="{Binding AdditionalName, Converter={StaticResource AdditionalNameColorConverter}}"/>
-										</TextBlock>
-										<TextBlock Text="{Binding TypeName, Mode=OneTime}"
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding TypeName, Mode=OneTime}"
                                                    FontSize="11"/>
-									</StackPanel>
+                                    </StackPanel>
 
-									<TextBlock Grid.Column="1"
+                                    <TextBlock Grid.Column="1"
                                                Grid.Row="0"
                                                Text="Lv"/>
-									<TextBlock Grid.Column="1"
+                                    <TextBlock Grid.Column="1"
                                                Grid.Row="1"
                                                Text="{Binding Level, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
                                                Style="{DynamicResource ValueTextStyle}"/>
 
-									<TextBlock Grid.Column="2"
+                                    <TextBlock Grid.Column="2"
                                                Grid.Row="0"
                                                Text="HP"/>
-									<TextBlock Grid.Column="2"
+                                    <TextBlock Grid.Column="2"
                                                Grid.Row="1"
                                                Text="{Binding MaxHP, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
                                                Style="{DynamicResource ValueTextStyle}"/>
 
 
-									<TextBlock Grid.Column="3"
+                                    <TextBlock Grid.Column="3"
                                                Grid.Row="0"
                                                Text="화력"/>
-									<TextBlock Grid.Column="3"
+                                    <TextBlock Grid.Column="3"
                                                Grid.Row="1">
                                         <Run Text="{Binding SumFirepower, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
                                              Style="{DynamicResource EmphaticTextElementStyleKey}"/>
@@ -661,12 +709,12 @@
                                                 </MultiBinding>
                                             </Run.Text>
                                         </Run>
-									</TextBlock>
+                                    </TextBlock>
 
-									<TextBlock Grid.Column="4"
+                                    <TextBlock Grid.Column="4"
                                                Grid.Row="0"
                                                Text="뇌장"/>
-									<TextBlock Grid.Column="4"
+                                    <TextBlock Grid.Column="4"
                                                Grid.Row="1">
                                         <Run Text="{Binding SumTorpedo, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
                                              Style="{DynamicResource EmphaticTextElementStyleKey}"/>
@@ -679,12 +727,12 @@
                                                 </MultiBinding>
                                             </Run.Text>
                                         </Run>
-									</TextBlock>
+                                    </TextBlock>
 
-									<TextBlock Grid.Column="5"
+                                    <TextBlock Grid.Column="5"
                                                Grid.Row="0"
                                                Text="대공"/>
-									<TextBlock Grid.Column="5"
+                                    <TextBlock Grid.Column="5"
                                                Grid.Row="1">
                                         <Run Text="{Binding SumAA, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
                                              Style="{DynamicResource EmphaticTextElementStyleKey}"/>
@@ -697,12 +745,12 @@
                                                 </MultiBinding>
                                             </Run.Text>
                                         </Run>
-									</TextBlock>
+                                    </TextBlock>
 
-									<TextBlock Grid.Column="6"
+                                    <TextBlock Grid.Column="6"
                                                Grid.Row="0"
                                                Text="장갑"/>
-									<TextBlock Grid.Column="6"
+                                    <TextBlock Grid.Column="6"
                                                Grid.Row="1">
                                         <Run Text="{Binding SumArmer, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
                                              Style="{DynamicResource EmphaticTextElementStyleKey}"/>
@@ -715,53 +763,53 @@
                                                 </MultiBinding>
                                             </Run.Text>
                                         </Run>
-									</TextBlock>
+                                    </TextBlock>
 
-									<TextBlock Grid.Column="7"
+                                    <TextBlock Grid.Column="7"
                                                Grid.Row="0"
                                                Text="대잠"/>
-									<TextBlock Grid.Column="7"
+                                    <TextBlock Grid.Column="7"
                                                Grid.Row="1"
                                                Text="{Binding SlotsASW, Mode=OneTime, StringFormat={}(+{0})}"/>
 
 
-									<TextBlock Grid.Column="8"
+                                    <TextBlock Grid.Column="8"
                                                Grid.Row="0"
                                                Text="명중"/>
-									<TextBlock Grid.Column="8"
+                                    <TextBlock Grid.Column="8"
                                                Grid.Row="1"
                                                Text="{Binding SlotsHit, Mode=OneTime, StringFormat={}(+{0})}"/>
 
 
-									<TextBlock Grid.Column="9"
+                                    <TextBlock Grid.Column="9"
                                                Grid.Row="0"
                                                Text="회피"/>
-									<TextBlock Grid.Column="9"
+                                    <TextBlock Grid.Column="9"
                                                Grid.Row="1"
                                                Text="{Binding SlotsEvade, Mode=OneTime, StringFormat={}(+{0})}"/>
 
 
-									<TextBlock Grid.Column="10"
+                                    <TextBlock Grid.Column="10"
                                                Grid.Row="0"
                                                Text="공격종류"/>
-									<StackPanel Grid.Column="10"
+                                    <StackPanel Grid.Column="10"
                                                 Grid.Row="1"
                                                 Grid.RowSpan="2">
-										<TextBlock>
+                                        <TextBlock>
                                             <Run Text="주간"/>
                                             <Run Text="{Binding DayAttackType, Mode=OneTime, Converter={StaticResource AttackTypeConverter}}"
                                                  Style="{DynamicResource EmphaticTextElementStyleKey}"
                                                  FontSize="{DynamicResource DefaultFontSizeKey}"/>
-										</TextBlock>
-										<TextBlock>
+                                        </TextBlock>
+                                        <TextBlock>
                                             <Run Text="야전"/>
                                             <Run Text="{Binding NightAttackType, Mode=OneTime, Converter={StaticResource AttackTypeConverter}}"
                                                  Style="{DynamicResource EmphaticTextElementStyleKey}"
                                                  FontSize="{DynamicResource DefaultFontSizeKey}"/>
-										</TextBlock>
-									</StackPanel>
+                                        </TextBlock>
+                                    </StackPanel>
 
-									<ItemsControl Grid.Column="11"
+                                    <ItemsControl Grid.Column="11"
                                                   Grid.Row="0"
                                                   Grid.RowSpan="3"
                                                   ItemsSource="{Binding Slots}"

@@ -130,5 +130,17 @@ namespace BattleInfoPlugin.Properties {
                 this["IsPursuitEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnableColorChange {
+            get {
+                return ((bool)(this["EnableColorChange"]));
+            }
+            set {
+                this["EnableColorChange"] = value;
+            }
+        }
     }
 }

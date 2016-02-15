@@ -9,7 +9,6 @@
              xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:models="clr-namespace:BattleInfoPlugin.Models"
-             Background="{DynamicResource ThemeBrushKey}"
              Foreground="{DynamicResource ActiveForegroundBrushKey}"
              mc:Ignorable="d" 
              d:DesignHeight="530"
@@ -199,6 +198,11 @@
 									<Setter Property="Background" Value="#FF0A8AB9"/>
 									<Setter Property="Text" Value="기분탓"/>
 								</DataTrigger>
+								<DataTrigger Binding="{Binding Cell}"
+												 Value="10">
+									<Setter Property="Background" Value="#FF51A6C5"/>
+									<Setter Property="Text" Value="공습전"/>
+								</DataTrigger>
 							</Style.Triggers>
 						</Style>
 					</TextBlock.Style>
@@ -233,6 +237,9 @@
                           Margin="0,0,10,0"/>
 				<CheckBox Content="대파"
                           IsChecked="{Binding IsCriticalNotiEnabled}"
+                          Margin="0,0,10,0"/>
+				<CheckBox Content="색 변경"
+                          IsChecked="{Binding EnableColorChange}"
                           Margin="0,0,10,0"/>
 			</StackPanel>
         </Grid>

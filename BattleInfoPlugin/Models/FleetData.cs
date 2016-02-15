@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Livet;
 using Grabacr07.KanColleWrapper.Models;
+using BattleInfoPlugin.Properties;
 
 namespace BattleInfoPlugin.Models
 {
@@ -290,7 +291,14 @@ namespace BattleInfoPlugin.Models
                         s.NowHP = s.MaxHP;
                 });
             }
+			InputCritical(fleet);
         }
+		public static void InputCritical(FleetData fleet)
+		{
+			if (fleet.FleetType == FleetType.Enemy) return;
+			else if(fleet.FleetType==FleetType.First) Settings.Default.FirstIsCritical = fleet.IsCritical;
+			else if(fleet.FleetType==FleetType.Second) Settings.Default.SecondIsCritical = fleet.IsCritical;
+		}
 
         /// <summary>
         /// 演習ダメージ適用

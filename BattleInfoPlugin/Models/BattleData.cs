@@ -227,6 +227,9 @@ namespace BattleInfoPlugin.Models
 		public BattleData()
 		{
 			var proxy = KanColleClient.Current.Proxy;
+			
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_port/port")
+				.TryParse<battle_midnight_battle>().Subscribe(x => this.ResultClear());
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_battle_midnight/battle")
 				.TryParse<battle_midnight_battle>().Subscribe(x => this.Update(x.Data));
@@ -628,7 +631,7 @@ namespace BattleInfoPlugin.Models
 
 		public void Update(battle_result data)
 		{
-			this.DropShipName = data.api_get_ship?.api_ship_name;
+			this.DropShipName = KanColleClient.Current.Translations.GetTranslation(data.api_get_ship?.api_ship_name, TranslationType.Ships, false);
 		}
 
 		private void UpdateFleetsByStartNext(map_start_next startNext, string api_deck_id = null)
@@ -718,7 +721,11 @@ namespace BattleInfoPlugin.Models
 			this.SecondFleet.Ships.SetValues(api_nowhps_combined.GetFriendData(), (s, v) => s.NowHP = v);
 			this.SecondFleet.Ships.SetValues(api_nowhps_combined.GetFriendData(), (s, v) => s.BeforeNowHP = v);
 		}
-
+		private void ResultClear()
+		{
+			if (this.FirstFleet != null) this.FirstFleet.TotalDamaged = 0;
+			if (this.SecondFleet != null) this.SecondFleet.TotalDamaged = 0;
+		}
 		private void Clear()
 		{
 			this.UpdatedTime = DateTimeOffset.Now;

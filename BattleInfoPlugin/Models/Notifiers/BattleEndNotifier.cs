@@ -69,23 +69,6 @@ namespace BattleInfoPlugin.Models.Notifiers
 
 		#endregion
 
-		#region EnableColorChange
-
-		public bool EnableColorChange
-		{
-			get { return settings.EnableColorChange; }
-			set
-			{
-				if (settings.EnableColorChange == value)
-					return;
-				settings.EnableColorChange = value;
-				settings.Save();
-				this.RaisePropertyChanged();
-			}
-		}
-
-		#endregion
-
 		#region IsNotifyOnlyWhenInactive変更通知プロパティ
 
 		public bool IsNotifyOnlyWhenInactive
@@ -153,7 +136,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 			var isActive = DispatcherHelper.UIDispatcher.Invoke(() => Application.Current.MainWindow.IsActive);
 			if (IsCritical && CriticalEnabled)
 			{
-				if(EnableColorChange)
+				if(settings.EnableColorChange)
 				{
 					ThemeService.Current.ChangeAccent(Accent.Red);
 					ThemeService.Current.ChangeTheme(Theme.CritialRed);

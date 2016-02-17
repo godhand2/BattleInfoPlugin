@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using settings=BattleInfoPlugin.Properties.Settings;
 using BattleInfoPlugin.Models;
 using BattleInfoPlugin.Models.Notifiers;
 using Livet;
@@ -142,6 +143,22 @@ namespace BattleInfoPlugin.ViewModels
 				this.RaisePropertyChanged();
 			}
 		}
+		#endregion
+		#region EnableColorChange
+
+		public bool EnableColorChange
+		{
+			get { return settings.Default.EnableColorChange; }
+			set
+			{
+				if (settings.Default.EnableColorChange == value)
+					return;
+				settings.Default.EnableColorChange = value;
+				settings.Default.Save();
+				this.RaisePropertyChanged();
+			}
+		}
+
 		#endregion
 
 

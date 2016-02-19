@@ -631,7 +631,7 @@ namespace BattleInfoPlugin.Models
 
 		public void Update(battle_result data)
 		{
-			this.DropShipName = KanColleClient.Current.Translations.GetTranslation(data.api_get_ship?.api_ship_name, TranslationType.Ships, false);
+			this.DropShipName = KanColleClient.Current.Translations.GetTranslation(data.api_get_ship?.api_ship_name, TranslationType.Ships, true);
 		}
 
 		private void UpdateFleetsByStartNext(map_start_next startNext, string api_deck_id = null)

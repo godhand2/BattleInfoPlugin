@@ -227,7 +227,7 @@ namespace BattleInfoPlugin.Models
 		public BattleData()
 		{
 			var proxy = KanColleClient.Current.Proxy;
-			
+
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_port/port")
 				.TryParse<battle_midnight_battle>().Subscribe(x => this.ResultClear());
 
@@ -658,12 +658,15 @@ namespace BattleInfoPlugin.Models
 			this.UpdatedTime = DateTimeOffset.Now;
 			this.UpdateFriendFleets(api_deck_id);
 
+			var eTotal = 0;
+			if (this.Enemies != null) eTotal = this.Enemies.TotalDamaged;
 			this.Enemies = new FleetData(
 				data.ToMastersShipDataArray(),
 				this.Enemies?.Formation ?? Formation.없음,
 				this.Enemies?.Name ?? "",
 				FleetType.Enemy,
 				this.Enemies?.Rank);
+			this.Enemies.TotalDamaged = eTotal;
 
 			if (api_formation != null)
 			{

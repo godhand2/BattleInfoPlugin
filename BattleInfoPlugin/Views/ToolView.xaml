@@ -152,6 +152,10 @@
 												 Value="패배">
 									<Setter Property="Foreground" Value="#FF42428F"/>
 								</DataTrigger>
+								<DataTrigger Binding="{Binding RankResult}"
+												 Value="공습전">
+									<Setter Property="Foreground" Value="#FF52A661"/>
+								</DataTrigger>
 							</Style.Triggers>
 						</Style>
 					</TextBlock.Style>

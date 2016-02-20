@@ -15,5 +15,6 @@ namespace BattleInfoPlugin.Models
 		B승리 = 4,
 		패배 = 5,
 		없음 = 0,
+		공습전 = 6,
 	}
 }

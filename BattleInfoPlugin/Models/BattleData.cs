@@ -601,7 +601,8 @@ namespace BattleInfoPlugin.Models
 
 			this.AirCombatResults = data.api_kouku.ToResult();
 
-			this.RankResult = this.CalcRank();
+			//this.RankResult = this.CalcRank();
+			this.RankResult = Rank.공습전;
 		}
 
 		private void Update(combined_battle_ld_airbattle data)
@@ -624,7 +625,8 @@ namespace BattleInfoPlugin.Models
 
 			this.AirCombatResults = data.api_kouku.ToResult();
 
-			this.RankResult = this.CalcRank();
+			//this.RankResult = this.CalcRank();
+			this.RankResult = Rank.공습전;
 		}
 
 		#endregion

@@ -54,10 +54,28 @@ namespace BattleInfoPlugin.Models
 		#endregion
 
 
-		#region Cell変更通知プロパティ
-		private int _Cell;
+		#region CellEvent変更通知プロパティ
+		private int _CellEvent;
 
-		public int Cell
+		public int CellEvent
+		{
+			get
+			{ return this._CellEvent; }
+			set
+			{
+				if (this._CellEvent == value)
+					return;
+				this._CellEvent = value;
+				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
+
+
+		#region Cell変更通知プロパティ
+		private string _Cell;
+
+		public string Cell
 		{
 			get
 			{ return this._Cell; }
@@ -633,14 +651,20 @@ namespace BattleInfoPlugin.Models
 
 		public void Update(battle_result data)
 		{
-			this.DropShipName = KanColleClient.Current.Translations.GetTranslation(data.api_get_ship?.api_ship_name, TranslationType.Ships, true);
+			//this.DropShipName = KanColleClient.Current.Translations.GetTranslation(data.api_get_ship?.api_ship_name, TranslationType.Ships, true);
+			this.DropShipName = KanColleClient.Current.Master.Ships.SingleOrDefault(x => x.Value.Id == data.api_get_ship?.api_ship_id).Value?.Name;
 		}
 
 		private void UpdateFleetsByStartNext(map_start_next startNext, string api_deck_id = null)
 		{
 			this.Clear();
 
-			this.Cell = startNext.api_event_id;
+			this.CellEvent = startNext.api_event_id;
+			this.Cell = "";
+			if (startNext.api_no != 0)
+			{
+				this.Cell = startNext.api_no.ToString();
+			}
 			this.RankResult = Rank.없음;
 
 			if (api_deck_id != null) this.CurrentDeckId = int.Parse(api_deck_id);

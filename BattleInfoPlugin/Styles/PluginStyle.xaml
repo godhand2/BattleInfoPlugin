@@ -50,5 +50,7 @@
                                          Background1="{StaticResource ThemeBrushKey}"
                                          Background2="{StaticResource SemiactiveBackgroundBrushKey}"/>
     <converters:UnknownValueConverter x:Key="UnknownValueConverter"/>
+    <converters:CellEventToEventName x:Key="CellEventToEventName"/>
+    <converters:CellEventToEventColor x:Key="CellEventToEventColor"/>
     <converters1:HasFlagConverter x:Key="HasFlagConverter"/>
 </ResourceDictionary>

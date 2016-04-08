@@ -34,9 +34,11 @@ namespace BattleInfoPlugin.ViewModels
                 : "";
 
 		public string Cell
-			=>this.BattleData?.Cell.ToString();
+			=> MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.BattleData?.Cell).Value ?? this.BattleData?.Cell;
+		public string CellEvent
+			=> this.BattleData?.CellEvent.ToString();
 		public string RankResult
-			=>this.BattleData.RankResult.ToString();
+			=> this.BattleData.RankResult.ToString();
 		public string DropShipName
             => this.BattleData?.DropShipName;
 
@@ -188,6 +190,10 @@ namespace BattleInfoPlugin.ViewModels
 
             this.CompositeDisposable.Add(new PropertyChangedEventListener(this.BattleData)
 			{
+				{
+					() => this.BattleData.CellEvent,
+					(_, __) => this.RaisePropertyChanged(() => this.CellEvent)
+				},
 				{
 					() => this.BattleData.Cell,
 					(_, __) => this.RaisePropertyChanged(() => this.Cell)

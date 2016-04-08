@@ -160,57 +160,14 @@
 						</Style>
 					</TextBlock.Style>
 				</TextBlock>
-				<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
 						   Margin="10,4"
 						   Padding="10,2"
-						   Foreground="White">
-					<TextBlock.Style>
-						<Style TargetType="TextBlock">
-							<Style.Triggers>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="0">
-									<Setter Property="Text" Value=""/>
-									<Setter Property="Background" Value="Transparent"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="2">
-									<Setter Property="Background" Value="#FF3FBD2B"/>
-									<Setter Property="Text" Value="자원획득"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="3">
-									<Setter Property="Background" Value="#FFA33CEA"/>
-									<Setter Property="Text" Value="소용돌이"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="4">
-									<Setter Property="Background" Value="#FFF01717"/>
-									<Setter Property="Text" Value="적군조우"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="31">
-									<Setter Property="Background" Value="#FFF01717"/>
-									<Setter Property="Text" Value="적군조우"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="5">
-									<Setter Property="Background" Value="#FFD40C0C"/>
-									<Setter Property="Text" Value="보스전"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="6">
-									<Setter Property="Background" Value="#FF0A8AB9"/>
-									<Setter Property="Text" Value="기분탓"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding Cell}"
-												 Value="10">
-									<Setter Property="Background" Value="#FF51A6C5"/>
-									<Setter Property="Text" Value="공습전"/>
-								</DataTrigger>
-							</Style.Triggers>
-						</Style>
-					</TextBlock.Style>
-				</TextBlock>
+						   Foreground="White"
+                           Background="{Binding CellEvent, Converter={StaticResource CellEventToEventColor}}">                    
+                    <Run Text="{Binding Cell, Mode=OneWay}"/>
+                    <Run Text="{Binding CellEvent, Mode=OneWay, Converter={StaticResource CellEventToEventName}}"/>
+                </TextBlock>
 			</Grid>
 
 

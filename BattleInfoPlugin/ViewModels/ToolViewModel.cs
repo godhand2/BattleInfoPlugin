@@ -34,7 +34,7 @@ namespace BattleInfoPlugin.ViewModels
                 : "";
 
 		public string Cell
-			=> this.BattleData?.Cell;
+			=> MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.BattleData?.Cell).Value ?? this.BattleData?.Cell;
 		public string CellEvent
 			=> this.BattleData?.CellEvent.ToString();
 		public string RankResult

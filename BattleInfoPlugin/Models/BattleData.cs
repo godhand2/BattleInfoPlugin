@@ -663,7 +663,7 @@ namespace BattleInfoPlugin.Models
 			this.Cell = "";
 			if (startNext.api_no != 0)
 			{
-				this.Cell = startNext.api_no.ToString();
+				this.Cell = startNext.api_maparea_id + "-" + startNext.api_mapinfo_no + "-" + startNext.api_no;
 			}
 			this.RankResult = Rank.없음;
 

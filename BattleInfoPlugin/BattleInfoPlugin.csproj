@@ -62,8 +62,9 @@
       <HintPath>$(SolutionDir)\packages\LivetCask.1.3.1.0\lib\net45\Livet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-<Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>      <Private>True</Private>
+    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Nekoxy, Version=1.5.2.20, Culture=neutral, processorArchitecture=MSIL">
@@ -174,6 +175,7 @@
     <Compile Include="NotifyAttribute.cs" />
     <Compile Include="SortieDataListener.cs" />
     <Compile Include="ViewModels\AirCombatResultViewModel.cs" />
+    <Compile Include="ViewModels\Enemies\CellPointViewModel.cs" />
     <Compile Include="ViewModels\Enemies\EnemyFleetViewModel.cs" />
     <Compile Include="ViewModels\Enemies\EnemyMapViewModel.cs" />
     <Compile Include="ViewModels\Enemies\EnemyCellViewModel.cs" />
@@ -269,8 +271,8 @@
   <ItemGroup>
     <Analyzer Include="$(SolutionDir)\packages\KanColleViewer.PluginAnalyzer.1.1.1.0\analyzers\KanColleViewer.Composition.dll" />
     <Analyzer Include="$(SolutionDir)\packages\KanColleViewer.PluginAnalyzer.1.1.1.0\analyzers\KanColleViewer.PluginAnalyzer.dll" />
-<Analyzer Include="..\packages\NotifyPropertyChangedGenerator.1.1.0.1\analyzers\dotnet\cs\NotifyPropertyChangedGenerator.dll" />
-</ItemGroup>
+    <Analyzer Include="..\packages\NotifyPropertyChangedGenerator.1.1.0.1\analyzers\dotnet\cs\NotifyPropertyChangedGenerator.dll" />
+  </ItemGroup>
   <ItemGroup>
     <COMReference Include="MSHTML">
       <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
@@ -292,18 +294,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-<ProjectReference Include="$(SolutionDir)\MetroRadiance\source\MetroRadiance.Chrome\MetroRadiance.Chrome.csproj">
-<Project>{21b4ad15-d9fa-4873-bfad-1eeefbc6c264}</Project>
-      <Name>MetroRadiance.Chrome</Name>
-    </ProjectReference>
-<ProjectReference Include="$(SolutionDir)\MetroRadiance\source\MetroRadiance.Core\MetroRadiance.Core.csproj">
-<Project>{a6b0a741-5be0-479d-b813-e65672350057}</Project>
-      <Name>MetroRadiance.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\MetroRadiance\source\MetroRadiance\MetroRadiance.csproj">
-      <Project>{0af0b9ff-d981-4d0f-a41f-c3ab6fe2f16d}</Project>
-      <Name>MetroRadiance</Name>
-    </ProjectReference>
     <ProjectReference Include="$(SolutionDir)\MetroTrilithon\source\MetroTrilithon.Desktop\MetroTrilithon.Desktop.csproj">
       <Project>{4e2eb2e0-e5fe-4feb-a3e5-5f2f05cd1a67}</Project>
       <Name>MetroTrilithon.Desktop</Name>
@@ -311,6 +301,26 @@
     <ProjectReference Include="$(SolutionDir)\MetroTrilithon\source\MetroTrilithon\MetroTrilithon.csproj">
       <Project>{df381709-9f44-44ed-a7d6-ecdf157e620d}</Project>
       <Name>MetroTrilithon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KanColleViewer\source\MetroRadiance\source\MetroRadiance.Chrome\MetroRadiance.Chrome.csproj">
+      <Project>{21b4ad15-d9fa-4873-bfad-1eeefbc6c264}</Project>
+      <Name>MetroRadiance.Chrome</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KanColleViewer\source\MetroRadiance\source\MetroRadiance.Core\MetroRadiance.Core.csproj">
+      <Project>{a6b0a741-5be0-479d-b813-e65672350057}</Project>
+      <Name>MetroRadiance.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KanColleViewer\source\MetroRadiance\source\MetroRadiance\MetroRadiance.csproj">
+      <Project>{0af0b9ff-d981-4d0f-a41f-c3ab6fe2f16d}</Project>
+      <Name>MetroRadiance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KanColleViewer\source\MetroRadiance\source\RetroRadiance\RetroRadiance.csproj">
+      <Project>{7f898b3a-da17-4cab-b387-5629b5faca49}</Project>
+      <Name>RetroRadiance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KanColleViewer\source\MetroTrilithon\source\RetroTrilithon.Desktop\RetroTrilithon.Desktop.csproj">
+      <Project>{75a62817-2f64-4179-939c-b28914bdc566}</Project>
+      <Name>RetroTrilithon.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

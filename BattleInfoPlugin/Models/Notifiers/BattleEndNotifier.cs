@@ -6,7 +6,6 @@ using Grabacr07.KanColleViewer;
 using Grabacr07.KanColleViewer.Composition;
 using Grabacr07.KanColleWrapper;
 using Livet;
-using MetroRadiance;
 using BattleInfoPlugin.Models.Raw;
 using MetroRadiance.UI;
 

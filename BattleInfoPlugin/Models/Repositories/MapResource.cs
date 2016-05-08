@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using DDW.Swf;
 using BattleInfoPlugin.Properties;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 
 namespace BattleInfoPlugin.Models.Repositories
 {
@@ -65,12 +66,19 @@ namespace BattleInfoPlugin.Models.Repositories
             {
                 var swf = map.ToSwf();
 
-                return swf?.Tags
-                    .SkipWhile(x => x.TagType != TagType.ShowFrame) //1フレーム飛ばす
+                var frame = swf?.Tags.SkipWhile(x => x.TagType != TagType.ShowFrame).ToArray();
+                var jpeg3 = frame
                     .OfType<DefineBitsTag>()
                     .Where(x => x.TagType == TagType.DefineBitsJPEG3)
-                    .Select(x => x.ToBitmapFrame())
-                    .Where(x => x.Width == 768)
+                    .Select(x => x.ToBitmapFrame());
+                var lossless2 = frame
+                    .OfType<DefineBitsLosslessTag>()
+                    .Where(x => x.TagType == TagType.DefineBitsLossless2)
+                    .Select(x => x.ToBitmapFrame());
+
+                return jpeg3.Concat(lossless2)
+                    .Where(x => x != null)
+                    .Where(x => x.PixelWidth == 768)
                     .ToArray();
             }
 
@@ -131,6 +139,18 @@ namespace BattleInfoPlugin.Models.Repositories
                     { 3, "/kcs/resources/swf/map/fwy_wlrdttcoc.swf" },
                 }
             },
+            {
+                34, new Dictionary<int, string>
+                {
+                    { 1, "/kcs/resources/swf/map/lddsvnlihrvtnpjkwqcelxpsmylpcqcyifty.swf" },
+                    { 2, "/kcs/resources/swf/map/gtghlytvrrnwwlgclowhlxxdowjcyhsslylg.swf" },
+                    { 3, "/kcs/resources/swf/map/ykiginprdwshxaxvsfqfsglcgqbmuwsesjsj.swf" },
+                    { 4, "/kcs/resources/swf/map/wxjwlfrhgcklfdsibozycoxusitdrbcvspjm.swf" },
+                    { 5, "/kcs/resources/swf/map/ttiowoxbvxkzupqukiogqbferupdilhnbuss.swf" },
+                    { 6, "/kcs/resources/swf/map/ffeslxuunebocfbhyurhqvkuadvbdpchpuun.swf" },
+                    { 7, "/kcs/resources/swf/map/ajbgoywibmolclvnnmqkgmpcymosnellkojv.swf" },
+                }
+            },
         };
 
         private static string GetMapSwfFilePath(this MapInfo map)
@@ -175,6 +195,27 @@ namespace BattleInfoPlugin.Models.Repositories
                     (int)Math.Floor(tag.Matrix.TranslateX / 20) / 2 * 2,
                     (int)Math.Floor(tag.Matrix.TranslateY / 20) / 2 * 2)
                 : default(Point);
+        }
+
+        public static BitmapFrame ToBitmapFrame(this DefineBitsLosslessTag tag)
+        {
+            if (tag == null) return null;
+
+            BitmapFrame frame;
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    tag.GetBitmap().Save(stream, ImageFormat.Png);
+                    frame = BitmapFrame.Create(stream,
+                        BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.OnLoad);
+                }
+            }
+            catch (NotSupportedException)
+            {
+                return null;
+            }
+            return frame;
         }
 
         public static BitmapFrame ToBitmapFrame(this DefineBitsTag tag)

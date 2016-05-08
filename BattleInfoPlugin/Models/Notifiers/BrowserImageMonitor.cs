@@ -17,7 +17,6 @@ using WebBrowser = System.Windows.Controls.WebBrowser;
 using BattleInfoPlugin.Properties;
 using Grabacr07.KanColleWrapper;
 using BattleInfoPlugin.Models.Notifiers._Internal;
-using MetroRadiance;
 using MetroRadiance.UI;
 
 namespace BattleInfoPlugin.Models.Notifiers

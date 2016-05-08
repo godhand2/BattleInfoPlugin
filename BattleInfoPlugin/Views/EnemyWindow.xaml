@@ -192,87 +192,87 @@
                             </Style>
                         </StackPanel.Resources>
                         <TextBlock>
-                            <Run Text="에리어 "/>
-                            <Run Text="{Binding /Info.MapArea.Name, Mode=OneTime}"
-                                 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-						</TextBlock>
-						<TextBlock>
-                            <Run Text="맵 "/>
-                            <Run Text="{Binding /Name, Mode=OneTime}"
-                                 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-						</TextBlock>
-						<TextBlock>
-                            <Run Text="난이도 Lv."/>
-                            <Run Text="{Binding /Info.Level, Mode=OneTime}"
-                                 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-						</TextBlock>
-						<TextBlock>
-                            <Run Text="필요격파횟수 "/>
-                            <Run Text="{Binding /RequiredDefeatCount, Mode=OneTime}"
-                                 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-						</TextBlock>
+													<Run Text="에리어 "/>
+													<Run Text="{Binding /Info.MapArea.Name, Mode=OneTime}"
+															 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+												</TextBlock>
+												<TextBlock>
+													<Run Text="맵 "/>
+													<Run Text="{Binding /Name, Mode=OneTime}"
+															 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+												</TextBlock>
+												<TextBlock>
+													<Run Text="난이도 Lv."/>
+													<Run Text="{Binding /Info.Level, Mode=OneTime}"
+															 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+												</TextBlock>
+												<TextBlock>
+													<Run Text="필요격파횟수 "/>
+													<Run Text="{Binding /RequiredDefeatCount, Mode=OneTime}"
+															 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+												</TextBlock>
 
-						<TextBlock Text="작전명"
-                                   Margin="5,30,5,0"/>
-						<TextBlock Text="{Binding /Info.OperationName, Mode=OneTime}"
-                                   Style="{DynamicResource EmphaticTextStyleKey}"
-                                   Margin="5,5,5,0"/>
-						<TextBlock Text="작전개요"/>
-						<TextBlock Text="{Binding /Info.OperationSummary, Mode=OneTime, Converter={StaticResource BrTagToNewLineConverter}}"
-                                   Style="{DynamicResource EmphaticTextStyleKey}"
-                                   Margin="5,5,5,0"
-                                   FontSize="12"
-                                   MaxWidth="200"
-                                   TextWrapping="Wrap"/>
-                    </StackPanel>
+												<TextBlock Text="작전명"
+																							 Margin="5,30,5,0"/>
+												<TextBlock Text="{Binding /Info.OperationName, Mode=OneTime}"
+																							 Style="{DynamicResource EmphaticTextStyleKey}"
+																							 Margin="5,5,5,0"/>
+												<TextBlock Text="작전개요"/>
+												<TextBlock Text="{Binding /Info.OperationSummary, Mode=OneTime, Converter={StaticResource BrTagToNewLineConverter}}"
+																							 Style="{DynamicResource EmphaticTextStyleKey}"
+																							 Margin="5,5,5,0"
+																							 FontSize="12"
+																							 MaxWidth="200"
+																							 TextWrapping="Wrap"/>
+											</StackPanel>
 
-                    <!-- Map Data Not Found メッセージ -->
-                    <StackPanel Grid.Column="1"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center">
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding /HasImage}" Value="False"/>
-                                            <Condition Binding="{Binding /ExistsMapAssembly}" Value="True"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
-                        <TextBlock Text="Map Data Not Found"
+											<!-- Map Data Not Found メッセージ -->
+											<StackPanel Grid.Column="1"
+																	HorizontalAlignment="Center"
+																	VerticalAlignment="Center">
+												<StackPanel.Style>
+													<Style TargetType="StackPanel">
+														<Setter Property="Visibility" Value="Collapsed"/>
+														<Style.Triggers>
+															<MultiDataTrigger>
+																<MultiDataTrigger.Conditions>
+																	<Condition Binding="{Binding /HasImage}" Value="False"/>
+																	<Condition Binding="{Binding /ExistsMapAssembly}" Value="True"/>
+																</MultiDataTrigger.Conditions>
+																<Setter Property="Visibility" Value="Visible"/>
+															</MultiDataTrigger>
+														</Style.Triggers>
+													</Style>
+												</StackPanel.Style>
+												<TextBlock Text="Map Data Not Found"
                                    FontSize="20"
                                    HorizontalAlignment="Center"/>
-						<TextBlock Text="・로컬에 저장된 맵 데이터가 표시됩니다"
-                                   Style="{DynamicResource DefaultTextStyleKey}"/>
-						<TextBlock Text="・맵 데이터는 브라우저 캐시가 없는 상태에서 출격했을시 저장됩니다"
-                                   Style="{DynamicResource DefaultTextStyleKey}"/>
-                    </StackPanel>
+												<TextBlock Text="・로컬에 저장된 맵 데이터가 표시됩니다"
+																							 Style="{DynamicResource DefaultTextStyleKey}"/>
+												<TextBlock Text="・맵 데이터는 브라우저 캐시가 없는 상태에서 출격했을시 저장됩니다"
+																							 Style="{DynamicResource DefaultTextStyleKey}"/>
+											</StackPanel>
 
-                    <!-- Required Assembly Not Found メッセージ -->
-                    <StackPanel Grid.Column="1"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center">
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding /ExistsMapAssembly}" Value="False">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
-                        <TextBlock Text="Required Assembly Not Found"
+											<!-- Required Assembly Not Found メッセージ -->
+											<StackPanel Grid.Column="1"
+																	HorizontalAlignment="Center"
+																	VerticalAlignment="Center">
+												<StackPanel.Style>
+													<Style TargetType="StackPanel">
+														<Setter Property="Visibility" Value="Collapsed"/>
+														<Style.Triggers>
+															<DataTrigger Binding="{Binding /ExistsMapAssembly}" Value="False">
+																<Setter Property="Visibility" Value="Visible"/>
+															</DataTrigger>
+														</Style.Triggers>
+													</Style>
+												</StackPanel.Style>
+												<TextBlock Text="Required Assembly Not Found"
                                    FontSize="20"
                                    HorizontalAlignment="Center"/>
-						<TextBlock Text="・SwfFormat.dll 나 ICSharpCode.SharpZipLib.dll 를 찾을 수 없습니다"
-                                   Style="{DynamicResource DefaultTextStyleKey}"/>
-                    </StackPanel>
+												<TextBlock Text="・SwfFormat.dll 나 ICSharpCode.SharpZipLib.dll 를 찾을 수 없습니다"
+																							 Style="{DynamicResource DefaultTextStyleKey}"/>
+											</StackPanel>
 
 
                     <ScrollViewer Grid.Column="1"
@@ -322,14 +322,14 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemContainerStyle>
                                     <Style TargetType="{x:Type ContentPresenter}">
-                                        <Setter Property="Canvas.Left" Value="{Binding Path=Value.Item1.X}"/>
-                                        <Setter Property="Canvas.Top" Value="{Binding Path=Value.Item1.Y}"/>
+                                        <Setter Property="Canvas.Left" Value="{Binding Path=Point.X}"/>
+                                        <Setter Property="Canvas.Top" Value="{Binding Path=Point.Y}"/>
                                     </Style>
                                 </ItemsControl.ItemContainerStyle>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <local:Cell Text="{Binding Key}"
-                                                    CellIconNumber="{Binding Value.Item2}">
+                                        <local:Cell Text="{Binding Label}"
+                                                    CellIconNumber="{Binding ColorNo}">
                                             <i:Interaction.Behaviors>
                                                 <behaviors:ScrollToCellBehavior ScrollTargetName="EnemiesDataScrollViewer"
                                                                                 ParentElement="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type metro:MetroWindow}}}"/>
@@ -452,16 +452,16 @@
                                                           Background="Transparent">
                                                         <Grid.ContextMenu>
                                                             <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Self}, Path=PlacementTarget.Tag}">
-																<MenuItem Header="Enemy ID를 복사">
-																	<i:Interaction.Triggers>
-																		<i:EventTrigger EventName="Click">
-																			<l:LivetCallMethodAction MethodTarget="{Binding}"
-                                                                                                     MethodName="CopyIdToClipboard"/>
-																		</i:EventTrigger>
-																	</i:Interaction.Triggers>
-																</MenuItem>
-																<MenuItem Header="삭제">
-																	<i:Interaction.Triggers>
+																															<MenuItem Header="Enemy ID를 복사">
+																																<i:Interaction.Triggers>
+																																	<i:EventTrigger EventName="Click">
+																																		<l:LivetCallMethodAction MethodTarget="{Binding}"
+																																																																	 MethodName="CopyIdToClipboard"/>
+																																	</i:EventTrigger>
+																																</i:Interaction.Triggers>
+																															</MenuItem>
+																															<MenuItem Header="삭제">
+																																<i:Interaction.Triggers>
                                                                         <i:EventTrigger EventName="Click">
                                                                             <l:LivetCallMethodAction MethodTarget="{Binding}"
                                                                                                      MethodName="DeleteEnemy"/>
@@ -525,73 +525,73 @@
                                                                     <Style TargetType="{x:Type Border}">
                                                                         <Setter Property="Visibility" Value="Collapsed"/>
                                                                         <Style.Triggers>
-																			<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=항공전}"
-                                                                                         Value="True">
-                                                                                <Setter Property="Visibility"
-                                                                                        Value="Visible"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Border.Style>
-																<TextBlock Text="항공전"
-                                                                           Margin="9,2"
-                                                                           HorizontalAlignment="Center"/>
-                                                            </Border>
+																																					<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=항공전}"
+																																																														 Value="True">
+																																						<Setter Property="Visibility"
+																																										Value="Visible"/>
+																																					</DataTrigger>
+																																				</Style.Triggers>
+																																			</Style>
+																																		</Border.Style>
+																																		<TextBlock Text="항공전"
+																																																							 Margin="9,2"
+																																																							 HorizontalAlignment="Center"/>
+																																	</Border>
 
-                                                            <Border Background="#433390"
-                                                                    HorizontalAlignment="Left"
-                                                                    Margin="5,0"
-                                                                    MinWidth="50">
-                                                                <Border.Style>
-                                                                    <Style TargetType="{x:Type Border}">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=야전}"
-                                                                                         Value="True">
-                                                                                <Setter Property="Visibility"
-                                                                                        Value="Visible"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Border.Style>
-                                                                <TextBlock Text="야전"
-                                                                           Margin="9,2"
-                                                                           HorizontalAlignment="Center"/>
-                                                            </Border>
+																																	<Border Background="#433390"
+																																					HorizontalAlignment="Left"
+																																					Margin="5,0"
+																																					MinWidth="50">
+																																		<Border.Style>
+																																			<Style TargetType="{x:Type Border}">
+																																				<Setter Property="Visibility" Value="Collapsed"/>
+																																				<Style.Triggers>
+																																					<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=야전}"
+																																											 Value="True">
+																																						<Setter Property="Visibility"
+																																										Value="Visible"/>
+																																					</DataTrigger>
+																																				</Style.Triggers>
+																																			</Style>
+																																		</Border.Style>
+																																		<TextBlock Text="야전"
+																																							 Margin="9,2"
+																																							 HorizontalAlignment="Center"/>
+																																	</Border>
 
-                                                            <Border Background="DarkGreen"
-                                                                    HorizontalAlignment="Left"
-                                                                    Margin="5,0"
-                                                                    MinWidth="50">
-                                                                <Border.Style>
-                                                                    <Style TargetType="{x:Type Border}">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=공습전}"
-                                                                                         Value="True">
-                                                                                <Setter Property="Visibility"
-                                                                                        Value="Visible"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Border.Style>
-																<TextBlock Text="공습전"
-                                                                           Margin="9,2"
-                                                                           HorizontalAlignment="Center"/>
-                                                            </Border>
+																																	<Border Background="DarkGreen"
+																																					HorizontalAlignment="Left"
+																																					Margin="5,0"
+																																					MinWidth="50">
+																																		<Border.Style>
+																																			<Style TargetType="{x:Type Border}">
+																																				<Setter Property="Visibility" Value="Collapsed"/>
+																																				<Style.Triggers>
+																																					<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=공습전}"
+																																											 Value="True">
+																																						<Setter Property="Visibility"
+																																										Value="Visible"/>
+																																					</DataTrigger>
+																																				</Style.Triggers>
+																																			</Style>
+																																		</Border.Style>
+																																		<TextBlock Text="공습전"
+																																																							 Margin="9,2"
+																																																							 HorizontalAlignment="Center"/>
+																																	</Border>
 
-                                                            <TextBlock Margin="5,10,5,0">
-                                                                <Run Text="진형:"
-                                                                     FontSize="12"/>
-                                                                <Run Text="{Binding Formation, Mode=OneTime}"
-                                                                     Style="{DynamicResource EmphaticTextElementStyleKey}"
-                                                                     FontSize="12"/>
-                                                            </TextBlock>
+																																	<TextBlock Margin="5,10,5,0">
+																																		<Run Text="진형:"
+																																				 FontSize="12"/>
+																																		<Run Text="{Binding Formation, Mode=OneTime}"
+																																				 Style="{DynamicResource EmphaticTextElementStyleKey}"
+																																				 FontSize="12"/>
+																																	</TextBlock>
 
-                                                            <TextBlock Margin="5,10,5,0"
-                                                                       Visibility="{Binding RankVisibility}">
-                                                                <Run Text="난이도:"
-                                                                     FontSize="12"/>
+																																	<TextBlock Margin="5,10,5,0"
+																																						 Visibility="{Binding RankVisibility}">
+																																		<Run Text="난이도:"
+																																				 FontSize="12"/>
                                                                 <Run Text="{Binding Rank, Mode=OneTime}"
                                                                      Style="{DynamicResource EmphaticTextElementStyleKey}"
                                                                      FontSize="12"/>

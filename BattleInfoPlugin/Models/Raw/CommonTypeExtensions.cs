@@ -55,10 +55,6 @@ namespace BattleInfoPlugin.Models.Raw
             => kouku?.api_stage3?.api_edam?.GetDamages()
                ?? defaultValue;
 
-        public static FleetDamages GetEnemyDamages(this Api_Air_Base_Attack[] attacks)
-            => attacks?.Select(x => x?.api_stage3?.api_edam?.GetDamages() ?? defaultValue)
-            ?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
-
         public static AirSupremacy GetAirSupremacy(this Api_Kouku kouku)
             => (AirSupremacy)(kouku?.api_stage1?.api_disp_seiku ?? (int)AirSupremacy.항공전없음);
 
@@ -81,11 +77,26 @@ namespace BattleInfoPlugin.Models.Raw
             => stage2 == null ? new AirCombatResult(name)
             : new AirCombatResult(name, stage2.api_f_count, stage2.api_f_lostcount, stage2.api_e_count, stage2.api_e_lostcount);
 
-        #endregion
+		#endregion
 
-        #region 雷撃戦
+		#region 기지항공대
 
-        public static FleetDamages GetFriendDamages(this Raigeki raigeki)
+		public static FleetDamages GetEnemyDamages(this Api_Air_Base_Attack[] attacks)
+			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetDamages() ?? defaultValue)
+			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
+
+		public static AirCombatResult[] ToResult(this Api_Air_Base_Attack[] attacks)
+		{
+			return attacks != null
+				? attacks.SelectMany(x => new[] { x.api_stage1.ToResult($"제 {x.api_base_id}항공대 공대공"), x.api_stage2.ToResult($"제 {x.api_base_id}항공대 공대함") }).ToArray()
+				: new AirCombatResult[0];
+		}
+
+		#endregion
+
+		#region 雷撃戦
+
+		public static FleetDamages GetFriendDamages(this Raigeki raigeki)
             => raigeki?.api_fdam?.GetDamages()
                ?? defaultValue;
 

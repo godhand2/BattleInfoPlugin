@@ -369,8 +369,8 @@ namespace BattleInfoPlugin.Models
                 );
 
             this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy(); //航空戦2回目はスルー
-
-			this.AirCombatResults = data.api_kouku.ToResult("1회차/")
+			
+			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult("1회차/"))
 							.Concat(data.api_kouku2.ToResult("2회차/")).ToArray();
 
 			this.RankResult = this.CalcRank(true);
@@ -410,7 +410,7 @@ namespace BattleInfoPlugin.Models
 
             this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 
-            this.AirCombatResults = data.api_kouku.ToResult();
+            this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
 			this.RankResult = this.CalcRank(true);
 		}
@@ -449,7 +449,7 @@ namespace BattleInfoPlugin.Models
 
             this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 
-            this.AirCombatResults = data.api_kouku.ToResult();
+            this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
 			this.RankResult = this.CalcRank(true);
 		}
@@ -569,7 +569,7 @@ namespace BattleInfoPlugin.Models
 
             this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy(); // 航空戦2回目はスルー
 
-			this.AirCombatResults = data.api_kouku.ToResult("1회차/")
+			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult("1회차/"))
 							.Concat(data.api_kouku2.ToResult("2회차/")).ToArray();
 
 			this.RankResult = this.CalcRank();
@@ -603,7 +603,7 @@ namespace BattleInfoPlugin.Models
 
             this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 
-			this.AirCombatResults = data.api_kouku.ToResult();
+			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
 			this.RankResult = this.CalcRank();
 		}
@@ -622,7 +622,7 @@ namespace BattleInfoPlugin.Models
 
             this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 
-			this.AirCombatResults = data.api_kouku.ToResult();
+			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
 			//this.RankResult = this.CalcRank();
 			this.RankResult = Rank.공습전;
@@ -646,7 +646,7 @@ namespace BattleInfoPlugin.Models
 
             this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 
-			this.AirCombatResults = data.api_kouku.ToResult();
+			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
 			//this.RankResult = this.CalcRank();
 			this.RankResult = Rank.공습전;

@@ -182,10 +182,14 @@
                 <views:Fleet Margin="0,6,0,0"
                              DataContext="{Binding Enemies}"/>
             </StackPanel>
-
-            <StackPanel Grid.Row="3"
+			
+			<StackPanel Grid.Row="3"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
+				<TextBlock Text="설정: "/>
+				<CheckBox Content="세부 항공전 표시"
+                          IsChecked="{Binding DetailKouku}"
+                          Margin="0,0,10,0"/>
 				<TextBlock Text="알림: "/>
                 <CheckBox Content="전투종료"
                           IsChecked="{Binding IsNotifierEnabled}"

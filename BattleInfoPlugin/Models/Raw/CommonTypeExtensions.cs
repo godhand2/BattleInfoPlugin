@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BattleInfoPlugin.Properties;
 
 namespace BattleInfoPlugin.Models.Raw
 {
@@ -87,7 +88,7 @@ namespace BattleInfoPlugin.Models.Raw
 
 		public static AirCombatResult[] ToResult(this Api_Air_Base_Attack[] attacks)
 		{
-			return attacks != null
+			return attacks != null && Settings.Default.DetailKouku
 				? attacks.SelectMany(x => new[] { x.api_stage1.ToResult($"제 {x.api_base_id}항공대 공대공"), x.api_stage2.ToResult($"제 {x.api_base_id}항공대 공대함") }).ToArray()
 				: new AirCombatResult[0];
 		}

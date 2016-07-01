@@ -163,6 +163,23 @@ namespace BattleInfoPlugin.ViewModels
 
 		#endregion
 
+		#region DetailKouku
+
+		public bool DetailKouku
+		{
+			get { return settings.Default.DetailKouku; }
+			set
+			{
+				if (settings.Default.DetailKouku == value)
+					return;
+				settings.Default.DetailKouku = value;
+				settings.Default.Save();
+				this.RaisePropertyChanged();
+			}
+		}
+
+		#endregion
+
 
 		#region IsNotifyOnlyWhenInactive変更通知プロパティ
 		// ここ以外で変更しないのでModel変更通知は受け取らない雑対応

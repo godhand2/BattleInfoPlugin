@@ -15,105 +15,106 @@
              d:DesignWidth="720"
              d:DataContext="{d:DesignData /SampleData/ToolViewModelSampleData.xaml}">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/PluginStyle.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../Styles/PluginStyle.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
 
-    <i:Interaction.Triggers>
-        <l:InteractionMessageTrigger Messenger="{Binding Messenger}"
+	<i:Interaction.Triggers>
+		<l:InteractionMessageTrigger Messenger="{Binding Messenger}"
                                      MessageKey="Show/EnemyWindow">
-            <l:TransitionInteractionMessageAction Mode="NewOrActive"
+			<l:TransitionInteractionMessageAction Mode="NewOrActive"
                                                   WindowType="views:EnemyWindow"
                                                   IsOwned="False" />
-        </l:InteractionMessageTrigger>
-    </i:Interaction.Triggers>
+		</l:InteractionMessageTrigger>
+	</i:Interaction.Triggers>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto"
+	<ScrollViewer VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Auto"
                   PanningMode="Both">
-        <Grid Margin="8,4">
-            <Grid.RowDefinitions>
+		<Grid Margin="8,4">
+			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            
-            <DockPanel Grid.Row="0">
-                <TextBlock Text="전투정보"
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+
+			<DockPanel Grid.Row="0">
+				<TextBlock Text="전투정보"
                            VerticalAlignment="Top"
                            Style="{DynamicResource HeaderTextStyleKey}"
                            Margin="0,0,10,0"/>
-                <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="190"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+				<StackPanel>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition/>
+							<ColumnDefinition Width="190"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="1"
+						<StackPanel Grid.Column="1"
                                     Margin="0,0,10,0">
-                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
                                 <Run Text="전투종류:"/>
                                 <Run Text="{Binding BattleName, Mode=OneWay}"
                                      FontSize="12"
                                      Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-                            </TextBlock>
-                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+							</TextBlock>
+							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
                                 <Run Text="교전형태:"/>
                                 <Run Text="{Binding BattleSituation, Mode=OneWay}"
                                      FontSize="12"
                                      Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-                            </TextBlock>
-                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+							</TextBlock>
+							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
                                 <Run Text="제공종류:"/>
                                 <Run Text="{Binding FriendAirSupremacy, Mode=OneWay}"
                                      FontSize="12"
                                      Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-                            </TextBlock>
-                        </StackPanel>
+							</TextBlock>
+						</StackPanel>
 
 
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+						<StackPanel Grid.Column="2">
+							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
                                 <Run Text="갱신일시:"/>
                                 <Run Text="{Binding UpdatedTime, Mode=OneWay}"
                                      FontSize="12"
                                      Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-                            </TextBlock>
-                            <TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+							</TextBlock>
+							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
                                 <Run Text="드롭:"/>
                                 <Run Text="{Binding DropShipName, Mode=OneWay}"
                                      FontSize="12"
                                      Style="{DynamicResource EmphaticTextElementStyleKey}"/>
-                            </TextBlock>
-                        </StackPanel>
+							</TextBlock>
+						</StackPanel>
 
-                        <Button Grid.Column="3"
+						<Button Grid.Column="3"
                                 Content="적 정보 목록"
                                 VerticalAlignment="Stretch"
                                 HorizontalAlignment="Right"
                                 Margin="0,3,4,0">
-                            <i:Interaction.Triggers>
+							<i:Interaction.Triggers>
 								<i:EventTrigger EventName="Click">
 									<ei:CallMethodAction TargetObject="{Binding}"
                                                          MethodName="OpenEnemyWindow"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
-                    </Grid>
-                    
-                    <Rectangle Height="1"
+								</i:EventTrigger>
+							</i:Interaction.Triggers>
+						</Button>
+					</Grid>
+
+					<Rectangle Height="1"
                                Margin="3, 4"
                                Style="{DynamicResource SeparatorRectangleStyleKey}" />
-                </StackPanel>
-            </DockPanel>
+				</StackPanel>
+			</DockPanel>
 
 			<Grid Grid.Row="1">
 				<TextBlock Padding="10,5"
@@ -160,29 +161,29 @@
 						</Style>
 					</TextBlock.Style>
 				</TextBlock>
-                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+				<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
 						   Margin="10,4"
 						   Padding="10,2"
 						   Foreground="White"
                            Background="{Binding CellEvent, Converter={StaticResource CellEventToEventColor}}">                    
                     <Run Text="{Binding Cell, Mode=OneWay}"/>
                     <Run Text="{Binding CellEvent, Mode=OneWay, Converter={StaticResource CellEventToEventName}}"/>
-                </TextBlock>
+				</TextBlock>
 			</Grid>
 
 
 			<StackPanel Orientation="Horizontal"
                         Grid.Row="2">
-                <views:Fleet Margin="0,6,0,0"
+				<views:Fleet Margin="0,6,0,0"
                              DataContext="{Binding FirstFleet}"/>
 
-                <views:Fleet Margin="0,6,0,0"
+				<views:Fleet Margin="0,6,0,0"
                              DataContext="{Binding SecondFleet}"/>
 
-                <views:Fleet Margin="0,6,0,0"
+				<views:Fleet Margin="0,6,0,0"
                              DataContext="{Binding Enemies}"/>
-            </StackPanel>
-			
+			</StackPanel>
+
 			<StackPanel Grid.Row="3"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
@@ -190,8 +191,13 @@
 				<CheckBox Content="세부 항공전 표시"
                           IsChecked="{Binding DetailKouku}"
                           Margin="0,0,10,0"/>
+			</StackPanel>
+
+			<StackPanel Grid.Row="4"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
 				<TextBlock Text="알림: "/>
-                <CheckBox Content="전투종료"
+				<CheckBox Content="전투종료"
                           IsChecked="{Binding IsNotifierEnabled}"
                           Margin="0,0,10,0"/>
 				<CheckBox Content="야전선택"
@@ -207,6 +213,6 @@
                           IsChecked="{Binding EnableColorChange}"
                           Margin="0,0,10,0"/>
 			</StackPanel>
-        </Grid>
-    </ScrollViewer>
+		</Grid>
+	</ScrollViewer>
 </UserControl>

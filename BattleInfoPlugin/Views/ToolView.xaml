@@ -184,35 +184,31 @@
                              DataContext="{Binding Enemies}"/>
 			</StackPanel>
 
-			<StackPanel Grid.Row="3"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right">
-				<TextBlock Text="설정: "/>
-				<CheckBox Content="세부 항공전 표시"
+			<Expander Grid.Row="3" ExpandDirection="Down" Header="설정 표시">
+				<StackPanel Margin="10,0,0,0" Grid.Row="3"
+                        Orientation="Horizontal">
+					<TextBlock Text="설정: "/>
+					<CheckBox Content="세부 항공전 표시"
                           IsChecked="{Binding DetailKouku}"
                           Margin="0,0,10,0"/>
-			</StackPanel>
-
-			<StackPanel Grid.Row="4"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right">
-				<TextBlock Text="알림: "/>
-				<CheckBox Content="전투종료"
+					<TextBlock Text="알림: "/>
+					<CheckBox Content="전투종료"
                           IsChecked="{Binding IsNotifierEnabled}"
                           Margin="0,0,10,0"/>
-				<CheckBox Content="야전선택"
+					<CheckBox Content="야전선택"
                           IsChecked="{Binding IsPursuitEnabled}"
                           Margin="0,0,10,0"/>
-				<CheckBox Content="비활성화일때"
+					<CheckBox Content="비활성화일때"
                           IsChecked="{Binding IsNotifyOnlyWhenInactive}"
                           Margin="0,0,10,0"/>
-				<CheckBox Content="대파"
+					<CheckBox Content="대파"
                           IsChecked="{Binding IsCriticalNotiEnabled}"
                           Margin="0,0,10,0"/>
-				<CheckBox Content="색 변경"
+					<CheckBox Content="색 변경"
                           IsChecked="{Binding EnableColorChange}"
                           Margin="0,0,10,0"/>
-			</StackPanel>
+				</StackPanel>
+			</Expander>
 		</Grid>
 	</ScrollViewer>
 </UserControl>

@@ -282,7 +282,8 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock>
-                                <Run Text="{Binding Name, Mode=OneWay}"
+                                <Run x:Name="ShipName"
+                                     Text="{Binding Name, Mode=OneWay}"
                                      Style="{DynamicResource EmphaticTextElementStyleKey}" />
                                 <Run Text="{Binding AdditionalName, Mode=OneWay}"
                                      Foreground="{Binding AdditionalName, Converter={StaticResource AdditionalNameColorConverter}}"/>
@@ -381,6 +382,10 @@
                     </StackPanel>
 
                     <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsMvp}" Value="True">
+                            <Setter TargetName="ShipName" Property="FontWeight" Value="Bold" />
+                            <Setter TargetName="ShipName" Property="Foreground" Value="#FFFFE558" />
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding Situation, Converter={StaticResource HasFlagConverter}, ConverterParameter=Evacuation}"
                                      Value="True">
                             <Setter TargetName="HPIndicator"

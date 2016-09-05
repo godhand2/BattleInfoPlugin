@@ -22,6 +22,8 @@ namespace BattleInfoPlugin.Models
         공습전 = 1 << 10,
 
         야전 = 1 << 31,
+
+        연습전 = -1,
     }
 
     public static class CellTypeExtensions

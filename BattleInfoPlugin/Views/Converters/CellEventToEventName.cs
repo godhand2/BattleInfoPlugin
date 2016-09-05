@@ -17,6 +17,8 @@ namespace BattleInfoPlugin.Views.Converters
 				int cellevent = int.Parse((string)value);
 				switch (cellevent)
 				{
+                    case -1:
+                        return "연습전";
 					case 2:
 						return "자원획득";
 					case 3:

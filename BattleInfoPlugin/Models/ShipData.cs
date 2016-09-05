@@ -307,6 +307,17 @@ namespace BattleInfoPlugin.Models
 
         #endregion
 
+        private bool _IsMvp;
+        public bool IsMvp
+        {
+            get { return this._IsMvp; }
+            set
+            {
+                this._IsMvp = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
         public int SlotsFirepower => this.Slots.Sum(x => x.Firepower);
         public int SlotsTorpedo => this.Slots.Sum(x => x.Torpedo);
         public int SlotsAA => this.Slots.Sum(x => x.AA);

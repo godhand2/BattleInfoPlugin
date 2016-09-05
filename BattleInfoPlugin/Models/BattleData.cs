@@ -503,6 +503,7 @@ namespace BattleInfoPlugin.Models
             this.Clear();
 
 			this.Name = "연습 - 주간전";
+            this.CellEvent = (int)CellType.연습전;
 
             this.UpdateFleets(data.api_dock_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps);
@@ -664,8 +665,25 @@ namespace BattleInfoPlugin.Models
 
         public void Update(battle_result data)
         {
-			//this.DropShipName = KanColleClient.Current.Translations.GetTranslation(data.api_get_ship?.api_ship_name, TranslationType.Ships, true);
-			this.DropShipName = KanColleClient.Current.Master.Ships.SingleOrDefault(x => x.Value.Id == data.api_get_ship?.api_ship_id).Value?.Name;
+            //this.DropShipName = KanColleClient.Current.Translations.GetTranslation(data.api_get_ship?.api_ship_name, TranslationType.Ships, true);
+            this.DropShipName = KanColleClient.Current.Master.Ships.SingleOrDefault(x => x.Value.Id == data.api_get_ship?.api_ship_id).Value?.Name;
+
+            foreach (var item in FirstFleet.Ships) item.IsMvp = false;
+            foreach (var item in SecondFleet.Ships) item.IsMvp = false;
+
+            bool[] firstMvp = new bool[6] { false, false, false, false, false, false };
+            bool[] secondMvp = new bool[6] { false, false, false, false, false, false };
+
+            if (data.api_mvp > 0 && FirstFleet != null)
+            {
+                firstMvp[data.api_mvp - 1] = true;
+                FirstFleet.Ships.SetValues(firstMvp, (s, v) => s.IsMvp = v);
+            }
+            if (data.api_mvp_combined > 0 && SecondFleet != null)
+            {
+                secondMvp[(data.api_mvp_combined > 6 ? data.api_mvp_combined - 6 : data.api_mvp_combined) - 1] = true;
+                FirstFleet.Ships.SetValues(secondMvp, (s, v) => s.IsMvp = v);
+            }
         }
 
         private void UpdateFleetsByStartNext(map_start_next startNext, string api_deck_id = null)
@@ -765,8 +783,16 @@ namespace BattleInfoPlugin.Models
 		}
 		private void ResultClear()
 		{
-			if (this.FirstFleet != null) this.FirstFleet.TotalDamaged = 0;
-			if (this.SecondFleet != null) this.SecondFleet.TotalDamaged = 0;
+            if (this.FirstFleet != null)
+            {
+                this.FirstFleet.TotalDamaged = 0;
+                FirstFleet.Ships.SetValues(new bool[6] { false, false, false, false, false, false }, (s, v) => s.IsMvp = v);
+            }
+            if (this.SecondFleet != null)
+            {
+                this.SecondFleet.TotalDamaged = 0;
+                SecondFleet.Ships.SetValues(new bool[6] { false, false, false, false, false, false }, (s, v) => s.IsMvp = v);
+            }
         }
         private void Clear()
         {
@@ -774,7 +800,10 @@ namespace BattleInfoPlugin.Models
             this.Name = "";
             this.DropShipName = null;
 
-			this.BattleSituation = BattleSituation.없음;
+            if (this.FirstFleet != null) FirstFleet.Ships.SetValues(new bool[6] { false, false, false, false, false, false }, (s, v) => s.IsMvp = v);
+            if (this.SecondFleet != null) SecondFleet.Ships.SetValues(new bool[6] { false, false, false, false, false, false }, (s, v) => s.IsMvp = v);
+
+            this.BattleSituation = BattleSituation.없음;
 			this.FriendAirSupremacy = AirSupremacy.항공전없음;
             this.AirCombatResults = new AirCombatResult[0];
 			if (this.FirstFleet != null) this.FirstFleet.Formation = Formation.없음;

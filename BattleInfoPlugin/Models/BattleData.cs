@@ -276,6 +276,9 @@ namespace BattleInfoPlugin.Models
             proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_practice/midnight_battle")
                 .TryParse<practice_midnight_battle>().Subscribe(x => this.Update(x.Data));
 
+            proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_practice/battle_result")
+                .TryParse<battle_result>().Subscribe(x => this.Update(x.Data));
+
             proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_sortie/airbattle")
                 .TryParse<sortie_airbattle>().Subscribe(x => this.Update(x.Data));
 
@@ -504,6 +507,7 @@ namespace BattleInfoPlugin.Models
 
 			this.Name = "연습 - 주간전";
             this.CellEvent = (int)CellType.연습전;
+            this.Cell = "";
 
             this.UpdateFleets(data.api_dock_id, data, data.api_formation);
             this.UpdateMaxHP(data.api_maxhps);

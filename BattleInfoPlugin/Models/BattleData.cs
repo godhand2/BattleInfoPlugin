@@ -783,16 +783,8 @@ namespace BattleInfoPlugin.Models
 		}
 		private void ResultClear()
 		{
-            if (this.FirstFleet != null)
-            {
-                this.FirstFleet.TotalDamaged = 0;
-                FirstFleet.Ships.SetValues(new bool[6] { false, false, false, false, false, false }, (s, v) => s.IsMvp = v);
-            }
-            if (this.SecondFleet != null)
-            {
-                this.SecondFleet.TotalDamaged = 0;
-                SecondFleet.Ships.SetValues(new bool[6] { false, false, false, false, false, false }, (s, v) => s.IsMvp = v);
-            }
+            if (this.FirstFleet != null) this.FirstFleet.TotalDamaged = 0;
+            if (this.SecondFleet != null) this.SecondFleet.TotalDamaged = 0;
         }
         private void Clear()
         {

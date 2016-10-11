@@ -100,7 +100,7 @@
 ### LATEST BUILD
 
 * [![Build status](https://ci.appveyor.com/api/projects/status/wqd7o4u10lvqfsbj?svg=true)](https://ci.appveyor.com/project/veigr/battleinfoplugin/build/artifacts) [BattleInfoPlugin - AppVeyor](https://ci.appveyor.com/project/veigr/battleinfoplugin/build/artifacts)
-* dll 파일의 「차단 해제」를 해주시기 바랍ㄴ니다.
+* dll 파일의 「차단 해제」를 해주시기 바랍니다.
     * [https://twitter.com/Grabacr07/status/497403215730589696](https://twitter.com/Grabacr07/status/497403215730589696)
 * 문제가 일어나도 신경쓰지 않을 분만 사용해주시기 바랍니다.
     * 버그가 발생하면 전투예보가 표시되지 않거나 프로그램이 충돌나서 종료될 수도 있습니다.

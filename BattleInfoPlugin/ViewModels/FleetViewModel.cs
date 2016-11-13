@@ -7,120 +7,87 @@ using Livet.EventListeners;
 
 namespace BattleInfoPlugin.ViewModels
 {
-    public class FleetViewModel : ViewModel
-    {
+	public class FleetViewModel : ViewModel
+	{
+		private string defaultName { get; }
 
-        #region Name変更通知プロパティ
-        private string _Name;
-
-        public string Name
-        {
-            get
-            { return this._Name; }
-            set
-            { 
-                if (this._Name == value)
-                    return;
-                this._Name = value;
-                this.RaisePropertyChanged();
-            }
-        }
-		#endregion
-
-
-		#region FleetGauge変更通知プロパティ
-
-		public string FleetGauge
+		#region Name変更通知プロパティ
+		private string _Name;
+		public string Name
 		{
-			get
+			get { return this._Name; }
+			set
 			{
-				return (this.Fleet != null && this.Fleet.AttackGauge != string.Empty)
-				  ? this.Fleet.AttackGauge
-				  : string.Empty;
+				if (this._Name != value)
+				{
+					this._Name = value;
+					this.RaisePropertyChanged();
+				}
 			}
 		}
 		#endregion
 
-
 		#region Fleet変更通知プロパティ
 		private FleetData _Fleet;
+		public FleetData Fleet
+		{
+			get { return this._Fleet; }
+			set
+			{
+				if (this._Fleet != value)
+				{
+					this._Fleet = value;
+					this.RaisePropertyChanged();
 
-        public FleetData Fleet
-        {
-            get
-            { return this._Fleet; }
-            set
-            {
-                if (this._Fleet == value)
-                    return;
-                this._Fleet = value;
-                this.RaisePropertyChanged();
+					this.RaisePropertyChanged(nameof(this.FleetFormation));
+					this.RaisePropertyChanged(nameof(this.IsVisible));
+					this.RaisePropertyChanged(nameof(this.FleetGauge));
 
-                this.RaisePropertyChanged(() => this.FleetFormation);
-                this.RaisePropertyChanged(() => this.IsVisible);
-				this.RaisePropertyChanged(() => this.FleetGauge);
+					this.Name = !string.IsNullOrWhiteSpace(value.Name)
+						? value.Name
+						: this.defaultName;
+				}
+			}
+		}
+		#endregion
 
-				this.Name = !string.IsNullOrWhiteSpace(value.Name)
-                    ? value.Name
-                    : this.defaultName;
-            }
-        }
-        #endregion
+		public string FleetGauge =>
+			this.Fleet?.AttackGauge != string.Empty
+				? this.Fleet.AttackGauge
+				: string.Empty;
 
+		public string FleetFormation =>
+			this.Fleet?.Formation != Formation.없음
+				? this.Fleet.Formation.ToString()
+				: "";
 
-        #region IsVisible変更通知プロパティ
+		#region AirCombatResults変更通知プロパティ
+		private AirCombatResultViewModel[] _AirCombatResults;
+		public AirCombatResultViewModel[] AirCombatResults
+		{
+			get { return this._AirCombatResults; }
+			set
+			{
+				if (this._AirCombatResults != value)
+				{
+					this._AirCombatResults = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
 
-        public bool IsVisible
-        {
-            get
-            { return this.Fleet != null && this.Fleet.Ships.Count() != 0; }
-        }
-        #endregion
-
-
-        #region FleetFormation変更通知プロパティ
-
-        public string FleetFormation
-        {
-            get
-            {
-                return (this.Fleet != null && this.Fleet.Formation != Formation.없음)
-                      ? this.Fleet.Formation.ToString()
-                      : "";
-            }
-        }
-
-        #endregion
-
-
-        #region AirCombatResults変更通知プロパティ
-        private AirCombatResultViewModel[] _AirCombatResults;
-
-        public AirCombatResultViewModel[] AirCombatResults
-        {
-            get
-            { return this._AirCombatResults; }
-            set
-            {
-                if (this._AirCombatResults == value)
-                    return;
-                this._AirCombatResults = value;
-                this.RaisePropertyChanged();
-            }
-        }
-        #endregion
+		public bool IsVisible => (this.Fleet?.Ships?.Count() ?? 0) > 0;
 
 
-        public FleetViewModel() : this("")
-        {
-        }
+		public FleetViewModel() : this("")
+		{
+		}
 
-        public FleetViewModel(string name)
-        {
-            this.defaultName = name;
-            this._Name = name;
-        }
-
-        private readonly string defaultName;
-    }
+		public FleetViewModel(string name)
+		{
+			this.defaultName = name;
+			this._Name = name;
+		}
+	}
 }

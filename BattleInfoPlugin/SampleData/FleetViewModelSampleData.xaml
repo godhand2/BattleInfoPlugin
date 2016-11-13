@@ -1,48 +1,50 @@
 ﻿<viewModels:FleetViewModel xmlns:BattleInfoPlugin="clr-namespace:BattleInfoPlugin"
-                           xmlns:Livet="clr-namespace:Livet;assembly=Livet"
-                           xmlns:wrapper="clr-namespace:Grabacr07.KanColleWrapper.Models;assembly=KanColleWrapper"
-                           xmlns:Messaging="clr-namespace:Livet.Messaging;assembly=Livet"
-                           xmlns:models="clr-namespace:BattleInfoPlugin.Models"
-                           xmlns:viewModels="clr-namespace:BattleInfoPlugin.ViewModels"
-                           Name="敵艦隊"
-                           FleetFormation="戦闘陣形"
-                           IsVisible="True">
+						   xmlns:Livet="clr-namespace:Livet;assembly=Livet"
+						   xmlns:wrapper="clr-namespace:Grabacr07.KanColleWrapper.Models;assembly=KanColleWrapper"
+						   xmlns:Messaging="clr-namespace:Livet.Messaging;assembly=Livet"
+						   xmlns:models="clr-namespace:BattleInfoPlugin.Models"
+						   xmlns:viewModels="clr-namespace:BattleInfoPlugin.ViewModels"
+						   Name="적함대"
+						   FleetFormation="전투진형"
+						   IsVisible="True">
 
-    <viewModels:FleetViewModel.AirCombatResults>
-        <viewModels:AirCombatResultViewModel Name="1回目/空対空"/>
-        <viewModels:AirCombatResultViewModel Name="1回目/空対艦"
-                                IsHappen="True"
-                                Count="400"
-                                LostCount="100"
-                                RemainingCount="300"/>
-        <viewModels:AirCombatResultViewModel Name="空対空"
-                                IsHappen="True"
-                                Count="900"
-                                LostCount="200"
-                                RemainingCount="700"/>
-        <viewModels:AirCombatResultViewModel Name="空対艦"/>
-    </viewModels:FleetViewModel.AirCombatResults>
+	<viewModels:FleetViewModel.AirCombatResults>
+		<viewModels:AirCombatResultViewModel Name="1회차/공대공"/>
+		<viewModels:AirCombatResultViewModel Name="1회차/공대함"
+											 IsHappen="True"
+											 Count="400"
+											 LostCount="100"
+											 RemainingCount="300"/>
+		<viewModels:AirCombatResultViewModel Name="공대공"
+											 IsHappen="True"
+											 Count="900"
+											 LostCount="200"
+											 RemainingCount="700"/>
+		<viewModels:AirCombatResultViewModel Name="공대함"/>
+	</viewModels:FleetViewModel.AirCombatResults>
 
-    <viewModels:FleetViewModel.Fleet>
-        <models:FleetData Formation="戦闘陣形" FleetType="Enemy">
-            <models:FleetData.Ships>
-                <models:MembersShipData MaxHP="15" NowHP="83" Name="戦艦水鬼" Situation="Tow" TypeName="つよい">
-                    <models:MembersShipData.HP>
-                        <wrapper:LimitedValue Current="6" Maximum="9" Minimum="0"/>
-                    </models:MembersShipData.HP>
-                </models:MembersShipData>
-                <models:MembersShipData MaxHP="20" NowHP="96" Name="ほっぽ" Situation="Evacuation" TypeName="ろり" AdditionalName="elite">
-                    <models:MembersShipData.HP>
-                        <wrapper:LimitedValue Current="71" Maximum="85" Minimum="0"/>
-                    </models:MembersShipData.HP>
-                </models:MembersShipData>
-                <models:MembersShipData MaxHP="40" NowHP="62" Name="駆逐ロ級後期型" Situation="HeavilyDamaged" TypeName="きもい" AdditionalName="flagship" IsUsedDamecon="True">
-                    <models:MembersShipData.HP>
-                        <wrapper:LimitedValue Current="77" Maximum="25" Minimum="0"/>
-                    </models:MembersShipData.HP>
-                </models:MembersShipData>
-            </models:FleetData.Ships>
-        </models:FleetData>
-    </viewModels:FleetViewModel.Fleet>
+	<viewModels:FleetViewModel.Fleet>
+		<models:FleetData Formation="전투진형" FleetType="Enemy">
+			<!--
+			<models:FleetData.Ships>
+				<models:MembersShipData MaxHP="15" NowHP="83" Name="戦艦水鬼" Situation="Tow" TypeName="つよい">
+					<models:MembersShipData.HP>
+						<wrapper:LimitedValue Current="6" Maximum="9" Minimum="0"/>
+					</models:MembersShipData.HP>
+				</models:MembersShipData>
+				<models:MembersShipData MaxHP="20" NowHP="96" Name="ほっぽ" Situation="Evacuation" TypeName="ろり" AdditionalName="elite">
+					<models:MembersShipData.HP>
+						<wrapper:LimitedValue Current="71" Maximum="85" Minimum="0"/>
+					</models:MembersShipData.HP>
+				</models:MembersShipData>
+				<models:MembersShipData MaxHP="40" NowHP="62" Name="駆逐ロ級後期型" Situation="HeavilyDamaged" TypeName="きもい" AdditionalName="flagship" IsUsedDamecon="True">
+					<models:MembersShipData.HP>
+						<wrapper:LimitedValue Current="77" Maximum="25" Minimum="0"/>
+					</models:MembersShipData.HP>
+				</models:MembersShipData>
+			</models:FleetData.Ships>
+			-->
+		</models:FleetData>
+	</viewModels:FleetViewModel.Fleet>
 
 </viewModels:FleetViewModel>

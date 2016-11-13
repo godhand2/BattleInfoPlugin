@@ -154,5 +154,17 @@ namespace BattleInfoPlugin.Properties {
                 this["DetailKouku"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoSelectTab {
+            get {
+                return ((bool)(this["AutoSelectTab"]));
+            }
+            set {
+                this["AutoSelectTab"] = value;
+            }
+        }
     }
 }

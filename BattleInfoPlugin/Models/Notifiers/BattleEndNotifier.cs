@@ -132,7 +132,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 		private void Notify(string type, string title, string message, bool IsCritical = false)
 		{
 			if (NotificationType.ConfirmPursuit == type && !IsPursuit) return;
-			var isActive = DispatcherHelper.UIDispatcher.Invoke(() => Application.Current.MainWindow.IsActive);
+			var isActive = DispatcherHelper.UIDispatcher.Invoke(() => System.Windows.Application.Current.MainWindow.IsActive);
 			if (IsCritical && CriticalEnabled)
 			{
 				if(settings.EnableColorChange)

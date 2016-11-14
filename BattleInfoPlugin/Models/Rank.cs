@@ -9,12 +9,15 @@ namespace BattleInfoPlugin.Models
 	public enum Rank
 	{
 		에러 = -1,
+		없음 = 0,
+
 		완전승리S = 1,
 		S승리 = 2,
 		A승리 = 3,
 		B승리 = 4,
-		패배 = 5,
-		없음 = 0,
-		공습전 = 6,
+		C패배 = 5,
+		D패배 = 6,
+		E패배 = 7,
+		공습전 = 8,
 	}
 }

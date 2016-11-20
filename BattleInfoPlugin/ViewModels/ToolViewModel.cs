@@ -78,6 +78,22 @@ namespace BattleInfoPlugin.ViewModels
 		}
 		#endregion
 
+		#region SecondEnemies変更通知プロパティ
+		private FleetViewModel _SecondEnemies;
+		public FleetViewModel SecondEnemies
+		{
+			get { return this._SecondEnemies; }
+			set
+			{
+				if (this._SecondEnemies != value)
+				{
+					this._SecondEnemies = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
 		#region Enemies変更通知プロパティ
 		private FleetViewModel _Enemies;
 		public FleetViewModel Enemies
@@ -212,6 +228,7 @@ namespace BattleInfoPlugin.ViewModels
 			this.notifier = new BattleEndNotifier(plugin);
 			this._FirstFleet = new FleetViewModel("기본함대");
 			this._SecondFleet = new FleetViewModel("호위함대");
+			this._SecondEnemies = new FleetViewModel("적호위함대");
 			this._Enemies = new FleetViewModel("적함대");
 
 			this.CompositeDisposable.Add(new PropertyChangedEventListener(this.BattleData)
@@ -247,6 +264,7 @@ namespace BattleInfoPlugin.ViewModels
 						this.RaisePropertyChanged(() => this.AirCombatResults);
 						this.FirstFleet.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.First)).ToArray();
 						this.SecondFleet.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.Second)).ToArray();
+						this.SecondEnemies.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.SecondEnemy)).ToArray();
 						this.Enemies.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.Enemy)).ToArray();
 					}
 				},
@@ -261,6 +279,10 @@ namespace BattleInfoPlugin.ViewModels
 				{
 					nameof(this.BattleData.SecondFleet),
 					(_, __) => this.SecondFleet.Fleet = this.BattleData.SecondFleet
+				},
+				{
+					nameof(this.BattleData.SecondEnemies),
+					(_, __) => this.SecondEnemies.Fleet = this.BattleData.SecondEnemies
 				},
 				{
 					nameof(this.BattleData.Enemies),

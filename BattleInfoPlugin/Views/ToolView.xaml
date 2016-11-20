@@ -11,7 +11,7 @@
 			 xmlns:models="clr-namespace:BattleInfoPlugin.Models"
 			 Foreground="{DynamicResource ActiveForegroundBrushKey}"
 			 mc:Ignorable="d"
-			 d:DesignWidth="560"
+			 d:DesignWidth="800"
 			 d:DesignHeight="440">
 
 	<UserControl.Resources>
@@ -91,7 +91,7 @@
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 							</TextBlock>
 						</StackPanel>
-
+<!--
 						<Button Grid.Column="3"
 								Content="적 정보 목록"
 								VerticalAlignment="Stretch"
@@ -104,6 +104,7 @@
 								</i:EventTrigger>
 							</i:Interaction.Triggers>
 						</Button>
+-->
 					</Grid>
 
 					<Rectangle Height="1"
@@ -172,6 +173,7 @@
 				<StackPanel Orientation="Horizontal">
 					<views:Fleet Margin="0,6,0,0" DataContext="{Binding FirstFleet}" />
 					<views:Fleet Margin="0,6,0,0" DataContext="{Binding SecondFleet}" />
+					<views:Fleet Margin="0,6,0,0" DataContext="{Binding SecondEnemies}" />
 					<views:Fleet Margin="0,6,0,0" DataContext="{Binding Enemies}" />
 				</StackPanel>
 			</ScrollViewer>

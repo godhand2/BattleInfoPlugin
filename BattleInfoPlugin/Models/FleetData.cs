@@ -125,7 +125,7 @@ namespace BattleInfoPlugin.Models
 			}
 		}
 		#endregion
-		
+
 		#region Formation変更通知プロパティ
 		private Formation _Formation;
 		public Formation Formation
@@ -158,7 +158,7 @@ namespace BattleInfoPlugin.Models
 			}
 		}
 		#endregion
-		
+
 		//#region AirSuperiorityPotential変更通知プロパティ
 		//private int _AirSuperiorityPotential;
 
@@ -192,7 +192,7 @@ namespace BattleInfoPlugin.Models
 			this._FleetType = type;
 			this._Rank = rank ?? new[] { 0 };
 
-			if (type == FleetType.Enemy) return;
+			if (type == FleetType.Enemy || type == FleetType.SecondEnemy) return;
 			this.IsCritical = this.Ships?
 				.Any(x => (x.NowHP / (double)x.MaxHP <= 0.25) && (x.NowHP / (double)x.MaxHP > 0))
 				?? false;
@@ -275,9 +275,9 @@ namespace BattleInfoPlugin.Models
 		}
 		public static void InputCritical(FleetData fleet)
 		{
-			if (fleet.FleetType == FleetType.Enemy) return;
-			else if(fleet.FleetType==FleetType.First) Settings.Default.FirstIsCritical = fleet.IsCritical;
-			else if(fleet.FleetType==FleetType.Second) Settings.Default.SecondIsCritical = fleet.IsCritical;
+			if (fleet.FleetType == FleetType.Enemy || fleet.FleetType == FleetType.SecondEnemy) return;
+			else if (fleet.FleetType == FleetType.First) Settings.Default.FirstIsCritical = fleet.IsCritical;
+			else if (fleet.FleetType == FleetType.Second) Settings.Default.SecondIsCritical = fleet.IsCritical;
 		}
 
 		/// <summary>

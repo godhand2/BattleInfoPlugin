@@ -160,6 +160,24 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
+		#region SecondEnemies変更通知プロパティ
+		private FleetData _SecondEnemies;
+
+		public FleetData SecondEnemies
+		{
+			get
+			{ return this._SecondEnemies; }
+			set
+			{
+				if (this._SecondEnemies == value)
+					return;
+				this._SecondEnemies = value;
+				this._SecondEnemies.FleetType = FleetType.SecondEnemy;
+				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
+
 		#region RankResult変更通知プロパティ
 		private Rank _RankResult;
 
@@ -258,6 +276,12 @@ namespace BattleInfoPlugin.Models
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/sp_midnight")
 				.TryParse<combined_battle_sp_midnight>().Subscribe(x => this.Update(x.Data));
+
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/each_battle")
+				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data));
+
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_midnight_battle")
+				.TryParse<combined_battle_ec_midnight_battle>().Subscribe(x => this.Update(x.Data));
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_practice/battle")
 				.TryParse<practice_battle>().Subscribe(x => this.Update(x.Data));
@@ -396,7 +420,7 @@ namespace BattleInfoPlugin.Models
 				data.api_kouku.GetFirstFleetDamages(),
 				data.api_hougeki2.GetFriendDamages(),
 				data.api_hougeki3.GetFriendDamages()
-				);
+			);
 
 			this.SecondFleet.CalcDamages(
 				data.api_kouku.GetSecondFleetDamages(),
@@ -404,7 +428,7 @@ namespace BattleInfoPlugin.Models
 				data.api_opening_atack.GetFriendDamages(),
 				data.api_hougeki1.GetFriendDamages(),
 				data.api_raigeki.GetFriendDamages()
-				);
+			);
 
 			this.Enemies.CalcDamages(
 				data.api_air_base_attack.GetEnemyDamages(),
@@ -416,7 +440,7 @@ namespace BattleInfoPlugin.Models
 				data.api_raigeki.GetEnemyDamages(),
 				data.api_hougeki2.GetEnemyDamages(),
 				data.api_hougeki3.GetEnemyDamages()
-				);
+			);
 
 			this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 
@@ -679,6 +703,90 @@ namespace BattleInfoPlugin.Models
 			this.RankResult = Rank.공습전;
 		}
 
+		public void Update(combined_battle_each_battle data)
+		{
+			AutoSelectTab();
+			this.Name = "연합함대 -  주간전";
+
+			this.UpdateFleets2(data.api_deck_id, data, data.api_formation);
+			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
+			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			this.FirstFleet.CalcDamages(
+				data.api_kouku.GetFirstFleetDamages(),
+				data.api_opening_taisen.GetEachFirstFriendDamages(),
+				data.api_opening_atack.GetEachFirstFriendDamages(),
+				data.api_hougeki1.GetEachFirstFriendDamages(),
+				data.api_raigeki.GetEachFirstFriendDamages(),
+				data.api_hougeki3.GetEachFirstFriendDamages()
+			);
+
+			this.SecondFleet.CalcDamages(
+				data.api_kouku.GetSecondFleetDamages(),
+				data.api_opening_taisen.GetEachSecondFriendDamages(),
+				data.api_opening_atack.GetEachSecondFriendDamages(),
+				data.api_hougeki2.GetEachSecondFriendDamages(),
+				data.api_raigeki.GetEachSecondFriendDamages(),
+				data.api_hougeki3.GetEachSecondFriendDamages()
+			);
+
+			this.Enemies.CalcDamages(
+				data.api_air_base_attack.GetEnemyDamages(),
+				data.api_support_info.GetEnemyDamages(),
+				data.api_kouku.GetEnemyDamages(),
+				data.api_opening_taisen.GetEachFirstEnemyDamages(),
+				data.api_opening_atack.GetEachFirstEnemyDamages(),
+				data.api_hougeki1.GetEachFirstEnemyDamages(),
+				data.api_raigeki.GetEachFirstEnemyDamages(),
+				data.api_hougeki3.GetEachFirstEnemyDamages()
+			);
+
+			this.SecondEnemies.CalcDamages(
+				data.api_air_base_attack.GetSecondEnemyDamages(),
+				data.api_support_info.GetSecondEnemyDamages(),
+				data.api_kouku.GetSecondEnemyDamages(),
+				data.api_opening_taisen.GetEachSecondEnemyDamages(),
+				data.api_opening_atack.GetEachSecondEnemyDamages(),
+				data.api_hougeki2.GetEachSecondEnemyDamages(),
+				data.api_raigeki.GetEachSecondEnemyDamages(),
+				data.api_hougeki3.GetEachSecondEnemyDamages()
+			);
+
+			this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
+
+			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
+
+			this.RankResult = this.CalcRank2(true, true);
+		}
+
+		public void Update(combined_battle_ec_midnight_battle data)
+		{
+			AutoSelectTab();
+			this.Name = "연합함대 - 야전";
+
+			int BeforedayBattleHP = this.FirstFleet.Ships
+				.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
+				.Sum(x => x.BeforeNowHP); // 리스트 갱신하기전에 아군 HP최대값을 저장
+			BeforedayBattleHP += this.SecondFleet.Ships
+				.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
+				.Sum(x => x.BeforeNowHP); // 리스트 갱신하기전에 아군 HP최대값을 저장
+
+			int EnemyBeforedayBattle = this.Enemies.Ships.Sum(x => x.BeforeNowHP);
+			EnemyBeforedayBattle += this.SecondEnemies.Ships.Sum(x => x.BeforeNowHP);
+
+			this.UpdateFleets2(data.api_deck_id, data);
+			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
+			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			if (data.api_active_deck[0] == 1) this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+			else this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+
+			if (data.api_active_deck[1] == 1) this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
+			else this.SecondEnemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
+
+			this.RankResult = this.CalcRank2(true, true, true, BeforedayBattleHP, EnemyBeforedayBattle);
+		}
+
 		#endregion
 
 		public void Update(battle_result data)
@@ -700,7 +808,7 @@ namespace BattleInfoPlugin.Models
 			if (data.api_mvp_combined > 0 && SecondFleet != null)
 			{
 				secondMvp[(data.api_mvp_combined > 6 ? data.api_mvp_combined - 6 : data.api_mvp_combined) - 1] = true;
-				FirstFleet.Ships.SetValues(secondMvp, (s, v) => s.IsMvp = v);
+				SecondFleet.Ships.SetValues(secondMvp, (s, v) => s.IsMvp = v);
 			}
 		}
 
@@ -725,6 +833,40 @@ namespace BattleInfoPlugin.Models
 			if (this.SecondFleet != null) this.SecondFleet.TotalDamaged = 0;
 		}
 
+		private void UpdateFleets2(int api_deck_id, ICommonEachBattleMembers data, int[] api_formation = null)
+		{
+			this.UpdatedTime = DateTimeOffset.Now;
+			this.UpdateFriendFleets(api_deck_id);
+
+			var eTotal = 0;
+			if (this.Enemies != null) eTotal = this.Enemies.TotalDamaged;
+			this.Enemies = new FleetData(
+				data.ToMastersShipDataArray(),
+				this.Enemies?.Formation ?? Formation.없음,
+				this.Enemies?.Name ?? "",
+				FleetType.Enemy,
+				this.Enemies?.Rank);
+			this.Enemies.TotalDamaged = eTotal;
+
+			eTotal = 0;
+			if (this.SecondEnemies != null) eTotal = this.SecondEnemies.TotalDamaged;
+			this.SecondEnemies = new FleetData(
+				data.ToMastersSecondShipDataArray(),
+				this.SecondEnemies?.Formation ?? Formation.없음,
+				this.SecondEnemies?.Name ?? "",
+				FleetType.SecondEnemy,
+				this.SecondEnemies?.Rank);
+			this.SecondEnemies.TotalDamaged = eTotal;
+
+			if (api_formation != null)
+			{
+				this.BattleSituation = (BattleSituation)api_formation[2];
+				if (this.FirstFleet != null) this.FirstFleet.Formation = (Formation)api_formation[0];
+				if (this.Enemies != null) this.Enemies.Formation = (Formation)api_formation[1];
+			}
+
+			this.CurrentDeckId = api_deck_id;
+		}
 		private void UpdateFleets(int api_deck_id, ICommonBattleMembers data, int[] api_formation = null)
 		{
 			this.UpdatedTime = DateTimeOffset.Now;
@@ -739,6 +881,15 @@ namespace BattleInfoPlugin.Models
 				FleetType.Enemy,
 				this.Enemies?.Rank);
 			this.Enemies.TotalDamaged = eTotal;
+
+			this.SecondEnemies = new FleetData(
+				new MembersShipData[0],
+				Formation.없음,
+				"",
+				FleetType.SecondEnemy,
+				this.SecondEnemies?.Rank
+			);
+
 
 			if (api_formation != null)
 			{
@@ -783,17 +934,22 @@ namespace BattleInfoPlugin.Models
 
 			if (api_maxhps_combined == null) return;
 			this.SecondFleet.Ships.SetValues(api_maxhps_combined.GetFriendData(), (s, v) => s.MaxHP = v);
+			this.SecondEnemies.Ships.SetValues(api_maxhps_combined.GetEnemyData(), (s, v) => s.MaxHP = v);
 		}
 		private void UpdateNowHP(int[] api_nowhps, int[] api_nowhps_combined = null)
 		{
 			this.FirstFleet.Ships.SetValues(api_nowhps.GetFriendData(), (s, v) => s.NowHP = v);
-			this.Enemies.Ships.SetValues(api_nowhps.GetEnemyData(), (s, v) => s.NowHP = v);
 			this.FirstFleet.Ships.SetValues(api_nowhps.GetFriendData(), (s, v) => s.BeforeNowHP = v);
+
+			this.Enemies.Ships.SetValues(api_nowhps.GetEnemyData(), (s, v) => s.NowHP = v);
 			this.Enemies.Ships.SetValues(api_nowhps.GetEnemyData(), (s, v) => s.BeforeNowHP = v);
 
 			if (api_nowhps_combined == null) return;
 			this.SecondFleet.Ships.SetValues(api_nowhps_combined.GetFriendData(), (s, v) => s.NowHP = v);
 			this.SecondFleet.Ships.SetValues(api_nowhps_combined.GetFriendData(), (s, v) => s.BeforeNowHP = v);
+
+			this.SecondEnemies.Ships.SetValues(api_nowhps_combined.GetEnemyData(), (s, v) => s.NowHP = v);
+			this.SecondEnemies.Ships.SetValues(api_nowhps_combined.GetEnemyData(), (s, v) => s.BeforeNowHP = v);
 		}
 
 		private void ResultClear()
@@ -815,6 +971,7 @@ namespace BattleInfoPlugin.Models
 			this.AirCombatResults = new AirCombatResult[0];
 			if (this.FirstFleet != null) this.FirstFleet.Formation = Formation.없음;
 			this.Enemies = new FleetData();
+			this.SecondEnemies = new FleetData();
 		}
 
 		private bool CalcOverKill(int MaxCount, int SinkCount)
@@ -873,6 +1030,162 @@ namespace BattleInfoPlugin.Models
 					.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
 					.Count();
 					SinkCount += this.SecondFleet.SinkCount;
+				}
+
+				if (IsMidnight)
+				{
+					AliasMax = BeforeHP;
+					EnemyMax = EnemyBefore;
+
+					EnemyDamagedPercent = EnemyTotal / (decimal)EnemyMax; // 적이 받은 총 데미지
+					AliasDamagedPercent = AliasTotal / (decimal)AliasMax; // 아군이 받은 총 데미지
+				}
+
+				this.FirstFleet.AttackGauge = this.MakeGaugeText(EnemyTotal, EnemyMax, EnemyDamagedPercent);
+				this.Enemies.AttackGauge = this.MakeGaugeText(AliasTotal, AliasMax, AliasDamagedPercent);
+
+				bool IsOverKill = CalcOverKill(EnemyMaxCount, this.Enemies.SinkCount);
+				bool IsOverKilled = CalcOverKill(MaxCount, SinkCount);
+
+				if (AliasTotal > 0)
+				{
+					decimal EnemyValue = decimal.Floor(EnemyDamagedPercent * 100m); // 적군 피격 데미지 비율 (소숫점 제외)
+					decimal AliasValue = decimal.Floor(AliasDamagedPercent * 100m); // 아군 피격 데미지 비율 (소숫점 제외)
+
+					if (AliasValue == 0)
+					{
+						if (EnemyTotal == 0) IsScratch = true;
+						else IsOverDamage = true; // 아군피해 0인 경우
+					}
+					else
+					{
+						var CalcPercent = Math.Round(EnemyValue / AliasValue, 2, MidpointRounding.AwayFromZero);
+						if (CalcPercent >= 2.5m)
+							IsOverDamage = true;// 2.5배 초과 데미지
+						else if (CalcPercent > 1m)
+							IsMidDamage = true;// 1초과 2.5이하
+						else
+							IsScratch = true;// 1미만
+
+						if (IsShipSink)
+						{
+							if (CalcPercent > 3m)
+							{
+								IsThreeTime = true;
+								IsOverDamage = true;
+								IsMidDamage = false;
+								IsScratch = false;
+							}
+						}
+					}
+				}
+				else if (AliasTotal == 0)
+				{
+					if (EnemyTotal == 0) IsScratch = true;
+					else IsOverDamage = true; // 아군피해 0인 경우
+				}
+
+				if (AliasTotal == 0 && EnemyTotal == 0) return Rank.D패배;//d
+				if (EnemyDamagedPercent < 0.0005m) return Rank.D패배;//d
+				else if (IsShipSink)
+				{
+					if (EnemyFlag.NowHP <= 0)
+					{
+						if (IsOverKill) return Rank.B승리;
+						else return Rank.D패배;//d
+					}
+					else if (IsMidDamage) return Rank.C패배;//c
+					else
+					{
+						if (IsOverKilled) return Rank.E패배;//e
+						else
+						{
+							if (!IsOverKill && IsThreeTime) return Rank.B승리;
+							if (IsOverKill && IsOverDamage) return Rank.B승리;
+							else return Rank.C패배;//c
+						}
+					}
+				}
+				else
+				{
+					if (EnemyFlag.NowHP <= 0)
+					{
+						if (EnemyMaxCount == this.Enemies.SinkCount)
+						{
+							if (AliasTotal > 0) return Rank.S승리;
+							else return Rank.완전승리S;
+						}
+						else
+						{
+							if (IsOverKill) return Rank.A승리;
+							else return Rank.B승리;
+						}
+					}
+					else
+					{
+						if (IsOverKill) return Rank.A승리;
+
+						if (IsOverDamage) return Rank.B승리;
+						else if (IsMidDamage) return Rank.C패배;//c
+						else if (IsScratch) return Rank.D패배;//d
+						else return Rank.D패배;//d
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				// KanColleClient.Current.CatchedErrorLogWriter.ReportException(ex.Source, ex);
+				System.IO.File.AppendAllText("battleinfo_error.log", ex.ToString() + Environment.NewLine);
+				Debug.WriteLine(ex);
+				return Rank.에러;
+			}
+		}
+		private Rank CalcRank2(bool IsCombined = false, bool IsEnemyCombined = false, bool IsMidnight = false, int BeforeHP = 0, int EnemyBefore = 0)
+		{
+			try
+			{
+				var AliasMax = this.FirstFleet.Ships
+					.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
+					.Sum(x => x.BeforeNowHP);
+
+				var EnemyTotal = this.Enemies.TotalDamaged;
+				var EnemyMax = this.Enemies.Ships.Sum(x => x.BeforeNowHP);
+
+				var AliasTotal = this.FirstFleet.TotalDamaged;
+				var IsShipSink = this.FirstFleet.SinkCount > 0; // ? true : false;
+				ShipData EnemyFlag = this.Enemies.Ships.First();
+
+				decimal EnemyDamagedPercent = EnemyTotal / (decimal)EnemyMax; // 적이 받은 총 데미지
+				decimal AliasDamagedPercent = AliasTotal / (decimal)AliasMax; // 아군이 받은 총 데미지
+
+				bool IsThreeTime = false;
+				bool IsOverDamage = false;
+				bool IsMidDamage = false;
+				bool IsScratch = false;
+
+				int MaxCount = this.FirstFleet.Ships
+					.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
+					.Count();
+				int EnemyMaxCount = this.Enemies.Ships.Count();
+				int SinkCount = this.FirstFleet.SinkCount;
+
+				if (IsCombined)
+				{
+					AliasTotal += this.SecondFleet.TotalDamaged;
+					AliasMax += this.SecondFleet.Ships.Sum(x => x.BeforeNowHP);
+					AliasDamagedPercent = AliasTotal / (decimal)AliasMax; // 아군이 받은 총 데미지
+
+					if (!IsShipSink) IsShipSink = this.SecondFleet.SinkCount > 0 ? true : false;
+					MaxCount += this.SecondFleet.Ships
+					.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
+					.Count();
+					SinkCount += this.SecondFleet.SinkCount;
+				}
+				if (IsEnemyCombined)
+				{
+					EnemyTotal += this.SecondEnemies.TotalDamaged;
+					EnemyMax = this.SecondEnemies.Ships.Sum(x => x.BeforeNowHP);
+					EnemyDamagedPercent = EnemyTotal / (decimal)EnemyMax; // 적군이 받은 총 데미지
 				}
 
 				if (IsMidnight)

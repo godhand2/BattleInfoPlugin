@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace BattleInfoPlugin.Models
 {
-    public enum FleetType
-    {
-        First,
-        Second,
-        Enemy,
-    }
+	public enum FleetType
+	{
+		First,
+		Second,
+		Enemy,
+		SecondEnemy,
+	}
 }

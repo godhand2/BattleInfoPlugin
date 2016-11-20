@@ -1184,7 +1184,7 @@ namespace BattleInfoPlugin.Models
 				if (IsEnemyCombined)
 				{
 					EnemyTotal += this.SecondEnemies.TotalDamaged;
-					EnemyMax = this.SecondEnemies.Ships.Sum(x => x.BeforeNowHP);
+					EnemyMax += this.SecondEnemies.Ships.Sum(x => x.BeforeNowHP);
 					EnemyDamagedPercent = EnemyTotal / (decimal)EnemyMax; // 적군이 받은 총 데미지
 				}
 

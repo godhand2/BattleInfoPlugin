@@ -45,14 +45,6 @@
       <HintPath>$(SolutionDir)\packages\LivetCask.1.3.1.0\lib\net45\Livet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MetroTrilithon, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetroTrilithon.0.2.0\lib\portable-net45+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10\MetroTrilithon.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MetroTrilithon.Desktop, Version=0.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetroTrilithon.Desktop.0.2.3\lib\net46\MetroTrilithon.Desktop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Nekoxy, Version=1.5.2.20, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Nekoxy.1.5.2.20\lib\net45\Nekoxy.dll</HintPath>
@@ -261,8 +253,6 @@
     </DesignData>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="$(SolutionDir)\packages\KanColleViewer.PluginAnalyzer.1.1.1.0\analyzers\KanColleViewer.Composition.dll" />
-    <Analyzer Include="$(SolutionDir)\packages\KanColleViewer.PluginAnalyzer.1.1.1.0\analyzers\KanColleViewer.PluginAnalyzer.dll" />
     <Analyzer Include="..\packages\NotifyPropertyChangedGenerator.1.1.1.0\analyzers\dotnet\cs\NotifyPropertyChangedGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -317,6 +307,14 @@
     <ProjectReference Include="..\..\KanColleViewer\source\MetroRadiance\source\MetroRadiance\MetroRadiance.csproj">
       <Project>{0af0b9ff-d981-4d0f-a41f-c3ab6fe2f16d}</Project>
       <Name>MetroRadiance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KanColleViewer\source\MetroTrilithon\source\MetroTrilithon.Desktop\MetroTrilithon.Desktop.csproj">
+      <Project>{4e2eb2e0-e5fe-4feb-a3e5-5f2f05cd1a67}</Project>
+      <Name>MetroTrilithon.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KanColleViewer\source\MetroTrilithon\source\MetroTrilithon\MetroTrilithon.csproj">
+      <Project>{df381709-9f44-44ed-a7d6-ecdf157e620d}</Project>
+      <Name>MetroTrilithon</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

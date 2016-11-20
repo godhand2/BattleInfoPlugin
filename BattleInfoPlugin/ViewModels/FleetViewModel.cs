@@ -52,12 +52,12 @@ namespace BattleInfoPlugin.ViewModels
 		#endregion
 
 		public string FleetGauge =>
-			this.Fleet?.AttackGauge != string.Empty
+			(this.Fleet?.AttackGauge ?? string.Empty) != string.Empty
 				? this.Fleet.AttackGauge
 				: string.Empty;
 
 		public string FleetFormation =>
-			this.Fleet?.Formation != Formation.없음
+			(this.Fleet?.Formation ?? Formation.없음) != Formation.없음
 				? this.Fleet.Formation.ToString()
 				: "";
 

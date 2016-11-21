@@ -186,17 +186,12 @@
 				</TextBlock>
 			</Grid>
 
-			<ScrollViewer Grid.Row="2"
-						  VerticalScrollBarVisibility="Auto"
-						  HorizontalScrollBarVisibility="Auto"
-						  PanningMode="Both">
-				<StackPanel Orientation="Horizontal">
-					<views:Fleet Margin="0,6,0,0" DataContext="{Binding FirstFleet}" />
-					<views:Fleet Margin="0,6,0,0" DataContext="{Binding SecondFleet}" />
-					<views:Fleet Margin="0,6,0,0" DataContext="{Binding SecondEnemies}" />
-					<views:Fleet Margin="0,6,0,0" DataContext="{Binding Enemies}" />
-				</StackPanel>
-			</ScrollViewer>
+			<StackPanel Orientation="Horizontal">
+				<views:Fleet Margin="0,6,0,0" DataContext="{Binding FirstFleet}" />
+				<views:Fleet Margin="0,6,0,0" DataContext="{Binding SecondFleet}" />
+				<views:Fleet Margin="0,6,0,0" DataContext="{Binding SecondEnemies}" />
+				<views:Fleet Margin="0,6,0,0" DataContext="{Binding Enemies}" />
+			</StackPanel>
 
 			<Expander Grid.Row="3"
 					  Margin="0,10,0,0"

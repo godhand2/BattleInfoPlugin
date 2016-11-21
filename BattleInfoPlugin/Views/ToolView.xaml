@@ -53,7 +53,7 @@
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition/>
 							<ColumnDefinition Width="190"/>
-							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="132"/>
 						</Grid.ColumnDefinitions>
 
 						<StackPanel Grid.Column="1"
@@ -87,6 +87,26 @@
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
 								<Run Text="드롭:"/>
 								<Run Text="{Binding DropShipName, Mode=OneWay}"
+									 FontSize="12"
+									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+							</TextBlock>
+						</StackPanel>
+						<StackPanel Grid.Column="3">
+							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+								<Run Text="조명탄:"/>
+								<Run Text="{Binding FlareUsed, Mode=OneWay}"
+									 FontSize="12"
+									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+							</TextBlock>
+							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+								<Run Text="야간정찰:"/>
+								<Run Text="{Binding NightReconScouted, Mode=OneWay}"
+									 FontSize="12"
+									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+							</TextBlock>
+							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+								<Run Text="대공컷인:"/>
+								<Run Text="{Binding AntiAirFired, Mode=OneWay}"
 									 FontSize="12"
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 							</TextBlock>

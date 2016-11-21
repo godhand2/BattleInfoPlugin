@@ -35,16 +35,28 @@ namespace BattleInfoPlugin.ViewModels
 
 		public string Cell
 			=> MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.BattleData?.Cell).Value ?? this.BattleData?.Cell;
+
 		public string CellEvent
 			=> this.BattleData?.CellEvent.ToString();
+
 		public string RankResult
 			=> this.BattleData.RankResult.ToString();
+
 		public string DropShipName
 			=> this.BattleData?.DropShipName;
 
 		public AirCombatResult[] AirCombatResults
 			=> this.BattleData?.AirCombatResults ?? new AirCombatResult[0];
-		
+
+		public string FlareUsed
+			=> (this.BattleData?.FlareUsed ?? UsedFlag.Unset).ToReadableString();
+
+		public string NightReconScouted
+			=> (this.BattleData?.NightReconScouted ?? UsedFlag.Unset).ToReadableString();
+
+		public string AntiAirFired
+			=> (this.BattleData?.AntiAirFired ?? AirFireFlag.Unset).ToReadableString();
+
 
 		#region FirstFleet変更通知プロパティ
 		private FleetViewModel _FirstFleet;
@@ -291,6 +303,18 @@ namespace BattleInfoPlugin.ViewModels
 				{
 					nameof(this.BattleData.RankResult),
 					(_, __) => this.RaisePropertyChanged(nameof(this.RankResult))
+				},
+				{
+					nameof(this.BattleData.FlareUsed),
+					(_, __) => this.RaisePropertyChanged(nameof(this.FlareUsed))
+				},
+				{
+					nameof(this.BattleData.NightReconScouted),
+					(_, __) => this.RaisePropertyChanged(nameof(this.NightReconScouted))
+				},
+				{
+					nameof(this.BattleData.AntiAirFired),
+					(_, __) => this.RaisePropertyChanged(nameof(this.AntiAirFired))
 				},
 			});
 		}

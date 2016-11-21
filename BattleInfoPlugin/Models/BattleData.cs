@@ -246,6 +246,54 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
+		#region FlareUsed変更通知プロパティ
+		private UsedFlag _FlareUsed;
+		public UsedFlag FlareUsed
+		{
+			get { return this._FlareUsed; }
+			set
+			{
+				if (this._FlareUsed != value)
+				{
+					this._FlareUsed = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
+		#region NightReconScouted変更通知プロパティ
+		private UsedFlag _NightReconScouted;
+		public UsedFlag NightReconScouted
+		{
+			get { return this._NightReconScouted; }
+			set
+			{
+				if (this._NightReconScouted != value)
+				{
+					this._NightReconScouted = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
+		#region AntiAirFired変更通知プロパティ
+		private AirFireFlag _AntiAirFired;
+		public AirFireFlag AntiAirFired
+		{
+			get { return this._AntiAirFired; }
+			set
+			{
+				if (this._AntiAirFired != value)
+				{
+					this._AntiAirFired = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
 
 		private int CurrentDeckId { get; set; }
 
@@ -348,6 +396,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
 
+			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
+
 			this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
@@ -363,6 +413,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_deck_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
+
+			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
 			this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 
@@ -381,6 +433,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_deck_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire, data.api_kouku2.api_stage2.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -415,6 +469,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_deck_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -457,6 +513,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_deck_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -508,6 +566,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
+			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
+
 			this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
@@ -523,6 +583,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_deck_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
 			this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 
@@ -545,6 +607,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_dock_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
+
+			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
 
 			this.FirstFleet.CalcPracticeDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -585,6 +649,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
 
+			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
+
 			this.FirstFleet.CalcPracticeDamages(data.api_hougeki.GetFriendDamages());
 
 			this.Enemies.CalcPracticeDamages(data.api_hougeki.GetEnemyDamages());
@@ -600,6 +666,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_dock_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
+
+			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire, data.api_kouku2.api_stage2.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -629,6 +697,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_dock_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
+
+			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -666,6 +736,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
 
+			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
+
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages()
 				);
@@ -686,6 +758,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_deck_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages()
@@ -711,6 +785,8 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets2(data.api_deck_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -775,8 +851,10 @@ namespace BattleInfoPlugin.Models
 			EnemyBeforedayBattle += this.SecondEnemies.Ships.Sum(x => x.BeforeNowHP);
 
 			this.UpdateFleets2(data.api_deck_id, data);
-			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
+			this.UpdateEnemyMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
 			if (data.api_active_deck[0] == 1) this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 			else this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
@@ -901,7 +979,6 @@ namespace BattleInfoPlugin.Models
 
 			this.CurrentDeckId = api_deck_id;
 		}
-
 		private void UpdateFriendFleets(int deckID)
 		{
 			var organization = KanColleClient.Current.Homeport.Organization;
@@ -953,6 +1030,14 @@ namespace BattleInfoPlugin.Models
 			this.SecondEnemies.Ships.SetValues(api_nowhps_combined.GetEnemyData(), (s, v) => s.BeforeNowHP = v);
 		}
 
+		private void UpdateEnemyMaxHP(int[] api_maxhps, int[] api_maxhps_combined = null)
+		{
+			this.Enemies.Ships.SetValues(api_maxhps.GetEnemyData(), (s, v) => s.MaxHP = v);
+
+			if (api_maxhps_combined == null) return;
+			this.SecondEnemies.Ships.SetValues(api_maxhps_combined.GetEnemyData(), (s, v) => s.MaxHP = v);
+		}
+
 		private void ResultClear()
 		{
 			if (this.FirstFleet != null) this.FirstFleet.TotalDamaged = 0;
@@ -966,6 +1051,10 @@ namespace BattleInfoPlugin.Models
 
 			if (this.FirstFleet != null) FirstFleet.Ships.SetValues(new bool[6] { false, false, false, false, false, false }, (s, v) => s.IsMvp = v);
 			if (this.SecondFleet != null) SecondFleet.Ships.SetValues(new bool[6] { false, false, false, false, false, false }, (s, v) => s.IsMvp = v);
+
+			this.FlareUsed = UsedFlag.Unset;
+			this.NightReconScouted = UsedFlag.Unset;
+			this.AntiAirFired = AirFireFlag.Unset;
 
 			this.BattleSituation = BattleSituation.없음;
 			this.FriendAirSupremacy = AirSupremacy.항공전없음;
@@ -1292,9 +1381,69 @@ namespace BattleInfoPlugin.Models
 			catch (Exception ex)
 			{
 				// KanColleClient.Current.CatchedErrorLogWriter.ReportException(ex.Source, ex);
+				System.IO.File.AppendAllText("battleinfo_error.log", "-----------------------------------------------------------------" + Environment.NewLine);
+				System.IO.File.AppendAllText("battleinfo_error.log", DateTime.Now.ToString() + Environment.NewLine);
 				System.IO.File.AppendAllText("battleinfo_error.log", ex.ToString() + Environment.NewLine);
 				Debug.WriteLine(ex);
 				return Rank.에러;
+			}
+		}
+
+		private void UpdateUsedFlag(int[] flare, int[] nightrecon)
+		{
+			try
+			{
+				if (flare[0] == -1 && flare[1] == -1)
+					this.FlareUsed = UsedFlag.Unused;
+				else if (flare[0] != -1)
+					this.FlareUsed = UsedFlag.Used;
+				else if (flare[1] != -1)
+					this.FlareUsed = UsedFlag.EnemyUsed;
+				else
+					this.FlareUsed = UsedFlag.BothUsed;
+
+				if (nightrecon[0] == -1 && nightrecon[1] == -1)
+					this.NightReconScouted = UsedFlag.Unused;
+				else if (nightrecon[0] != -1)
+					this.NightReconScouted = UsedFlag.Used;
+				else if (nightrecon[1] != -1)
+					this.NightReconScouted = UsedFlag.EnemyUsed;
+				else
+					this.NightReconScouted = UsedFlag.BothUsed;
+			}
+			catch
+			{
+				this.FlareUsed = UsedFlag.Unset;
+				this.NightReconScouted = UsedFlag.Unset;
+			}
+		}
+		private void UpdateUsedFlag(Api_Air_Fire data)
+		{
+			try
+			{
+				this.AntiAirFired = data == null ? AirFireFlag.Unused : AirFireFlag.Used;
+			}
+			catch
+			{
+				this.AntiAirFired = AirFireFlag.Unset;
+			}
+		}
+		private void UpdateUsedFlag(Api_Air_Fire data1, Api_Air_Fire data2)
+		{
+			try
+			{
+				if (data1 == null && data2 == null)
+					this.AntiAirFired = AirFireFlag.Unused;
+				else if (data1 != null)
+					this.AntiAirFired = AirFireFlag.Used1;
+				else if (data2 != null)
+					this.AntiAirFired = AirFireFlag.Used2;
+				else
+					this.AntiAirFired = AirFireFlag.UsedAll;
+			}
+			catch
+			{
+				this.AntiAirFired = AirFireFlag.Unset;
 			}
 		}
 

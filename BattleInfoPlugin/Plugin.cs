@@ -14,7 +14,7 @@ namespace BattleInfoPlugin
 	[ExportMetadata("Guid", "3CFE46C3-E3AF-4737-BFB7-CAD1865C10CA")]
 	[ExportMetadata("Title", "BattleInfo")]
 	[ExportMetadata("Description", "전투정보를 표시합니다. 대파알림 및 랭크예측등을 제공합니다")]
-	[ExportMetadata("Version", "1.7.0.3")]
+	[ExportMetadata("Version", "1.7.0.4")]
 	[ExportMetadata("Author", "@veigr")]
 	public class Plugin : IPlugin, ITool, IRequestNotify
 	{

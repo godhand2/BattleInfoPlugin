@@ -434,7 +434,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
-			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire, data.api_kouku2.api_stage2.api_air_fire);
+			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire, data.api_kouku2?.api_stage2?.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -470,7 +470,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
-			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
+			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -514,7 +514,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
-			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
+			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -608,7 +608,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
 
-			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
+			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 
 			this.FirstFleet.CalcPracticeDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -667,7 +667,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
 
-			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire, data.api_kouku2.api_stage2.api_air_fire);
+			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire, data.api_kouku2?.api_stage2?.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -698,7 +698,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
 
-			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
+			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -736,7 +736,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
 
-			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
+			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages()
@@ -759,7 +759,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
-			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
+			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages()
@@ -786,7 +786,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
-			this.UpdateUsedFlag(data.api_kouku.api_stage2.api_air_fire);
+			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),

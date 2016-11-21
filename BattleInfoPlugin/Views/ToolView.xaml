@@ -186,7 +186,8 @@
 				</TextBlock>
 			</Grid>
 
-			<StackPanel Orientation="Horizontal">
+			<StackPanel Grid.Row="2"
+						Orientation="Horizontal">
 				<views:Fleet Margin="0,6,0,0" DataContext="{Binding FirstFleet}" />
 				<views:Fleet Margin="0,6,0,0" DataContext="{Binding SecondFleet}" />
 				<views:Fleet Margin="0,6,0,0" DataContext="{Binding SecondEnemies}" />

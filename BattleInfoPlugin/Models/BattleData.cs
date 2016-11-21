@@ -831,41 +831,8 @@ namespace BattleInfoPlugin.Models
 
 			if (this.FirstFleet != null) this.FirstFleet.TotalDamaged = 0;
 			if (this.SecondFleet != null) this.SecondFleet.TotalDamaged = 0;
-		}
 
-		private void UpdateFleets2(int api_deck_id, ICommonEachBattleMembers data, int[] api_formation = null)
-		{
-			this.UpdatedTime = DateTimeOffset.Now;
-			this.UpdateFriendFleets(api_deck_id);
-
-			var eTotal = 0;
-			if (this.Enemies != null) eTotal = this.Enemies.TotalDamaged;
-			this.Enemies = new FleetData(
-				data.ToMastersShipDataArray(),
-				this.Enemies?.Formation ?? Formation.없음,
-				this.Enemies?.Name ?? "",
-				FleetType.Enemy,
-				this.Enemies?.Rank);
-			this.Enemies.TotalDamaged = eTotal;
-
-			eTotal = 0;
-			if (this.SecondEnemies != null) eTotal = this.SecondEnemies.TotalDamaged;
-			this.SecondEnemies = new FleetData(
-				data.ToMastersSecondShipDataArray(),
-				this.SecondEnemies?.Formation ?? Formation.없음,
-				this.SecondEnemies?.Name ?? "",
-				FleetType.SecondEnemy,
-				this.SecondEnemies?.Rank);
-			this.SecondEnemies.TotalDamaged = eTotal;
-
-			if (api_formation != null)
-			{
-				this.BattleSituation = (BattleSituation)api_formation[2];
-				if (this.FirstFleet != null) this.FirstFleet.Formation = (Formation)api_formation[0];
-				if (this.Enemies != null) this.Enemies.Formation = (Formation)api_formation[1];
-			}
-
-			this.CurrentDeckId = api_deck_id;
+			AutoSelectTab();
 		}
 		private void UpdateFleets(int api_deck_id, ICommonBattleMembers data, int[] api_formation = null)
 		{
@@ -890,6 +857,40 @@ namespace BattleInfoPlugin.Models
 				this.SecondEnemies?.Rank
 			);
 
+
+			if (api_formation != null)
+			{
+				this.BattleSituation = (BattleSituation)api_formation[2];
+				if (this.FirstFleet != null) this.FirstFleet.Formation = (Formation)api_formation[0];
+				if (this.Enemies != null) this.Enemies.Formation = (Formation)api_formation[1];
+			}
+
+			this.CurrentDeckId = api_deck_id;
+		}
+		private void UpdateFleets2(int api_deck_id, ICommonEachBattleMembers data, int[] api_formation = null)
+		{
+			this.UpdatedTime = DateTimeOffset.Now;
+			this.UpdateFriendFleets(api_deck_id);
+
+			var eTotal = 0;
+			if (this.Enemies != null) eTotal = this.Enemies.TotalDamaged;
+			this.Enemies = new FleetData(
+				data.ToMastersShipDataArray(),
+				this.Enemies?.Formation ?? Formation.없음,
+				this.Enemies?.Name ?? "",
+				FleetType.Enemy,
+				this.Enemies?.Rank);
+			this.Enemies.TotalDamaged = eTotal;
+
+			eTotal = 0;
+			if (this.SecondEnemies != null) eTotal = this.SecondEnemies.TotalDamaged;
+			this.SecondEnemies = new FleetData(
+				data.ToMastersSecondShipDataArray(),
+				this.SecondEnemies?.Formation ?? Formation.없음,
+				this.SecondEnemies?.Name ?? "",
+				FleetType.SecondEnemy,
+				this.SecondEnemies?.Rank);
+			this.SecondEnemies.TotalDamaged = eTotal;
 
 			if (api_formation != null)
 			{

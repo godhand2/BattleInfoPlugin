@@ -16,9 +16,14 @@ namespace BattleInfoPlugin.Models.Raw
 			   ?? support?.api_support_hourai?.api_damage?.GetDamages()
 			   ?? defaultValue;
 
-		public static FleetDamages GetSecondEnemyDamages(this Api_Support_Info support)
-			=> support?.api_support_airatack?.api_stage3_combined?.api_edam?.GetDamages()
-			   ?? support?.api_support_hourai?.api_damage_combined?.GetDamages()
+		public static FleetDamages GetEachFirstEnemyDamages(this Api_Support_Info support)
+			=> support?.api_support_airatack?.api_stage3?.api_edam?.GetEachDamages()
+			   ?? support?.api_support_hourai?.api_damage?.GetEachDamages()
+			   ?? defaultValue;
+
+		public static FleetDamages GetEachSecondEnemyDamages(this Api_Support_Info support)
+			=> support?.api_support_airatack?.api_stage3?.api_edam?.GetEachDamages(true)
+			   ?? support?.api_support_hourai?.api_damage?.GetEachDamages(true)
 			   ?? defaultValue;
 
 		#endregion
@@ -110,8 +115,12 @@ namespace BattleInfoPlugin.Models.Raw
 			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetDamages() ?? defaultValue)
 			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
 
-		public static FleetDamages GetSecondEnemyDamages(this Api_Air_Base_Attack[] attacks)
-			=> attacks?.Select(x => x?.api_stage3_combined?.api_edam?.GetDamages() ?? defaultValue)
+		public static FleetDamages GetEachFirstEnemyDamages(this Api_Air_Base_Attack[] attacks)
+			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetEachDamages() ?? defaultValue)
+			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
+
+		public static FleetDamages GetEachSecondEnemyDamages(this Api_Air_Base_Attack[] attacks)
+			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetEachDamages(true) ?? defaultValue)
 			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
 
 		public static AirCombatResult[] ToResult(this Api_Air_Base_Attack[] attacks)

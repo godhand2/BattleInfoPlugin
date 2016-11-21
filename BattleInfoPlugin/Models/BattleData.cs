@@ -706,7 +706,7 @@ namespace BattleInfoPlugin.Models
 		public void Update(combined_battle_each_battle data)
 		{
 			AutoSelectTab();
-			this.Name = "연합함대 -  주간전";
+			this.Name = "연합함대 - 주간전";
 
 			this.UpdateFleets2(data.api_deck_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
@@ -731,8 +731,8 @@ namespace BattleInfoPlugin.Models
 			);
 
 			this.Enemies.CalcDamages(
-				data.api_air_base_attack.GetEnemyDamages(),
-				data.api_support_info.GetEnemyDamages(),
+				data.api_air_base_attack.GetEachFirstEnemyDamages(),
+				data.api_support_info.GetEachFirstEnemyDamages(),
 				data.api_kouku.GetEnemyDamages(),
 				data.api_opening_taisen.GetEachFirstEnemyDamages(),
 				data.api_opening_atack.GetEachFirstEnemyDamages(),
@@ -742,8 +742,8 @@ namespace BattleInfoPlugin.Models
 			);
 
 			this.SecondEnemies.CalcDamages(
-				data.api_air_base_attack.GetSecondEnemyDamages(),
-				data.api_support_info.GetSecondEnemyDamages(),
+				data.api_air_base_attack.GetEachSecondEnemyDamages(),
+				data.api_support_info.GetEachSecondEnemyDamages(),
 				data.api_kouku.GetSecondEnemyDamages(),
 				data.api_opening_taisen.GetEachSecondEnemyDamages(),
 				data.api_opening_atack.GetEachSecondEnemyDamages(),

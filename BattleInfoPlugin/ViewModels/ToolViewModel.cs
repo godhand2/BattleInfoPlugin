@@ -57,6 +57,9 @@ namespace BattleInfoPlugin.ViewModels
 		public string AntiAirFired
 			=> (this.BattleData?.AntiAirFired ?? AirFireFlag.Unset).ToReadableString();
 
+		public string SupportUsed
+			=> (this.BattleData?.SupportUsed ?? UsedSupport.Unset).ToReadableString();
+
 
 		#region FirstFleet変更通知プロパティ
 		private FleetViewModel _FirstFleet;
@@ -315,6 +318,10 @@ namespace BattleInfoPlugin.ViewModels
 				{
 					nameof(this.BattleData.AntiAirFired),
 					(_, __) => this.RaisePropertyChanged(nameof(this.AntiAirFired))
+				},
+				{
+					nameof(this.BattleData.SupportUsed),
+					(_, __) => this.RaisePropertyChanged(nameof(this.SupportUsed))
 				},
 			});
 		}

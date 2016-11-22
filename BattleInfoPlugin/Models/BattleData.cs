@@ -294,6 +294,22 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
+		#region SupportUsed変更通知プロパティ
+		private UsedSupport _SupportUsed;
+		public UsedSupport SupportUsed
+		{
+			get { return this._SupportUsed; }
+			set
+			{
+				if (this._SupportUsed != value)
+				{
+					this._SupportUsed = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
 
 		private int CurrentDeckId { get; set; }
 
@@ -325,8 +341,11 @@ namespace BattleInfoPlugin.Models
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/sp_midnight")
 				.TryParse<combined_battle_sp_midnight>().Subscribe(x => this.Update(x.Data));
 
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_battle")
+				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, false));
+
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/each_battle")
-				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data));
+				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, true));
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_midnight_battle")
 				.TryParse<combined_battle_ec_midnight_battle>().Subscribe(x => this.Update(x.Data));
@@ -435,6 +454,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire, data.api_kouku2?.api_stage2?.api_air_fire);
+			this.UpdateUsedFlag(data.api_support_info);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -471,6 +491,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
+			this.UpdateUsedFlag(data.api_support_info);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -515,6 +536,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
+			this.UpdateUsedFlag(data.api_support_info);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -668,6 +690,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps);
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire, data.api_kouku2?.api_stage2?.api_air_fire);
+			this.UpdateUsedFlag(data.api_support_info);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -699,6 +722,7 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps);
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
+			this.UpdateUsedFlag(data.api_support_info);
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages(),
@@ -777,7 +801,7 @@ namespace BattleInfoPlugin.Models
 			this.RankResult = Rank.공습전;
 		}
 
-		public void Update(combined_battle_each_battle data)
+		public void Update(combined_battle_each_battle data, bool isCombined)
 		{
 			AutoSelectTab();
 			this.Name = "연합함대 - 주간전";
@@ -787,24 +811,40 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
+			this.UpdateUsedFlag(data.api_support_info);
 
-			this.FirstFleet.CalcDamages(
-				data.api_kouku.GetFirstFleetDamages(),
-				data.api_opening_taisen.GetEachFirstFriendDamages(),
-				data.api_opening_atack.GetEachFirstFriendDamages(),
-				data.api_hougeki1.GetEachFirstFriendDamages(),
-				data.api_raigeki.GetEachFirstFriendDamages(),
-				data.api_hougeki3.GetEachFirstFriendDamages()
-			);
+			if (isCombined)
+			{
+				this.FirstFleet.CalcDamages(
+					data.api_kouku.GetFirstFleetDamages(),
+					data.api_opening_taisen.GetEachFirstFriendDamages(),
+					data.api_opening_atack.GetEachFirstFriendDamages(),
+					data.api_hougeki1.GetEachFirstFriendDamages(),
+					data.api_raigeki.GetEachFirstFriendDamages(),
+					data.api_hougeki3.GetEachFirstFriendDamages()
+				);
 
-			this.SecondFleet.CalcDamages(
-				data.api_kouku.GetSecondFleetDamages(),
-				data.api_opening_taisen.GetEachSecondFriendDamages(),
-				data.api_opening_atack.GetEachSecondFriendDamages(),
-				data.api_hougeki2.GetEachSecondFriendDamages(),
-				data.api_raigeki.GetEachSecondFriendDamages(),
-				data.api_hougeki3.GetEachSecondFriendDamages()
-			);
+				this.SecondFleet.CalcDamages(
+					data.api_kouku.GetSecondFleetDamages(),
+					data.api_opening_taisen.GetEachSecondFriendDamages(),
+					data.api_opening_atack.GetEachSecondFriendDamages(),
+					data.api_hougeki2.GetEachSecondFriendDamages(),
+					data.api_raigeki.GetEachSecondFriendDamages(),
+					data.api_hougeki3.GetEachSecondFriendDamages()
+				);
+			}
+			else
+			{
+				this.FirstFleet.CalcDamages(
+					data.api_kouku.GetFirstFleetDamages(),
+					data.api_opening_taisen.GetEachFirstFriendDamages(),
+					data.api_opening_atack.GetEachFirstFriendDamages(),
+					data.api_hougeki1.GetEachFirstFriendDamages(),
+					data.api_hougeki2.GetEachFirstFriendDamages(),
+					data.api_raigeki.GetEachFirstFriendDamages(),
+					data.api_hougeki3.GetEachFirstFriendDamages()
+				);
+			}
 
 			this.Enemies.CalcDamages(
 				data.api_air_base_attack.GetEachFirstEnemyDamages(),
@@ -1055,6 +1095,7 @@ namespace BattleInfoPlugin.Models
 			this.FlareUsed = UsedFlag.Unset;
 			this.NightReconScouted = UsedFlag.Unset;
 			this.AntiAirFired = AirFireFlag.Unset;
+			this.SupportUsed = UsedSupport.Unset;
 
 			this.BattleSituation = BattleSituation.없음;
 			this.FriendAirSupremacy = AirSupremacy.항공전없음;
@@ -1273,6 +1314,7 @@ namespace BattleInfoPlugin.Models
 				}
 				if (IsEnemyCombined)
 				{
+					EnemyMaxCount += this.SecondEnemies.SinkCount();
 					EnemyTotal += this.SecondEnemies.TotalDamaged;
 					EnemyMax += this.SecondEnemies.Ships.Sum(x => x.BeforeNowHP);
 					EnemyDamagedPercent = EnemyTotal / (decimal)EnemyMax; // 적군이 받은 총 데미지
@@ -1444,6 +1486,24 @@ namespace BattleInfoPlugin.Models
 			catch
 			{
 				this.AntiAirFired = AirFireFlag.Unset;
+			}
+		}
+		private void UpdateUsedFlag(Api_Support_Info data)
+		{
+			try
+			{
+				if (data == null)
+					this.SupportUsed = UsedSupport.Unused;
+				else if (data.api_support_airatack != null)
+					this.SupportUsed = UsedSupport.Kouku;
+				else if (data.api_support_hourai != null)
+					this.SupportUsed = UsedSupport.Hourai;
+				else
+					this.SupportUsed = UsedSupport.Unset; ;
+			}
+			catch
+			{
+				this.SupportUsed = UsedSupport.Unset; ;
 			}
 		}
 

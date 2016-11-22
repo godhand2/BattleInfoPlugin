@@ -105,6 +105,7 @@
     <Compile Include="Models\Raw\combined_battle_each_battle.cs" />
     <Compile Include="Models\Raw\combined_battle_ec_midnight_battle.cs" />
     <Compile Include="Models\Raw\ICommonEachBattleMembers.cs" />
+    <Compile Include="Models\UsedSupport.cs" />
     <Compile Include="Models\UsedFlag.cs" />
     <Compile Include="NotifyAttribute.cs" />
     <Compile Include="Views\Converters\CellEventToEventColor.cs" />

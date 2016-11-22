@@ -53,7 +53,7 @@
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition/>
 							<ColumnDefinition Width="190"/>
-							<ColumnDefinition Width="132"/>
+							<ColumnDefinition Width="156"/>
 						</Grid.ColumnDefinitions>
 
 						<StackPanel Grid.Column="1"
@@ -90,10 +90,16 @@
 									 FontSize="12"
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 							</TextBlock>
+							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
+								<Run Text="지원함대:"/>
+								<Run Text="{Binding SupportUsed, Mode=OneWay}"
+									 FontSize="12"
+									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+							</TextBlock>
 						</StackPanel>
 						<StackPanel Grid.Column="3">
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="조명탄:"/>
+								<Run Text="조명탄:　"/>
 								<Run Text="{Binding FlareUsed, Mode=OneWay}"
 									 FontSize="12"
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>

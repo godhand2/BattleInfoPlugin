@@ -874,8 +874,8 @@ namespace BattleInfoPlugin.Models
 					data.api_opening_taisen.GetEachFirstEnemyDamages(),
 					data.api_opening_atack.GetEachFirstEnemyDamages(),
 					data.api_hougeki1.GetEachFirstEnemyDamages(),
-					data.api_hougeki2.GetEachFirstEnemyDamages(),
 					data.api_raigeki.GetEachFirstEnemyDamages(),
+					data.api_hougeki2.GetEachFirstEnemyDamages(),
 					data.api_hougeki3.GetEachFirstEnemyDamages()
 				);
 
@@ -886,8 +886,8 @@ namespace BattleInfoPlugin.Models
 					data.api_opening_taisen.GetEachSecondEnemyDamages(),
 					data.api_opening_atack.GetEachSecondEnemyDamages(),
 					data.api_hougeki1.GetEachSecondEnemyDamages(),
-					data.api_hougeki2.GetEachSecondEnemyDamages(),
 					data.api_raigeki.GetEachSecondEnemyDamages(),
+					data.api_hougeki2.GetEachSecondEnemyDamages(),
 					data.api_hougeki3.GetEachSecondEnemyDamages()
 				);
 			}
@@ -1338,7 +1338,7 @@ namespace BattleInfoPlugin.Models
 				}
 				if (IsEnemyCombined)
 				{
-					EnemyMaxCount += this.SecondEnemies.Count();
+					EnemyMaxCount += this.SecondEnemies.Ships.Count();
 					EnemyTotal += this.SecondEnemies.TotalDamaged;
 					EnemyMax += this.SecondEnemies.Ships.Sum(x => x.BeforeNowHP);
 					EnemyDamagedPercent = EnemyTotal / (decimal)EnemyMax; // 적군이 받은 총 데미지

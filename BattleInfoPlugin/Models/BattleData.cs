@@ -832,6 +832,28 @@ namespace BattleInfoPlugin.Models
 					data.api_raigeki.GetEachSecondFriendDamages(),
 					data.api_hougeki3.GetEachSecondFriendDamages()
 				);
+
+				this.Enemies.CalcDamages(
+					data.api_air_base_attack.GetEachFirstEnemyDamages(),
+					data.api_support_info.GetEachFirstEnemyDamages(),
+					data.api_kouku.GetEnemyDamages(),
+					data.api_opening_taisen.GetEachFirstEnemyDamages(),
+					data.api_opening_atack.GetEachFirstEnemyDamages(),
+					data.api_hougeki1.GetEachFirstEnemyDamages(),
+					data.api_raigeki.GetEachFirstEnemyDamages(),
+					data.api_hougeki3.GetEachFirstEnemyDamages()
+				);
+
+				this.SecondEnemies.CalcDamages(
+					data.api_air_base_attack.GetEachSecondEnemyDamages(),
+					data.api_support_info.GetEachSecondEnemyDamages(),
+					data.api_kouku.GetSecondEnemyDamages(),
+					data.api_opening_taisen.GetEachSecondEnemyDamages(),
+					data.api_opening_atack.GetEachSecondEnemyDamages(),
+					data.api_hougeki2.GetEachSecondEnemyDamages(),
+					data.api_raigeki.GetEachSecondEnemyDamages(),
+					data.api_hougeki3.GetEachSecondEnemyDamages()
+				);
 			}
 			else
 			{
@@ -844,29 +866,31 @@ namespace BattleInfoPlugin.Models
 					data.api_raigeki.GetEachFirstFriendDamages(),
 					data.api_hougeki3.GetEachFirstFriendDamages()
 				);
+
+				this.Enemies.CalcDamages(
+					data.api_air_base_attack.GetEachFirstEnemyDamages(),
+					data.api_support_info.GetEachFirstEnemyDamages(),
+					data.api_kouku.GetEnemyDamages(),
+					data.api_opening_taisen.GetEachFirstEnemyDamages(),
+					data.api_opening_atack.GetEachFirstEnemyDamages(),
+					data.api_hougeki1.GetEachFirstEnemyDamages(),
+					data.api_hougeki2.GetEachFirstEnemyDamages(),
+					data.api_raigeki.GetEachFirstEnemyDamages(),
+					data.api_hougeki3.GetEachFirstEnemyDamages()
+				);
+
+				this.SecondEnemies.CalcDamages(
+					data.api_air_base_attack.GetEachSecondEnemyDamages(),
+					data.api_support_info.GetEachSecondEnemyDamages(),
+					data.api_kouku.GetSecondEnemyDamages(),
+					data.api_opening_taisen.GetEachSecondEnemyDamages(),
+					data.api_opening_atack.GetEachSecondEnemyDamages(),
+					data.api_hougeki1.GetEachSecondEnemyDamages(),
+					data.api_hougeki2.GetEachSecondEnemyDamages(),
+					data.api_raigeki.GetEachSecondEnemyDamages(),
+					data.api_hougeki3.GetEachSecondEnemyDamages()
+				);
 			}
-
-			this.Enemies.CalcDamages(
-				data.api_air_base_attack.GetEachFirstEnemyDamages(),
-				data.api_support_info.GetEachFirstEnemyDamages(),
-				data.api_kouku.GetEnemyDamages(),
-				data.api_opening_taisen.GetEachFirstEnemyDamages(),
-				data.api_opening_atack.GetEachFirstEnemyDamages(),
-				data.api_hougeki1.GetEachFirstEnemyDamages(),
-				data.api_raigeki.GetEachFirstEnemyDamages(),
-				data.api_hougeki3.GetEachFirstEnemyDamages()
-			);
-
-			this.SecondEnemies.CalcDamages(
-				data.api_air_base_attack.GetEachSecondEnemyDamages(),
-				data.api_support_info.GetEachSecondEnemyDamages(),
-				data.api_kouku.GetSecondEnemyDamages(),
-				data.api_opening_taisen.GetEachSecondEnemyDamages(),
-				data.api_opening_atack.GetEachSecondEnemyDamages(),
-				data.api_hougeki2.GetEachSecondEnemyDamages(),
-				data.api_raigeki.GetEachSecondEnemyDamages(),
-				data.api_hougeki3.GetEachSecondEnemyDamages()
-			);
 
 			this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 
@@ -1314,7 +1338,7 @@ namespace BattleInfoPlugin.Models
 				}
 				if (IsEnemyCombined)
 				{
-					EnemyMaxCount += this.SecondEnemies.SinkCount();
+					EnemyMaxCount += this.SecondEnemies.Count();
 					EnemyTotal += this.SecondEnemies.TotalDamaged;
 					EnemyMax += this.SecondEnemies.Ships.Sum(x => x.BeforeNowHP);
 					EnemyDamagedPercent = EnemyTotal / (decimal)EnemyMax; // 적군이 받은 총 데미지

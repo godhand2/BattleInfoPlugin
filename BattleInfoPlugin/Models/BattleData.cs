@@ -770,7 +770,7 @@ namespace BattleInfoPlugin.Models
 
 			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
-			//this.RankResult = this.CalcRank();
+			this.RankResult = this.CalcRank3();
 			this.RankResult = Rank.공습전;
 		}
 
@@ -797,7 +797,7 @@ namespace BattleInfoPlugin.Models
 
 			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
-			//this.RankResult = this.CalcRank();
+			this.RankResult = this.CalcRank3(true);
 			this.RankResult = Rank.공습전;
 		}
 
@@ -1449,6 +1449,60 @@ namespace BattleInfoPlugin.Models
 				// KanColleClient.Current.CatchedErrorLogWriter.ReportException(ex.Source, ex);
 				System.IO.File.AppendAllText("battleinfo_error.log", "-----------------------------------------------------------------" + Environment.NewLine);
 				System.IO.File.AppendAllText("battleinfo_error.log", DateTime.Now.ToString() + Environment.NewLine);
+				System.IO.File.AppendAllText("battleinfo_error.log", ex.ToString() + Environment.NewLine);
+				Debug.WriteLine(ex);
+				return Rank.에러;
+			}
+		}
+		private Rank CalcRank3(bool IsCombined = false)
+		{
+			try
+			{
+				var AliasMax = this.FirstFleet.Ships
+					.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
+					.Sum(x => x.BeforeNowHP);
+
+				var AliasTotal = this.FirstFleet.TotalDamaged;
+				var IsShipSink = this.FirstFleet.SinkCount > 0; // ? true : false;
+
+				decimal AliasDamagedPercent = AliasTotal / (decimal)AliasMax; // 아군이 받은 총 데미지
+
+				int MaxCount = this.FirstFleet.Ships
+					.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
+					.Count();
+				int SinkCount = this.FirstFleet.SinkCount;
+
+				if (IsCombined)
+				{
+					AliasTotal += this.SecondFleet.TotalDamaged;
+					AliasMax += this.SecondFleet.Ships.Sum(x => x.BeforeNowHP);
+					AliasDamagedPercent = AliasTotal / (decimal)AliasMax; // 아군이 받은 총 데미지
+
+					if (!IsShipSink) IsShipSink = this.SecondFleet.SinkCount > 0 ? true : false;
+					MaxCount += this.SecondFleet.Ships
+					.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
+					.Count();
+					SinkCount += this.SecondFleet.SinkCount;
+				}
+
+				bool IsOverKilled = CalcOverKill(MaxCount, SinkCount);
+
+				if (AliasTotal > 0)
+				{
+					decimal AliasValue = decimal.Floor(AliasDamagedPercent * 100m); // 아군 피격 데미지 비율 (소숫점 제외)
+
+					if (AliasValue == 0) return Rank.완전승리S;
+					else if (AliasValue > 0 && AliasValue < 10) return Rank.A승리;
+					else if (AliasValue > 10 && AliasValue < 20) return Rank.B승리;
+					else if (AliasValue > 20 && AliasValue < 50) return Rank.C패배;
+					else if (SinkCount > 0) return Rank.E패배;
+					else return Rank.D패배;
+				}
+				else return Rank.D패배;
+			}
+			catch (Exception ex)
+			{
+				// KanColleClient.Current.CatchedErrorLogWriter.ReportException(ex.Source, ex);
 				System.IO.File.AppendAllText("battleinfo_error.log", ex.ToString() + Environment.NewLine);
 				Debug.WriteLine(ex);
 				return Rank.에러;

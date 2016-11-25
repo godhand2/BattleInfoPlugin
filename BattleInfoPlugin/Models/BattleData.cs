@@ -1215,7 +1215,7 @@ namespace BattleInfoPlugin.Models
 					else
 					{
 						var CalcPercent = Math.Round(EnemyValue / AliasValue, 2, MidpointRounding.AwayFromZero);
-						if (CalcPercent >= 2.5m)
+						if (CalcPercent > 2.5m)
 							IsOverDamage = true;// 2.5배 초과 데미지
 						else if (CalcPercent > 1m)
 							IsMidDamage = true;// 1초과 2.5이하
@@ -1372,7 +1372,7 @@ namespace BattleInfoPlugin.Models
 					else
 					{
 						var CalcPercent = Math.Round(EnemyValue / AliasValue, 2, MidpointRounding.AwayFromZero);
-						if (CalcPercent >= 2.5m)
+						if (CalcPercent > 2.5m)
 							IsOverDamage = true;// 2.5배 초과 데미지
 						else if (CalcPercent > 1m)
 							IsMidDamage = true;// 1초과 2.5이하

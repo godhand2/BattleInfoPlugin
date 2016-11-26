@@ -53,7 +53,7 @@
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition/>
 							<ColumnDefinition Width="190"/>
-							<ColumnDefinition Width="156"/>
+							<ColumnDefinition Width="120"/>
 						</Grid.ColumnDefinitions>
 
 						<StackPanel Grid.Column="1"

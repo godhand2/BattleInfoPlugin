@@ -195,6 +195,22 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
+		#region AirRankResult変更通知プロパティ
+		private Rank _AirRankResult;
+
+		public Rank AirRankResult
+		{
+			get
+			{ return this._AirRankResult; }
+			set
+			{
+				if (this._AirRankResult == value) return;
+				this._AirRankResult = value;
+				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
+
 		#region FriendAirSupremacy変更通知プロパティ
 		private AirSupremacy _FriendAirSupremacy = AirSupremacy.항공전없음;
 
@@ -341,15 +357,6 @@ namespace BattleInfoPlugin.Models
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/sp_midnight")
 				.TryParse<combined_battle_sp_midnight>().Subscribe(x => this.Update(x.Data));
 
-			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_battle")
-				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, false));
-
-			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/each_battle")
-				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, true));
-
-			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_midnight_battle")
-				.TryParse<combined_battle_ec_midnight_battle>().Subscribe(x => this.Update(x.Data));
-
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_practice/battle")
 				.TryParse<practice_battle>().Subscribe(x => this.Update(x.Data));
 
@@ -370,6 +377,15 @@ namespace BattleInfoPlugin.Models
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ld_airbattle")
 				.TryParse<combined_battle_ld_airbattle>().Subscribe(x => this.Update(x.Data));
+
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_battle")
+				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, false));
+
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/each_battle")
+				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, true));
+
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_midnight_battle")
+				.TryParse<combined_battle_ec_midnight_battle>().Subscribe(x => this.Update(x.Data));
 
 
 			proxy.api_req_sortie_battleresult
@@ -770,7 +786,7 @@ namespace BattleInfoPlugin.Models
 
 			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
-			this.RankResult = this.CalcRank3();
+			this.AirRankResult = this.CalcRank3();
 			this.RankResult = Rank.공습전;
 		}
 
@@ -797,7 +813,7 @@ namespace BattleInfoPlugin.Models
 
 			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
-			this.RankResult = this.CalcRank3(true);
+			this.AirRankResult = this.CalcRank3(true);
 			this.RankResult = Rank.공습전;
 		}
 
@@ -965,6 +981,7 @@ namespace BattleInfoPlugin.Models
 				this.Cell = startNext.api_maparea_id + "-" + startNext.api_mapinfo_no + "-" + startNext.api_no;
 			}
 			this.RankResult = Rank.없음;
+			this.AirRankResult = Rank.없음;
 
 			if (api_deck_id != null) this.CurrentDeckId = int.Parse(api_deck_id);
 			if (this.CurrentDeckId < 1) return;
@@ -1143,7 +1160,10 @@ namespace BattleInfoPlugin.Models
 			}
 
 			// x / 3m * 2m
-			return (int)decimal.Floor(MaxCount / 1.5m) <= SinkCount;
+			// return (int)decimal.Floor(MaxCount / 1.5m) <= SinkCount;
+
+			// 절반 초과 굉침
+			return (int)decimal.Floor(MaxCount / 2m) < SinkCount;
 		}
 		private Rank CalcRank(bool IsCombined = false, bool IsMidnight = false, int BeforeHP = 0, int EnemyBefore = 0)
 		{
@@ -1356,7 +1376,7 @@ namespace BattleInfoPlugin.Models
 				this.FirstFleet.AttackGauge = this.MakeGaugeText(EnemyTotal, EnemyMax, EnemyDamagedPercent);
 				this.Enemies.AttackGauge = this.MakeGaugeText(AliasTotal, AliasMax, AliasDamagedPercent);
 
-				bool IsOverKill = CalcOverKill(EnemyMaxCount, this.Enemies.SinkCount);
+				bool IsOverKill = CalcOverKill(EnemyMaxCount, this.Enemies.SinkCount + (IsEnemyCombined ? this.SecondEnemies.SinkCount : 0));
 				bool IsOverKilled = CalcOverKill(MaxCount, SinkCount);
 
 				if (AliasTotal > 0)
@@ -1491,14 +1511,14 @@ namespace BattleInfoPlugin.Models
 				{
 					decimal AliasValue = decimal.Floor(AliasDamagedPercent * 100m); // 아군 피격 데미지 비율 (소숫점 제외)
 
-					if (AliasValue == 0) return Rank.완전승리S;
+					if (AliasValue == 0) return Rank.A승리;
 					else if (AliasValue > 0 && AliasValue < 10) return Rank.A승리;
 					else if (AliasValue > 10 && AliasValue < 20) return Rank.B승리;
 					else if (AliasValue > 20 && AliasValue < 50) return Rank.C패배;
 					else if (SinkCount > 0) return Rank.E패배;
 					else return Rank.D패배;
 				}
-				else return Rank.D패배;
+				else return Rank.완전승리S;
 			}
 			catch (Exception ex)
 			{

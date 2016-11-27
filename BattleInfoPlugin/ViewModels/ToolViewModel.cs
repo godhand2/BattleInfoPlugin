@@ -42,6 +42,12 @@ namespace BattleInfoPlugin.ViewModels
 		public string RankResult
 			=> this.BattleData.RankResult.ToString();
 
+		public string AirRankResult
+			=> this.BattleData.AirRankResult.ToString();
+
+		public bool AirRankAvailable
+			=> this.BattleData.RankResult == Rank.공습전;
+
 		public string DropShipName
 			=> this.BattleData?.DropShipName;
 
@@ -305,7 +311,14 @@ namespace BattleInfoPlugin.ViewModels
 				},
 				{
 					nameof(this.BattleData.RankResult),
-					(_, __) => this.RaisePropertyChanged(nameof(this.RankResult))
+					(_, __) => {
+						this.RaisePropertyChanged(nameof(this.RankResult));
+						this.RaisePropertyChanged(nameof(this.AirRankAvailable));
+					}
+				},
+				{
+					nameof(this.BattleData.AirRankResult),
+					(_, __) => this.RaisePropertyChanged(nameof(this.AirRankResult))
 				},
 				{
 					nameof(this.BattleData.FlareUsed),

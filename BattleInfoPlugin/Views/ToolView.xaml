@@ -140,48 +140,85 @@
 			</DockPanel>
 
 			<Grid Grid.Row="1">
-				<TextBlock Padding="10,5"
+				<StackPanel Orientation="Horizontal"
+							HorizontalAlignment="Center">
+					<TextBlock Padding="10,5"
 						   FontWeight="ExtraBold"
 						   FontSize="18"
 						   TextAlignment="Center"
-						   Text="{Binding RankResult}">
-					<TextBlock.Style>
-						<Style TargetType="TextBlock">
-							<Style.Triggers>
-								<DataTrigger Binding="{Binding RankResult}" Value="에러">
-									<Setter Property="Foreground" Value="Red"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}" Value="없음">
-									<Setter Property="Foreground" Value="Transparent"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}" Value="완전승리S">
-									<Setter Property="Foreground" Value="#FFFFE558"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}" Value="S승리">
-									<Setter Property="Foreground" Value="Gold"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}" Value="A승리">
-									<Setter Property="Foreground" Value="#FFD10000"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}" Value="B승리">
-									<Setter Property="Foreground" Value="#FFD43353"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}" Value="C패배">
-									<Setter Property="Foreground" Value="#FF42428F"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}" Value="D패배">
-									<Setter Property="Foreground" Value="#FF42428F"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}" Value="E패배">
-									<Setter Property="Foreground" Value="#FF42428F"/>
-								</DataTrigger>
-								<DataTrigger Binding="{Binding RankResult}" Value="공습전">
-									<Setter Property="Foreground" Value="#FF52A661"/>
-								</DataTrigger>
-							</Style.Triggers>
-						</Style>
-					</TextBlock.Style>
-				</TextBlock>
+						   Text="{Binding RankResult, Mode=OneWay}">
+						<TextBlock.Style>
+							<Style TargetType="TextBlock">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding RankResult}" Value="에러">
+										<Setter Property="Foreground" Value="Red"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding RankResult}" Value="없음">
+										<Setter Property="Foreground" Value="Transparent"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding RankResult}" Value="완전승리S">
+										<Setter Property="Foreground" Value="#FFFFE558"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding RankResult}" Value="S승리">
+										<Setter Property="Foreground" Value="Gold"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding RankResult}" Value="A승리">
+										<Setter Property="Foreground" Value="#FFD10000"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding RankResult}" Value="B승리">
+										<Setter Property="Foreground" Value="#FFD43353"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding RankResult}" Value="C패배">
+										<Setter Property="Foreground" Value="#FF42428F"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding RankResult}" Value="D패배">
+										<Setter Property="Foreground" Value="#FF42428F"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding RankResult}" Value="E패배">
+										<Setter Property="Foreground" Value="#FF42428F"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding RankResult}" Value="공습전">
+										<Setter Property="Foreground" Value="#FF52A661"/>
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
+					</TextBlock>
+					<TextBlock Padding="10,5"
+						   FontWeight="ExtraBold"
+						   FontSize="18"
+						   TextAlignment="Center"
+						   Text="{Binding AirRankResult, Mode=OneWay}">
+						<TextBlock.Style>
+							<Style TargetType="TextBlock">
+								<Setter Property="Visibility" Value="Collapsed" />
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding AirRankAvailable}" Value="True">
+										<Setter Property="Visibility" Value="Visible"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding AirRankResult}" Value="완전승리S">
+										<Setter Property="Foreground" Value="#FFFFE558"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding AirRankResult}" Value="A승리">
+										<Setter Property="Foreground" Value="#FFD10000"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding AirRankResult}" Value="B승리">
+										<Setter Property="Foreground" Value="#FFD43353"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding AirRankResult}" Value="C패배">
+										<Setter Property="Foreground" Value="#FF42428F"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding AirRankResult}" Value="D패배">
+										<Setter Property="Foreground" Value="#FF42428F"/>
+									</DataTrigger>
+									<DataTrigger Binding="{Binding AirRankResult}" Value="E패배">
+										<Setter Property="Foreground" Value="#FF42428F"/>
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
+					</TextBlock>
+				</StackPanel>
 				<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
 						   Margin="10,4"
 						   Padding="10,2"

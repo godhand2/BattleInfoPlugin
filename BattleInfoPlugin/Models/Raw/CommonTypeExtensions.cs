@@ -116,11 +116,11 @@ namespace BattleInfoPlugin.Models.Raw
 			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
 
 		public static FleetDamages GetEachFirstEnemyDamages(this Api_Air_Base_Attack[] attacks)
-			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetEachDamages() ?? defaultValue)
+			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetDamages() ?? defaultValue)
 			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
 
 		public static FleetDamages GetEachSecondEnemyDamages(this Api_Air_Base_Attack[] attacks)
-			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetEachDamages(true) ?? defaultValue)
+			=> attacks?.Select(x => x?.api_stage3_combined?.api_edam?.GetDamages() ?? defaultValue)
 			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
 
 		public static AirCombatResult[] ToResult(this Api_Air_Base_Attack[] attacks)

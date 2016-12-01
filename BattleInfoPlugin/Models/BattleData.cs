@@ -780,7 +780,10 @@ namespace BattleInfoPlugin.Models
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages()
-				);
+			);
+			this.Enemies.CalcDamages(
+				data.api_air_base_attack.GetEnemyDamages()
+			);
 
 			this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 
@@ -803,11 +806,14 @@ namespace BattleInfoPlugin.Models
 
 			this.FirstFleet.CalcDamages(
 				data.api_kouku.GetFirstFleetDamages()
-				);
-
+			);
 			this.SecondFleet.CalcDamages(
 				data.api_kouku.GetSecondFleetDamages()
-				);
+			);
+
+			this.Enemies.CalcDamages(
+				data.api_air_base_attack.GetEnemyDamages()
+			);
 
 			this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 
@@ -1160,10 +1166,7 @@ namespace BattleInfoPlugin.Models
 			}
 
 			// x / 3m * 2m
-			// return (int)decimal.Floor(MaxCount / 1.5m) <= SinkCount;
-
-			// 절반 초과 굉침
-			return (int)decimal.Floor(MaxCount / 2m) < SinkCount;
+			return (int)decimal.Floor(MaxCount / 1.5m) <= SinkCount;
 		}
 		private Rank CalcRank(bool IsCombined = false, bool IsMidnight = false, int BeforeHP = 0, int EnemyBefore = 0)
 		{
@@ -1482,9 +1485,13 @@ namespace BattleInfoPlugin.Models
 					.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
 					.Sum(x => x.BeforeNowHP);
 
+				var EnemyTotal = this.Enemies.TotalDamaged;
+				var EnemyMax = this.Enemies.Ships.Sum(x => x.BeforeNowHP);
+
 				var AliasTotal = this.FirstFleet.TotalDamaged;
 				var IsShipSink = this.FirstFleet.SinkCount > 0; // ? true : false;
 
+				decimal EnemyDamagedPercent = EnemyTotal / (decimal)EnemyMax; // 적이 받은 총 데미지
 				decimal AliasDamagedPercent = AliasTotal / (decimal)AliasMax; // 아군이 받은 총 데미지
 
 				int MaxCount = this.FirstFleet.Ships
@@ -1505,17 +1512,20 @@ namespace BattleInfoPlugin.Models
 					SinkCount += this.SecondFleet.SinkCount;
 				}
 
+				this.FirstFleet.AttackGauge = this.MakeGaugeText(EnemyTotal, EnemyMax, EnemyDamagedPercent);
+				this.Enemies.AttackGauge = this.MakeGaugeText(AliasTotal, AliasMax, AliasDamagedPercent);
+
 				bool IsOverKilled = CalcOverKill(MaxCount, SinkCount);
 
 				if (AliasTotal > 0)
 				{
 					decimal AliasValue = decimal.Floor(AliasDamagedPercent * 100m); // 아군 피격 데미지 비율 (소숫점 제외)
 
-					if (AliasValue == 0) return Rank.A승리;
+					if (SinkCount > 0) return Rank.E패배;
+					else if (AliasValue == 0) return Rank.A승리;
 					else if (AliasValue > 0 && AliasValue < 10) return Rank.A승리;
 					else if (AliasValue > 10 && AliasValue < 20) return Rank.B승리;
 					else if (AliasValue > 20 && AliasValue < 50) return Rank.C패배;
-					else if (SinkCount > 0) return Rank.E패배;
 					else return Rank.D패배;
 				}
 				else return Rank.완전승리S;

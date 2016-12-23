@@ -43,10 +43,6 @@
 			</Grid.RowDefinitions>
 
 			<DockPanel Grid.Row="0">
-				<TextBlock Text="전투정보"
-						   VerticalAlignment="Top"
-						   Style="{DynamicResource HeaderTextStyleKey}"
-						   Margin="0,0,10,0"/>
 				<StackPanel>
 					<Grid>
 						<Grid.ColumnDefinitions>

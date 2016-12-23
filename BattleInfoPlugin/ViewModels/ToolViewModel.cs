@@ -20,7 +20,7 @@ namespace BattleInfoPlugin.ViewModels
 
 		public string UpdatedTime
 			=> this.BattleData != null && this.BattleData.UpdatedTime != default(DateTimeOffset)
-				? this.BattleData.UpdatedTime.ToString("yyyy/MM/dd HH:mm:ss")
+				? this.BattleData.UpdatedTime.ToString("HH:mm:ss") // yyyy/MM/dd
 				: "No Data";
 
 		public string BattleSituation

@@ -420,7 +420,10 @@ namespace BattleInfoPlugin.Models
 				.Where(s => s.Equipped)
 				.Select(s => new ShipSlotData(s))
 				.ToArray();
-			this.ExSlot = new ShipSlotData(this.Source.ExSlot);
+			this.ExSlot =
+				this.Source.ExSlotExists && this.Source.ExSlot.Equipped
+				? new ShipSlotData(this.Source.ExSlot)
+				: null;
 
 			this.Firepower = this.Source.Firepower.Current;
 			this.Torpedo = this.Source.Torpedo.Current;

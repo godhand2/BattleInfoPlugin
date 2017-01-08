@@ -248,61 +248,63 @@
 									</TextBlock>
 								</StackPanel>
 
-								<ItemsControl ItemsSource="{Binding Slots}"
-											  Margin="7,0">
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<Grid>
-												<Grid.ColumnDefinitions>
-													<ColumnDefinition Width="14"/>
-													<ColumnDefinition Width="Auto"/>
-												</Grid.ColumnDefinitions>
-												<controls:SlotItemIcon Grid.Column="0"
-																	   Type="{Binding Source.IconType, Mode=OneWay}"
-																	   Width="14"
-																	   Height="14" />
-												<TextBlock Grid.Column="1"
-														   Foreground="{DynamicResource ActiveForegroundBrushKey}"
-														   Style="{DynamicResource DefaultTextStyleKey}"
-														   Text="{Binding Source.Name, Mode=OneWay}"
-														   Margin="5,1"/>
-											</Grid>
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-
 								<StackPanel Orientation="Vertical">
-									<Rectangle Height="1"
-											   Margin="0,4,0,0"
-											   Style="{DynamicResource SeparatorRectangleStyleKey}" />
-									<Grid>
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="14"/>
-											<ColumnDefinition Width="Auto"/>
-										</Grid.ColumnDefinitions>
-										<controls:SlotItemIcon Grid.Column="0"
-															   Type="{Binding ExSlot.IconType, Mode=OneWay}"
-															   Width="14"
-															   Height="14" />
-										<TextBlock Grid.Column="1"
-												   Foreground="{DynamicResource ActiveForegroundBrushKey}"
-												   Style="{DynamicResource DefaultTextStyleKey}"
-												   Text="{Binding ExSlot.Name, Mode=OneWay}"
-												   Margin="5,1"/>
-									</Grid>
+									<ItemsControl ItemsSource="{Binding Slots}"
+												  Margin="7,0">
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<Grid>
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="14"/>
+														<ColumnDefinition Width="Auto"/>
+													</Grid.ColumnDefinitions>
+													<controls:SlotItemIcon Grid.Column="0"
+																		   Type="{Binding Source.IconType, Mode=OneWay}"
+																		   Width="14"
+																		   Height="14" />
+													<TextBlock Grid.Column="1"
+															   Foreground="{DynamicResource ActiveForegroundBrushKey}"
+															   Style="{DynamicResource DefaultTextStyleKey}"
+															   Text="{Binding Source.Name, Mode=OneWay}"
+															   Margin="5,1"/>
+												</Grid>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
 
-									<StackPanel.Style>
-										<Style TargetType="{x:Type StackPanel}">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding ExSlot}" Value="{x:Null}">
-													<Setter Property="Visibility" Value="Collapsed" />
-												</DataTrigger>
-												<DataTrigger Binding="{Binding ExSlot.Equipped}" Value="False">
-													<Setter Property="Visibility" Value="Collapsed" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</StackPanel.Style>
+									<StackPanel Orientation="Vertical">
+										<Rectangle Height="1"
+												   Margin="0,4,0,0"
+												   Style="{DynamicResource SeparatorRectangleStyleKey}" />
+										<Grid>
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="14"/>
+												<ColumnDefinition Width="Auto"/>
+											</Grid.ColumnDefinitions>
+											<controls:SlotItemIcon Grid.Column="0"
+																   Type="{Binding ExSlot.Source.IconType, Mode=OneWay}"
+																   Width="14"
+																   Height="14" />
+											<TextBlock Grid.Column="1"
+													   Foreground="{DynamicResource ActiveForegroundBrushKey}"
+													   Style="{DynamicResource DefaultTextStyleKey}"
+													   Text="{Binding ExSlot.Source.Name, Mode=OneWay}"
+													   Margin="5,1"/>
+										</Grid>
+
+										<StackPanel.Style>
+											<Style TargetType="{x:Type StackPanel}">
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding ExSlot}" Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed" />
+													</DataTrigger>
+													<DataTrigger Binding="{Binding ExSlot.Equipped}" Value="False">
+														<Setter Property="Visibility" Value="Collapsed" />
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</StackPanel.Style>
+									</StackPanel>
 								</StackPanel>
 							</StackPanel>
 						</StackPanel.ToolTip>

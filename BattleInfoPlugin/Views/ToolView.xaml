@@ -135,10 +135,40 @@
 				</StackPanel>
 			</DockPanel>
 
-			<Grid Grid.Row="1">
+			<StackPanel Grid.Row="1" Orientation="Vertical">
+				<ItemsControl ItemsSource="{Binding Cells}"
+							  HorizontalAlignment="Right">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+										Margin="4,2"
+										Padding="10,2"
+										Foreground="White"
+										Background="{Binding CellEvent, Converter={StaticResource CellEventToEventColor}}">
+								<Run Text="{Binding CellName, Mode=OneWay}" />
+								<Run Text="{Binding CellEvent, Mode=OneWay, Converter={StaticResource CellEventToEventName}}"/>
+
+								<TextBlock.Style>
+									<Style TargetType="TextBlock">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsOld}" Value="True">
+												<Setter Property="Opacity" Value="0.46"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 				<StackPanel Orientation="Horizontal"
 							HorizontalAlignment="Center">
-					<TextBlock Padding="10,5"
+					<TextBlock Padding="10,6"
 						   FontWeight="ExtraBold"
 						   FontSize="18"
 						   TextAlignment="Center"
@@ -180,7 +210,7 @@
 							</Style>
 						</TextBlock.Style>
 					</TextBlock>
-					<TextBlock Padding="10,5"
+					<TextBlock Padding="10,6"
 						   FontWeight="ExtraBold"
 						   FontSize="18"
 						   TextAlignment="Center"
@@ -215,15 +245,7 @@
 						</TextBlock.Style>
 					</TextBlock>
 				</StackPanel>
-				<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
-						   Margin="10,4"
-						   Padding="10,2"
-						   Foreground="White"
-						   Background="{Binding CellEvent, Converter={StaticResource CellEventToEventColor}}">
-					<Run Text="{Binding Cell, Mode=OneWay}" />
-					<Run Text="{Binding CellEvent, Mode=OneWay, Converter={StaticResource CellEventToEventName}}"/>
-				</TextBlock>
-			</Grid>
+			</StackPanel>
 
 			<StackPanel Grid.Row="2"
 						Orientation="Horizontal">

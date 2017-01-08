@@ -86,6 +86,22 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
+		#region Cells変更通知プロパティ
+		private List<CellData> _Cells;
+		public List<CellData> Cells
+		{
+			get { return this._Cells; }
+			set
+			{
+				if (this._Cells != value)
+				{
+					this._Cells = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
 		#region BattleSituation変更通知プロパティ
 
 		private BattleSituation _BattleSituation;
@@ -331,6 +347,8 @@ namespace BattleInfoPlugin.Models
 
 		public BattleData()
 		{
+			this.Cells = new List<CellData>();
+
 			var proxy = KanColleClient.Current.Proxy;
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_port/port")
@@ -400,7 +418,6 @@ namespace BattleInfoPlugin.Models
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/next")
 				.TryParse<map_start_next>().Subscribe(x => this.UpdateFleetsByStartNext(x.Data));
-
 		}
 
 		private void AutoSelectTab()
@@ -989,7 +1006,22 @@ namespace BattleInfoPlugin.Models
 			this.RankResult = Rank.없음;
 			this.AirRankResult = Rank.없음;
 
-			if (api_deck_id != null) this.CurrentDeckId = int.Parse(api_deck_id);
+			if (api_deck_id != null) // api_deck_id 가 null 인 경우는 next 인 경우
+			{
+				this.CurrentDeckId = int.Parse(api_deck_id);
+
+				this.Cells.Clear();
+			}
+
+			this.Cells.ForEach(x => x.IsOld = true);
+			this.Cells.Add(new CellData
+			{
+				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.Cell).Value ?? this.Cell,
+				CellEvent = this.CellEvent.ToString(),
+				IsOld = false
+			});
+			this.RaisePropertyChanged(nameof(this.Cells));
+
 			if (this.CurrentDeckId < 1) return;
 
 			this.UpdateFriendFleets(this.CurrentDeckId);

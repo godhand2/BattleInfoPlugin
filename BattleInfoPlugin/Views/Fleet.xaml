@@ -79,10 +79,11 @@
 			<ItemsControl.Style>
 				<Style TargetType="{x:Type ItemsControl}">
 					<Style.Triggers>
-						<DataTrigger Binding="{Binding Fleet.FleetType, Converter={StaticResource HasFlagConverter}, ConverterParameter=Second}"
-									 Value="True">
-							<Setter Property="Visibility"
-									Value="Hidden"/>
+						<DataTrigger Binding="{Binding Fleet.FleetType, Converter={StaticResource HasFlagConverter}, ConverterParameter=Second}" Value="True">
+							<Setter Property="Visibility" Value="Hidden"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Fleet.FleetType, Converter={StaticResource HasFlagConverter}, ConverterParameter=SecondEnemy}" Value="True">
+							<Setter Property="Visibility" Value="Hidden"/>
 						</DataTrigger>
 					</Style.Triggers>
 				</Style>

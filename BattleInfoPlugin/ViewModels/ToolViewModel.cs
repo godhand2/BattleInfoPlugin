@@ -33,11 +33,7 @@ namespace BattleInfoPlugin.ViewModels
 				? this.BattleData.FriendAirSupremacy.ToString()
 				: "";
 
-		public string Cell
-			=> MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.BattleData?.Cell).Value ?? this.BattleData?.Cell;
-
-		public string CellEvent
-			=> this.BattleData?.CellEvent.ToString();
+		public CellData[] Cells => this.BattleData?.Cells?.ToArray();
 
 		public string RankResult
 			=> this.BattleData.RankResult.ToString();
@@ -255,12 +251,8 @@ namespace BattleInfoPlugin.ViewModels
 			this.CompositeDisposable.Add(new PropertyChangedEventListener(this.BattleData)
 			{
 				{
-					nameof(this.BattleData.CellEvent),
-					(_, __) => this.RaisePropertyChanged(() => this.CellEvent)
-				},
-				{
-					nameof(this.BattleData.Cell),
-					(_, __) => this.RaisePropertyChanged(nameof(this.Cell))
+					nameof(this.BattleData.Cells),
+					(_, __) => this.RaisePropertyChanged(() => this.Cells)
 				},
 				{
 					nameof(this.BattleData.Name),

@@ -111,10 +111,6 @@ namespace BattleInfoPlugin.Models.Raw
 
 		#region 기지항공대
 
-		public static FleetDamages GetEnemyDamages(this Api_Air_Base_Attack[] attacks)
-			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetDamages() ?? defaultValue)
-			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
-
 		public static FleetDamages GetEachFirstEnemyDamages(this Api_Air_Base_Attack[] attacks)
 			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetDamages() ?? defaultValue)
 			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
@@ -129,6 +125,46 @@ namespace BattleInfoPlugin.Models.Raw
 				? attacks.SelectMany(x => new[] { x.api_stage1.ToResult($"제 {x.api_base_id}항공대 공대공"), x.api_stage2.ToResult($"제 {x.api_base_id}항공대 공대함") }).ToArray()
 				: new AirCombatResult[0];
 		}
+
+		#endregion
+
+		#region 噴式基地航空隊攻撃
+
+		public static FleetDamages GetFirstFleetDamages(this Api_Air_Base_Injection injection)
+			=> injection?.api_stage3?.api_fdam.GetDamages()
+			   ?? defaultValue;
+
+		public static FleetDamages GetSecondFleetDamages(this Api_Air_Base_Injection injection)
+			=> injection?.api_stage3_combined?.api_fdam?.GetDamages()
+			   ?? defaultValue;
+
+		public static FleetDamages GetEnemyDamages(this Api_Air_Base_Injection injection)
+			=> injection?.api_stage3?.api_edam?.GetDamages()
+			   ?? defaultValue;
+
+		public static FleetDamages GetSecondEnemyDamages(this Api_Air_Base_Injection injection)
+			=> injection?.api_stage3_combined?.api_edam?.GetDamages()
+			   ?? defaultValue;
+
+		#endregion
+
+		#region 噴式基地航空隊
+
+		public static FleetDamages GetFirstFleetDamages(this Api_Injection_Kouku kouku)
+			=> kouku?.api_stage3?.api_fdam.GetDamages()
+			   ?? defaultValue;
+
+		public static FleetDamages GetSecondFleetDamages(this Api_Injection_Kouku kouku)
+			=> kouku?.api_stage3_combined?.api_fdam?.GetDamages()
+			   ?? defaultValue;
+
+		public static FleetDamages GetEnemyDamages(this Api_Injection_Kouku kouku)
+			=> kouku?.api_stage3?.api_edam?.GetDamages()
+			   ?? defaultValue;
+
+		public static FleetDamages GetSecondEnemyDamages(this Api_Injection_Kouku kouku)
+			=> kouku?.api_stage3_combined?.api_edam?.GetDamages()
+			   ?? defaultValue;
 
 		#endregion
 

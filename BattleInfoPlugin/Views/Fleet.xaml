@@ -4,6 +4,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+			 xmlns:kcvc="http://schemes.grabacr.net/winfx/2015/kancolleviewer/controls"
 			 xmlns:converters="clr-namespace:Grabacr07.KanColleViewer.Converters;assembly=KanColleViewer.Controls"
 			 xmlns:controls="clr-namespace:Grabacr07.KanColleViewer.Controls;assembly=KanColleViewer.Controls"
 			 xmlns:models="clr-namespace:BattleInfoPlugin.Models"
@@ -143,154 +144,286 @@
 								<StackPanel.Resources>
 									<Style TargetType="{x:Type TextBlock}"
 										   BasedOn="{StaticResource DefaultTextStyleKey}">
-										<Setter Property="Margin" Value="3,0" />
+										<Setter Property="Margin" Value="2,0" />
 										<Setter Property="VerticalAlignment" Value="Top" />
 										<Setter Property="HorizontalAlignment" Value="Left" />
 									</Style>
 								</StackPanel.Resources>
 
-								<StackPanel Orientation="Horizontal">
-									<StackPanel>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="Auto" />
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
+
+									<TextBlock Grid.Column="0" Grid.Row="0" Text="화력" />
+									<TextBlock Grid.Column="1" Grid.Row="0">
+										<Run Text="{Binding SumFirepower, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
+											 Style="{DynamicResource EmphaticTextElementStyleKey}"
+											 FontSize="12"/>
+										<Run>
+											<Run.Text>
+												<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
+													<Binding Path="Firepower" Converter="{StaticResource UnknownValueConverter}"/>
+													<Binding Path="SlotsFirepower" />
+												</MultiBinding>
+											</Run.Text>
+										</Run>
+									</TextBlock>
+
+									<TextBlock Grid.Column="0" Grid.Row="1" Text="뇌장" />
+									<TextBlock Grid.Column="1" Grid.Row="1">
+										<Run Text="{Binding SumTorpedo, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
+											 Style="{DynamicResource EmphaticTextElementStyleKey}"
+											 FontSize="12"/>
+										<Run>
+											<Run.Text>
+												<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
+													<Binding Path="Torpedo" Converter="{StaticResource UnknownValueConverter}"/>
+													<Binding Path="SlotsTorpedo" />
+												</MultiBinding>
+											</Run.Text>
+										</Run>
+									</TextBlock>
+
+									<TextBlock Grid.Column="0" Grid.Row="2" Text="대공" />
+									<TextBlock Grid.Column="1" Grid.Row="2">
+										<Run Text="{Binding SumAA, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
+											 Style="{DynamicResource EmphaticTextElementStyleKey}"
+											 FontSize="12"/>
+										<Run>
+											<Run.Text>
+												<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
+													<Binding Path="AA" Converter="{StaticResource UnknownValueConverter}"/>
+													<Binding Path="SlotsAA"/>
+												</MultiBinding>
+											</Run.Text>
+										</Run>
+									</TextBlock>
+
+									<TextBlock Grid.Column="0" Grid.Row="3" Text="장갑" />
+									<TextBlock Grid.Column="1" Grid.Row="3">
+										<Run Text="{Binding SumArmer, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
+												Style="{DynamicResource EmphaticTextElementStyleKey}"
+												FontSize="12"/>
+										<Run>
+											<Run.Text>
+												<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
+													<Binding Path="Armer"
+																Converter="{StaticResource UnknownValueConverter}"/>
+													<Binding Path="SlotsArmer"/>
+												</MultiBinding>
+											</Run.Text>
+										</Run>
+									</TextBlock>
+
+									<TextBlock Grid.Column="2" Grid.Row="0" Text="대잠" Margin="4,0,0,0" />
+									<TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding SlotsASW, Mode=OneWay, StringFormat={}(+{0})}" />
+
+									<TextBlock Grid.Column="2" Grid.Row="1" Text="명중" Margin="4,0,0,0" />
+									<TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding SlotsHit, Mode=OneWay, StringFormat={}(+{0})}" />
+
+									<TextBlock Grid.Column="2" Grid.Row="2" Text="회피" Margin="4,0,0,0" />
+									<TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding SlotsEvade, Mode=OneWay, StringFormat={}(+{0})}" />
+
+
+									<StackPanel Orientation="Horizontal"
+												Margin="4,0,0,0"
+												Grid.Column="2" Grid.Row="3"
+												Grid.ColumnSpan="3">
+										<TextBlock Text="cond." />
 										<TextBlock>
-											<Run Text="화력"/>
-											<Run Text="{Binding SumFirepower, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
+											<InlineUIContainer>
+												<kcvc:ConditionIcon ConditionType="{Binding ConditionType, Mode=OneWay}"
+																	Width="10" Height="10" />
+											</InlineUIContainer>
+											<Run Text="{Binding Condition, Mode=OneWay}"
 												 Style="{DynamicResource EmphaticTextElementStyleKey}"
-												 FontSize="12"/>
-											<Run>
-												<Run.Text>
-													<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
-														<Binding Path="Firepower"
-																 Converter="{StaticResource UnknownValueConverter}"/>
-														<Binding Path="SlotsFirepower"/>
-													</MultiBinding>
-												</Run.Text>
-											</Run>
+												 FontSize="{DynamicResource DefaultFontSizeKey}" />
 										</TextBlock>
 
-										<TextBlock>
-											<Run Text="뇌장"/>
-											<Run Text="{Binding SumTorpedo, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
-												 Style="{DynamicResource EmphaticTextElementStyleKey}"
-												 FontSize="12"/>
-											<Run>
-												<Run.Text>
-													<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
-														<Binding Path="Torpedo"
-																 Converter="{StaticResource UnknownValueConverter}"/>
-														<Binding Path="SlotsTorpedo"/>
-													</MultiBinding>
-												</Run.Text>
-											</Run>
-										</TextBlock>
-
-										<TextBlock>
-											<Run Text="대공"/>
-											<Run Text="{Binding SumAA, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
-												 Style="{DynamicResource EmphaticTextElementStyleKey}"
-												 FontSize="12"/>
-											<Run>
-												<Run.Text>
-													<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
-														<Binding Path="AA"
-																 Converter="{StaticResource UnknownValueConverter}"/>
-														<Binding Path="SlotsAA"/>
-													</MultiBinding>
-												</Run.Text>
-											</Run>
-										</TextBlock>
-
-										<TextBlock>
-											<Run Text="장갑"/>
-											<Run Text="{Binding SumArmer, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
-												 Style="{DynamicResource EmphaticTextElementStyleKey}"
-												 FontSize="12"/>
-											<Run>
-												<Run.Text>
-													<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
-														<Binding Path="Armer"
-																 Converter="{StaticResource UnknownValueConverter}"/>
-														<Binding Path="SlotsArmer"/>
-													</MultiBinding>
-												</Run.Text>
-											</Run>
-										</TextBlock>
+										<StackPanel.Style>
+											<Style TargetType="{x:Type StackPanel}">
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding Condition}" Value="-1">
+														<Setter Property="Visibility" Value="Collapsed" />
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</StackPanel.Style>
 									</StackPanel>
 
-									<StackPanel>
-										<TextBlock>
-											<Run Text="대잠"/>
-											<Run Text="{Binding SlotsASW, Mode=OneWay, StringFormat={}(+{0})}"/>
-										</TextBlock>
-										<TextBlock>
-											<Run Text="명중"/>
-											<Run Text="{Binding SlotsHit, Mode=OneWay, StringFormat={}(+{0})}"/>
-										</TextBlock>
-										<TextBlock>
-											<Run Text="회피"/>
-											<Run Text="{Binding SlotsEvade, Mode=OneWay, StringFormat={}(+{0})}"/>
-										</TextBlock>
-									</StackPanel>
-								</StackPanel>
 
-								<StackPanel>
-									<TextBlock Text="공격종류"/>
-									<TextBlock>
-										<Run Text="주간"/>
-										<Run Text="{Binding DayAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
-											 Style="{DynamicResource EmphaticTextElementStyleKey}"
-											 FontSize="{DynamicResource DefaultFontSizeKey}"/>
-									</TextBlock>
-									<TextBlock>
-										<Run Text="야전"/>
-										<Run Text="{Binding NightAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
-											 Style="{DynamicResource EmphaticTextElementStyleKey}"
-											 FontSize="{DynamicResource DefaultFontSizeKey}"/>
-									</TextBlock>
-								</StackPanel>
+									<TextBlock Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Text="공격종류" Margin="4,0,0,0" />
+
+									<TextBlock Grid.Column="4" Grid.Row="1" Text="주간" Margin="4,0" />
+									<TextBlock Grid.Column="5" Grid.Row="1"
+											   Text="{Binding DayAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
+											   Style="{DynamicResource EmphaticTextStyleKey}"
+											   FontSize="{DynamicResource DefaultFontSizeKey}" />
+
+									<TextBlock Grid.Column="4" Grid.Row="2" Text="야전" Margin="4,0" />
+									<TextBlock Grid.Column="5" Grid.Row="2"
+											   Text="{Binding NightAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
+											   Style="{DynamicResource EmphaticTextStyleKey}"
+											   FontSize="{DynamicResource DefaultFontSizeKey}" />
+								</Grid>
 
 								<StackPanel Orientation="Vertical">
 									<ItemsControl ItemsSource="{Binding Slots}"
 												  Margin="7,0">
 										<ItemsControl.ItemTemplate>
 											<DataTemplate>
-												<Grid>
-													<Grid.ColumnDefinitions>
-														<ColumnDefinition Width="14"/>
-														<ColumnDefinition Width="Auto"/>
-													</Grid.ColumnDefinitions>
+												<StackPanel Orientation="Horizontal">
 													<controls:SlotItemIcon Grid.Column="0"
 																		   Type="{Binding Source.IconType, Mode=OneWay}"
 																		   Width="14"
 																		   Height="14" />
-													<TextBlock Grid.Column="1"
-															   Foreground="{DynamicResource ActiveForegroundBrushKey}"
+													<TextBlock Foreground="{DynamicResource ActiveForegroundBrushKey}"
 															   Style="{DynamicResource DefaultTextStyleKey}"
 															   Text="{Binding Source.Name, Mode=OneWay}"
 															   Margin="5,1"/>
-												</Grid>
+
+													<TextBlock Margin="0,1,5,1"
+															   Text="{Binding Level, StringFormat=★+{0}}"
+															   Foreground="#FF45A9A5">
+														<TextBlock.Style>
+															<Style TargetType="{x:Type TextBlock}">
+																<Style.Triggers>
+																	<DataTrigger Binding="{Binding Level}" Value="0">
+																		<Setter Property="Visibility" Value="Collapsed" />
+																	</DataTrigger>
+																	<DataTrigger Binding="{Binding Level}" Value="10">
+																		<Setter Property="Text" Value="★max" />
+																	</DataTrigger>
+																</Style.Triggers>
+															</Style>
+														</TextBlock.Style>
+													</TextBlock>
+
+													<TextBlock Margin="0,1,5,1"
+														   Text="{Binding Proficiency, StringFormat=+{0}}"
+														   Foreground="#FFD49C0F">
+														<TextBlock.Style>
+															<Style TargetType="{x:Type TextBlock}">
+																<Style.Triggers>
+																	<DataTrigger Binding="{Binding Proficiency}" Value="0">
+																		<Setter Property="Visibility" Value="Collapsed" />
+																	</DataTrigger>
+																</Style.Triggers>
+															</Style>
+														</TextBlock.Style>
+													</TextBlock>
+
+													<TextBlock Margin="0,1,5,1">
+														<Run Text="(" />
+														<Run Text="{Binding Current, Mode=OneWay}" />
+														<Run Text="/" />
+														<Run Text="{Binding Maximum, Mode=OneWay}" />
+														<Run Text=")" />
+														<TextBlock.Style>
+															<Style TargetType="{x:Type TextBlock}">
+																<Setter Property="Foreground" Value="#FFDD3535" />
+																<Style.Triggers>
+																	<DataTrigger Binding="{Binding Source.IsNumerable}" Value="False">
+																		<Setter Property="Visibility" Value="Collapsed" />
+																	</DataTrigger>
+																	<DataTrigger Binding="{Binding Lost}" Value="0">
+																		<Setter Property="Foreground" Value="#FFFFFFFF" />
+																	</DataTrigger>
+																	<DataTrigger Binding="{Binding Current}" Value="0">
+																		<Setter Property="Foreground" Value="#80FFFFFF" />
+																	</DataTrigger>
+																</Style.Triggers>
+															</Style>
+														</TextBlock.Style>
+													</TextBlock>
+												</StackPanel>
 											</DataTemplate>
 										</ItemsControl.ItemTemplate>
 									</ItemsControl>
 
-									<StackPanel Orientation="Vertical">
+									<StackPanel Orientation="Vertical" Margin="7,0">
 										<Rectangle Height="1"
 												   Margin="0,4,0,0"
 												   Style="{DynamicResource SeparatorRectangleStyleKey}" />
-										<Grid>
-											<Grid.ColumnDefinitions>
-												<ColumnDefinition Width="14"/>
-												<ColumnDefinition Width="Auto"/>
-											</Grid.ColumnDefinitions>
+										<StackPanel Margin="0,4,0,0"
+													Orientation="Horizontal">
 											<controls:SlotItemIcon Grid.Column="0"
 																   Type="{Binding ExSlot.Source.IconType, Mode=OneWay}"
 																   Width="14"
 																   Height="14" />
-											<TextBlock Grid.Column="1"
-													   Foreground="{DynamicResource ActiveForegroundBrushKey}"
+											<TextBlock Foreground="{DynamicResource ActiveForegroundBrushKey}"
 													   Style="{DynamicResource DefaultTextStyleKey}"
 													   Text="{Binding ExSlot.Source.Name, Mode=OneWay}"
 													   Margin="5,1"/>
-										</Grid>
+
+											<TextBlock Margin="0,1,5,1"
+													   Text="{Binding ExSlot.Level, StringFormat=★+{0}}"
+													   Foreground="#FF45A9A5">
+												<TextBlock.Style>
+													<Style TargetType="{x:Type TextBlock}">
+														<Style.Triggers>
+															<DataTrigger Binding="{Binding ExSlot.Level}" Value="0">
+																<Setter Property="Visibility" Value="Collapsed" />
+															</DataTrigger>
+															<DataTrigger Binding="{Binding ExSlot.Level}" Value="10">
+																<Setter Property="Text" Value="★max" />
+															</DataTrigger>
+														</Style.Triggers>
+													</Style>
+												</TextBlock.Style>
+											</TextBlock>
+
+											<TextBlock Margin="0,1,5,1"
+													   Text="{Binding ExSlot.Proficiency, StringFormat=+{0}}"
+													   Foreground="#FFD49C0F">
+												<TextBlock.Style>
+													<Style TargetType="{x:Type TextBlock}">
+														<Style.Triggers>
+															<DataTrigger Binding="{Binding ExSlot.Proficiency}" Value="0">
+																<Setter Property="Visibility" Value="Collapsed" />
+															</DataTrigger>
+														</Style.Triggers>
+													</Style>
+												</TextBlock.Style>
+											</TextBlock>
+
+											<TextBlock Margin="0,1,5,1">
+												<Run Text="(" />
+												<Run Text="{Binding ExSlot.Current, Mode=OneWay}" />
+												<Run Text="/" />
+												<Run Text="{Binding ExSlot.Maximum, Mode=OneWay}" />
+												<Run Text=")" />
+												<TextBlock.Style>
+													<Style TargetType="{x:Type TextBlock}">
+														<Setter Property="Foreground" Value="#FFDD3535" />
+														<Style.Triggers>
+															<DataTrigger Binding="{Binding ExSlot.Source.IsNumerable}" Value="False">
+																<Setter Property="Visibility" Value="Collapsed" />
+															</DataTrigger>
+															<DataTrigger Binding="{Binding ExSlot.Lost}" Value="0">
+																<Setter Property="Foreground" Value="#FFFFFFFF" />
+															</DataTrigger>
+															<DataTrigger Binding="{Binding ExSlot.Current}" Value="0">
+																<Setter Property="Foreground" Value="#80FFFFFF" />
+															</DataTrigger>
+														</Style.Triggers>
+													</Style>
+												</TextBlock.Style>
+											</TextBlock>
+
+										</StackPanel>
 
 										<StackPanel.Style>
 											<Style TargetType="{x:Type StackPanel}">

@@ -306,16 +306,51 @@ namespace BattleInfoPlugin.Models
 
 		#endregion
 
+		#region Condition変更通知プロパティ
+		private int _Condition;
+		public int Condition
+		{
+			get { return this._Condition; }
+			set
+			{
+				if (this._Condition == value)
+					return;
+				this._Condition = value;
+				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
+
+		#region ConditionType変更通知プロパティ
+		private ConditionType _ConditionType;
+		public ConditionType ConditionType
+		{
+			get { return this._ConditionType; }
+			set
+			{
+				if (this._ConditionType == value)
+					return;
+				this._ConditionType = value;
+				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
+
+		#region IsMvp 변경통지 프로퍼티
 		private bool _IsMvp;
 		public bool IsMvp
 		{
 			get { return this._IsMvp; }
 			set
 			{
-				this._IsMvp = value;
-				this.RaisePropertyChanged();
+				if (this._IsMvp != value)
+				{
+					this._IsMvp = value;
+					this.RaisePropertyChanged();
+				}
 			}
 		}
+		#endregion
 
 		public int SlotsFirepower => this.Slots.Sum(x => x.Firepower);
 		public int SlotsTorpedo => this.Slots.Sum(x => x.Torpedo);
@@ -425,6 +460,9 @@ namespace BattleInfoPlugin.Models
 				? new ShipSlotData(this.Source.ExSlot)
 				: null;
 
+			this.Condition = this.Source.Condition;
+			this.ConditionType = this.Source.ConditionType;
+
 			this.Firepower = this.Source.Firepower.Current;
 			this.Torpedo = this.Source.Torpedo.Current;
 			this.AA = this.Source.AA.Current;
@@ -466,6 +504,8 @@ namespace BattleInfoPlugin.Models
 		{
 			this.Id = this.Source.Id;
 			this.Name = this.Source.Name;
+
+			this.Condition = -1;
 
 			var isEnemyID = 500 < this.Source.Id && this.Source.Id < 901;
 			var m = Plugin.RawStart2.api_mst_ship.Single(x => x.api_id == this.Source.Id);

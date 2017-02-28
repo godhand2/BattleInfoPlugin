@@ -402,6 +402,9 @@ namespace BattleInfoPlugin.Models
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/each_battle")
 				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, true));
 
+			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/each_battle_water")
+				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, true));
+
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_midnight_battle")
 				.TryParse<combined_battle_ec_midnight_battle>().Subscribe(x => this.Update(x.Data));
 
@@ -617,9 +620,9 @@ namespace BattleInfoPlugin.Models
 				.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
 				.Sum(x => x.BeforeNowHP);//리스트 갱신하기전에 아군 HP최대값을 저장
 
-			this.UpdateFleets(data.api_deck_id, data);
-			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
-			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+			// this.UpdateFleets(data.api_deck_id, data);
+			// this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
+			// this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
 			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
@@ -859,6 +862,7 @@ namespace BattleInfoPlugin.Models
 					data.api_opening_taisen.GetEachFirstFriendDamages(),
 					data.api_opening_atack.GetEachFirstFriendDamages(),
 					data.api_hougeki1.GetEachFirstFriendDamages(),
+					data.api_hougeki2.GetEachSecondFriendDamages(),
 					data.api_raigeki.GetEachFirstFriendDamages(),
 					data.api_hougeki3.GetEachFirstFriendDamages()
 				);
@@ -867,6 +871,7 @@ namespace BattleInfoPlugin.Models
 					data.api_kouku.GetSecondFleetDamages(),
 					data.api_opening_taisen.GetEachSecondFriendDamages(),
 					data.api_opening_atack.GetEachSecondFriendDamages(),
+					data.api_hougeki1.GetEachFirstFriendDamages(),
 					data.api_hougeki2.GetEachSecondFriendDamages(),
 					data.api_raigeki.GetEachSecondFriendDamages(),
 					data.api_hougeki3.GetEachSecondFriendDamages()
@@ -879,6 +884,7 @@ namespace BattleInfoPlugin.Models
 					data.api_opening_taisen.GetEachFirstEnemyDamages(),
 					data.api_opening_atack.GetEachFirstEnemyDamages(),
 					data.api_hougeki1.GetEachFirstEnemyDamages(),
+					data.api_hougeki2.GetEachSecondFriendDamages(),
 					data.api_raigeki.GetEachFirstEnemyDamages(),
 					data.api_hougeki3.GetEachFirstEnemyDamages()
 				);
@@ -889,6 +895,7 @@ namespace BattleInfoPlugin.Models
 					data.api_kouku.GetSecondEnemyDamages(),
 					data.api_opening_taisen.GetEachSecondEnemyDamages(),
 					data.api_opening_atack.GetEachSecondEnemyDamages(),
+					data.api_hougeki1.GetEachFirstEnemyDamages(),
 					data.api_hougeki2.GetEachSecondEnemyDamages(),
 					data.api_raigeki.GetEachSecondEnemyDamages(),
 					data.api_hougeki3.GetEachSecondEnemyDamages()

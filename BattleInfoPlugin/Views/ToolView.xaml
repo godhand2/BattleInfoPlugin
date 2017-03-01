@@ -283,7 +283,7 @@
 								Orientation="Horizontal">
 						<TextBlock Text="알림:" />
 						
-						<CheckBox Content="비활성화일때만"
+						<CheckBox Content="비활성화때만"
 								  IsChecked="{Binding IsNotifyOnlyWhenInactive}"
 								  Margin="5,0,5,0" />
 						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
@@ -297,6 +297,10 @@
 						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
 						<CheckBox Content="대파"
 								  IsChecked="{Binding IsCriticalNotiEnabled}"
+								  Margin="5,0,5,0" />
+						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
+						<CheckBox Content="대파알림 항상"
+								  IsChecked="{Binding IsCriticalAlways}"
 								  Margin="5,0,5,0" />
 					</StackPanel>
 				</StackPanel>

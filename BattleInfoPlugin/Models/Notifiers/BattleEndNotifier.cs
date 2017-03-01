@@ -110,17 +110,19 @@ namespace BattleInfoPlugin.Models.Notifiers
 			if (Settings.Default.FirstIsCritical || Settings.Default.SecondIsCritical)
 			{
 				this.Notify(
-									NotificationType.CriticalState,
-									"대파알림",
-									"대파된 칸무스가 있습니다!",
-									true);
+					NotificationType.CriticalState,
+					"대파알림",
+					"대파된 칸무스가 있습니다!",
+					true
+				);
 				return true;
 			}
 			else return false;
 		}
 		private void NotifyEndOfBattle()
 		{
-			if (!IsCriticalCheck() || !CriticalEnabled) this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
+			if (!IsCriticalCheck() || !CriticalEnabled)
+				this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
 		}
 
 		private void Notify(string type, string title, string message, bool IsCritical = false)

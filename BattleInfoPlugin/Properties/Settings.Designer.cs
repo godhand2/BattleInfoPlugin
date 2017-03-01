@@ -166,5 +166,17 @@ namespace BattleInfoPlugin.Properties {
                 this["AutoSelectTab"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CriticalAlways {
+            get {
+                return ((bool)(this["CriticalAlways"]));
+            }
+            set {
+                this["CriticalAlways"] = value;
+            }
+        }
     }
 }

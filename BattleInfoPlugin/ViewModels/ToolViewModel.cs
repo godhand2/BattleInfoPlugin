@@ -144,6 +144,23 @@ namespace BattleInfoPlugin.ViewModels
 		}
 		#endregion
 
+		#region IsCriticalAlways
+		// ここ以外で変更しないのでModel変更通知は受け取らない雑対応
+		public bool IsCriticalAlways
+		{
+			get { return settings.Default.CriticalAlways; }
+			set
+			{
+				if (settings.Default.CriticalAlways != value)
+				{
+					settings.Default.CriticalAlways = value;
+					settings.Default.Save();
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
 		#region IsNotifierEnabled変更通知プロパティ
 		// ここ以外で変更しないのでModel変更通知は受け取らない雑対応
 		public bool IsNotifierEnabled

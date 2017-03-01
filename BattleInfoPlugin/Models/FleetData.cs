@@ -252,7 +252,7 @@ namespace BattleInfoPlugin.Models
 				fleet.IsCritical = fleet.Ships
 					.Where(x => x.MaxHP > 0)
 					.Where(x => (x.NowHP / (double)x.MaxHP) <= 0.25)
-					.Any(x => !x.Situation.HasFlag(ShipSituation.DamageControlled) &&
+					.Any(x => !(x.Situation.HasFlag(ShipSituation.DamageControlled) && !Settings.Default.CriticalAlways) &&
 							  !x.Situation.HasFlag(ShipSituation.Evacuation) &&
 							  !x.Situation.HasFlag(ShipSituation.Tow)
 					);

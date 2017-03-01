@@ -295,10 +295,10 @@
 															   Margin="5,1"/>
 
 													<TextBlock Margin="0,1,5,1"
-															   Text="{Binding Level, StringFormat=★+{0}}"
 															   Foreground="#FF45A9A5">
 														<TextBlock.Style>
 															<Style TargetType="{x:Type TextBlock}">
+																<Setter Property="Text" Value="{Binding Level, StringFormat=★+{0}}" />
 																<Style.Triggers>
 																	<DataTrigger Binding="{Binding Level}" Value="0">
 																		<Setter Property="Visibility" Value="Collapsed" />
@@ -338,6 +338,12 @@
 																	<DataTrigger Binding="{Binding Source.IsNumerable}" Value="False">
 																		<Setter Property="Visibility" Value="Collapsed" />
 																	</DataTrigger>
+																	<DataTrigger Binding="{Binding Lost}" Value="-1">
+																		<Setter Property="Visibility" Value="Collapsed" />
+																	</DataTrigger>
+																	<DataTrigger Binding="{Binding Current}" Value="-1">
+																		<Setter Property="Visibility" Value="Collapsed" />
+																	</DataTrigger>
 																	<DataTrigger Binding="{Binding Lost}" Value="0">
 																		<Setter Property="Foreground" Value="#FFFFFFFF" />
 																	</DataTrigger>
@@ -369,10 +375,10 @@
 													   Margin="5,1"/>
 
 											<TextBlock Margin="0,1,5,1"
-													   Text="{Binding ExSlot.Level, StringFormat=★+{0}}"
 													   Foreground="#FF45A9A5">
 												<TextBlock.Style>
 													<Style TargetType="{x:Type TextBlock}">
+														<Setter Property="Text" Value="{Binding ExSlot.Level, StringFormat=★+{0}}" />
 														<Style.Triggers>
 															<DataTrigger Binding="{Binding ExSlot.Level}" Value="0">
 																<Setter Property="Visibility" Value="Collapsed" />
@@ -410,6 +416,12 @@
 														<Setter Property="Foreground" Value="#FFDD3535" />
 														<Style.Triggers>
 															<DataTrigger Binding="{Binding ExSlot.Source.IsNumerable}" Value="False">
+																<Setter Property="Visibility" Value="Collapsed" />
+															</DataTrigger>
+															<DataTrigger Binding="{Binding ExSlot.Lost}" Value="-1">
+																<Setter Property="Visibility" Value="Collapsed" />
+															</DataTrigger>
+															<DataTrigger Binding="{Binding ExSlot.Current}" Value="-1">
 																<Setter Property="Visibility" Value="Collapsed" />
 															</DataTrigger>
 															<DataTrigger Binding="{Binding ExSlot.Lost}" Value="0">

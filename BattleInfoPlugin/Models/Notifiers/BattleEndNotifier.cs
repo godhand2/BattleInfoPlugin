@@ -20,8 +20,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 		private readonly Plugin plugin;
 
 		#region IsEnabled変更通知プロパティ
-
-		public bool IsEnabled
+				public bool IsEnabled
 		{
 			get { return settings.IsEnabledBattleEndNotify; }
 			set
@@ -33,7 +32,6 @@ namespace BattleInfoPlugin.Models.Notifiers
 				this.RaisePropertyChanged();
 			}
 		}
-
 		#endregion
 
 		#region IsPursuit
@@ -47,12 +45,11 @@ namespace BattleInfoPlugin.Models.Notifiers
 				settings.IsPursuitEnabled = value;
 				settings.Save();
 				this.RaisePropertyChanged();
-            }
+			}
 		}
 		#endregion
 
 		#region CriticalEnabled
-
 		public bool CriticalEnabled
 		{
 			get { return settings.CriticalEnabled; }
@@ -65,11 +62,9 @@ namespace BattleInfoPlugin.Models.Notifiers
 				this.RaisePropertyChanged();
 			}
 		}
-
 		#endregion
 
 		#region IsNotifyOnlyWhenInactive変更通知プロパティ
-
 		public bool IsNotifyOnlyWhenInactive
 		{
 			get { return settings.IsBattleEndNotifyOnlyWhenInactive; }
@@ -82,7 +77,6 @@ namespace BattleInfoPlugin.Models.Notifiers
 				this.RaisePropertyChanged();
 			}
 		}
-
 		#endregion
 
 		public BattleEndNotifier(Plugin plugin)

@@ -677,8 +677,18 @@ namespace BattleInfoPlugin.Models
 			this.Clear();
 
 			this.Name = "연습 - 주간전";
+
 			this.CellEvent = (int)CellType.연습전;
 			this.Cell = "";
+			this.Cells.Clear();
+
+			this.Cells.ForEach(x => x.IsOld = true);
+			this.Cells.Add(new CellData
+			{
+				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.Cell).Value ?? this.Cell,
+				CellEvent = this.CellEvent.ToString(),
+				IsOld = false
+			});
 
 			this.UpdateFleets(data.api_dock_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps);

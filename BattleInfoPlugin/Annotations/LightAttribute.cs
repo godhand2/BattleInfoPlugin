@@ -15,21 +15,21 @@ namespace BattleInfoPlugin.Annotations
 #endif
 // ReSharper restore CheckNamespace
 {
-    [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-    [Conditional("DEBUG")]
-    public class LightAttribute
-        : ElementalAttribute
-    {
-        public const string Name = "Light";
+	[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+	[Conditional("DEBUG")]
+	public class LightAttribute
+		: ElementalAttribute
+	{
+		public const string Name = "Light";
 
-        public LightAttribute(string description = null)
-            : base(description)
-        {
-        }
-    }
+		public LightAttribute(string description = null)
+			: base(description)
+		{
+		}
+	}
 
-    partial class CodeElement
-    {
-        public const string Light = LightAttribute.Name;
-    }
+	partial class CodeElement
+	{
+		public const string Light = LightAttribute.Name;
+	}
 }

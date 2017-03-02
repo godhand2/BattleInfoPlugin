@@ -17,84 +17,84 @@ using MetroTrilithon.Linq;
 
 namespace BattleInfoPlugin.ViewModels.Enemies
 {
-    public class EnemyFleetViewModel : ViewModel
-    {
-        public string Key
-            => this.Fleets.Keys.JoinString("\r\n");
+	public class EnemyFleetViewModel : ViewModel
+	{
+		public string Key
+			=> this.Fleets.Keys.JoinString("\r\n");
 
-        public string Name
-            => this.Fleet?.Name ?? "？？？";
+		public string Name
+			=> this.Fleet?.Name ?? "？？？";
 
-        public string Rank
-            => string.Join(", ", this.Fleet?.Rank.Where(x => 0 < x).Select(x =>
-            {
-                switch (x)
-                {
-                    case 1:
-                        return "병";
-                    case 2:
-                        return "을";
-                    case 3:
-                        return "갑";
-                    default:
-                        return "？";
-                }
-            }));
+		public string Rank
+			=> string.Join(", ", this.Fleet?.Rank.Where(x => 0 < x).Select(x =>
+			{
+				switch (x)
+				{
+					case 1:
+						return "병";
+					case 2:
+						return "을";
+					case 3:
+						return "갑";
+					default:
+						return "？";
+				}
+			}));
 
-        public Visibility RankVisibility
-            => !string.IsNullOrEmpty(this.Rank) ? Visibility.Visible : Visibility.Collapsed;
-        
-        public Dictionary<string, FleetData> Fleets { get; set; } // 陣形ごとのデータ
+		public Visibility RankVisibility
+			=> !string.IsNullOrEmpty(this.Rank) ? Visibility.Visible : Visibility.Collapsed;
+		
+		public Dictionary<string, FleetData> Fleets { get; set; } // 陣形ごとのデータ
 
-        public FleetData Fleet => this.Fleets.Values.FirstOrDefault();
+		public FleetData Fleet => this.Fleets.Values.FirstOrDefault();
 
-        public string Formation => Fleets.Values
-                                    .OrderBy(x => x.Formation)
-                                    .Select(x => x.Formation.ToString())
-                                    .Distinct()
-                                    .JoinString(", ");
+		public string Formation => Fleets.Values
+									.OrderBy(x => x.Formation)
+									.Select(x => x.Formation.ToString())
+									.Distinct()
+									.JoinString(", ");
 
-        #region EnemyShips
+		#region EnemyShips
 
-        private EnemyShipViewModel[] _EnemyShips;
+		private EnemyShipViewModel[] _EnemyShips;
 
-        public EnemyShipViewModel[] EnemyShips
-        {
-            get { return this._EnemyShips; }
-            set
-            {
-                this._EnemyShips = value;
-                if (value == null) return;
-                foreach (var val in value)
-                {
-                    val.ParentFleet = this;
-                }
-            }
-        }
+		public EnemyShipViewModel[] EnemyShips
+		{
+			get { return this._EnemyShips; }
+			set
+			{
+				this._EnemyShips = value;
+				if (value == null) return;
+				foreach (var val in value)
+				{
+					val.ParentFleet = this;
+				}
+			}
+		}
 
-        #endregion
+		#endregion
 
-        public EnemyCellViewModel ParentCell { get; set; }
+		public EnemyCellViewModel ParentCell { get; set; }
 
-        public void DeleteEnemy()
-        {
-            System.Diagnostics.Debug.WriteLine($"DeleteEnemy:{this.Key}");
-            if (MessageBoxResult.OK != MessageBox.Show(
-                $"{this.Name}(key:{this.Key})의 데이터를 소거합니다",
-                "확인",
-                MessageBoxButton.OKCancel,
-                MessageBoxImage.Question))
-                return;
+		public void DeleteEnemy()
+		{
+			System.Diagnostics.Debug.WriteLine($"DeleteEnemy:{this.Key}");
+			if (MessageBoxResult.OK != MessageBox.Show(
+				$"{this.Name}(key:{this.Key})의 데이터를 소거합니다",
+				"확인",
+				MessageBoxButton.OKCancel,
+				MessageBoxImage.Question))
+				return;
 
-            foreach (var key in this.Fleets.Keys)
-            {
-                this.ParentCell.ParentMap.WindowViewModel.RemoveEnemy(key);
-            }
-        }
+			foreach (var key in this.Fleets.Keys)
+			{
+				this.ParentCell.ParentMap.WindowViewModel.RemoveEnemy(key);
+			}
+		}
 
-        public void CopyIdToClipboard()
-        {
-            Clipboard.SetText(this.Key);
-        }
-    }
+		public void CopyIdToClipboard()
+		{
+			Clipboard.SetText(this.Key);
+		}
+	}
 }

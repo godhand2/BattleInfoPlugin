@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BattleInfoPlugin.Win32
 {
-    [StructLayout(LayoutKind.Sequential)]
-    internal class RECT
-    {
-        public int left;
-        public int top;
-        public int width;
-        public int height;
-    }
+	[StructLayout(LayoutKind.Sequential)]
+	internal class RECT
+	{
+		public int left;
+		public int top;
+		public int width;
+		public int height;
+	}
 }

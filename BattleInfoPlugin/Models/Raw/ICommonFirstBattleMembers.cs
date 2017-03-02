@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BattleInfoPlugin.Models.Raw
 {
-    interface ICommonFirstBattleMembers : ICommonBattleMembers
-    {
-        int[] api_formation { get; set; }
-    }
+	interface ICommonFirstBattleMembers : ICommonBattleMembers
+	{
+		int[] api_formation { get; set; }
+	}
 }

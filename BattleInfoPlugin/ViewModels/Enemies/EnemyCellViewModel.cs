@@ -15,34 +15,34 @@ using BattleInfoPlugin.Models;
 
 namespace BattleInfoPlugin.ViewModels.Enemies
 {
-    public class EnemyCellViewModel : ViewModel
-    {
-        public int Key { get; set; }
+	public class EnemyCellViewModel : ViewModel
+	{
+		public int Key { get; set; }
 
-        #region EnemyFleets
+		#region EnemyFleets
 
-        private EnemyFleetViewModel[] _EnemyFleets;
+		private EnemyFleetViewModel[] _EnemyFleets;
 
-        public EnemyFleetViewModel[] EnemyFleets
-        {
-            get { return this._EnemyFleets; }
-            set
-            {
-                this._EnemyFleets = value;
-                if (value == null) return;
-                foreach (var val in value)
-                {
-                    val.ParentCell = this;
-                }
-            }
-        }
+		public EnemyFleetViewModel[] EnemyFleets
+		{
+			get { return this._EnemyFleets; }
+			set
+			{
+				this._EnemyFleets = value;
+				if (value == null) return;
+				foreach (var val in value)
+				{
+					val.ParentCell = this;
+				}
+			}
+		}
 
-        #endregion
+		#endregion
 
-        public CellType CellType { get; set; }
+		public CellType CellType { get; set; }
 
-        public int ColorNo { get; set; }
+		public int ColorNo { get; set; }
 
-        public EnemyMapViewModel ParentMap { get; set; }
-    }
+		public EnemyMapViewModel ParentMap { get; set; }
+	}
 }

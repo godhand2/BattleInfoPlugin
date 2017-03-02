@@ -8,19 +8,19 @@ using System.Windows.Data;
 
 namespace BattleInfoPlugin.Views.Converters
 {
-    public class UnknownValueConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is int && -1 < ((int) value))
-                return value;
+	public class UnknownValueConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (value is int && -1 < ((int) value))
+				return value;
 
-            return "？";
-        }
+			return "？";
+		}
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

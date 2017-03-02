@@ -17,8 +17,8 @@ namespace BattleInfoPlugin.Views.Converters
 				int cellevent = int.Parse((string)value);
 				switch (cellevent)
 				{
-                    case -1:
-                        return "#FF8DC660";
+					case -1:
+						return "#FF8DC660";
 					case 2:
 						return "#FF3FBD2B";
 					case 3:

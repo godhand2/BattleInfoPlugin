@@ -7,29 +7,29 @@ using Grabacr07.KanColleWrapper.Models.Raw;
 
 namespace BattleInfoPlugin.Models
 {
-    [DataContract]
-    public class MapArea
-    {
-        [DataMember]
-        public int Id { get; private set; }
+	[DataContract]
+	public class MapArea
+	{
+		[DataMember]
+		public int Id { get; private set; }
 
-        [DataMember]
-        public string Name { get; private set; }
+		[DataMember]
+		public string Name { get; private set; }
 
-        public MapArea(kcsapi_mst_maparea maparea)
-        {
-            this.Id = maparea.api_id;
-            this.Name = maparea.api_name;
-        }
+		public MapArea(kcsapi_mst_maparea maparea)
+		{
+			this.Id = maparea.api_id;
+			this.Name = maparea.api_name;
+		}
 
-        #region static members
+		#region static members
 
-        public static MapArea Dummy { get; } = new MapArea(new kcsapi_mst_maparea
-        {
-            api_id = 0,
-            api_name = "？？？",
-        });
+		public static MapArea Dummy { get; } = new MapArea(new kcsapi_mst_maparea
+		{
+			api_id = 0,
+			api_name = "？？？",
+		});
 
-        #endregion
-    }
+		#endregion
+	}
 }

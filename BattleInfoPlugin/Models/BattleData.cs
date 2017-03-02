@@ -689,6 +689,7 @@ namespace BattleInfoPlugin.Models
 				CellEvent = this.CellEvent.ToString(),
 				IsOld = false
 			});
+			this.RaisePropertyChanged(nameof(this.Cells));
 
 			this.UpdateFleets(data.api_dock_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps);

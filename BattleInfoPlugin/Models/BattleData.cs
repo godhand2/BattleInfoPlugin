@@ -1748,13 +1748,17 @@ namespace BattleInfoPlugin.Models
 			{
 				case 2:
 					if (data.api_itemget == null) return "자원획득";
-					return string.Format(
-						"{0} +{1}",
-						resources[data.api_itemget.api_id - 1],
-						data.api_itemget.api_getcount
+
+					return string.Join(
+						" ",
+						data.api_itemget
+							.Select(x => string.Format(
+								"{0} +{1}", resources[x.api_id - 1], x.api_getcount
+							))
+							.ToArray()
 					);
 				case 3:
-					if (data.api_happening == null) return "소용돌이";
+					if (data.api_happening == null || data.api_happening.api_count == 0) return "소용돌이";
 					return string.Format(
 						"{0} -{1}",
 						resources[data.api_happening.api_type - 1],

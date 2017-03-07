@@ -46,14 +46,12 @@
 				<StackPanel>
 					<Grid>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition/>
-							<ColumnDefinition Width="144"/>
-							<ColumnDefinition Width="120"/>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="120" />
 						</Grid.ColumnDefinitions>
 
-						<StackPanel Grid.Column="1"
-									Margin="0,0,10,0">
+						<StackPanel Margin="0,0,10,0">
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
 								<Run Text="전투종류:"/>
 								<Run Text="{Binding BattleName, Mode=OneWay}"
@@ -73,7 +71,8 @@
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 							</TextBlock>
 						</StackPanel>
-						<StackPanel Grid.Column="2">
+						<StackPanel Grid.Column="1"
+									MinWidth="144">
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
 								<Run Text="갱신일시:"/>
 								<Run Text="{Binding UpdatedTime, Mode=OneWay}"
@@ -89,28 +88,68 @@
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
 								<Run Text="지원함대:"/>
 								<Run Text="{Binding SupportUsed, Mode=OneWay}"
-									 FontSize="12"
-									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+									 FontSize="12">
+									<Run.Style>
+										<Style TargetType="{x:Type Run}">
+											<Setter Property="Foreground" Value="#FFFFFFFF" />
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding SupportUsed, Mode=OneWay}" Value="지원 없음">
+													<Setter Property="Foreground" Value="#80FFFFFF" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Run.Style>
+								</Run>
 							</TextBlock>
 						</StackPanel>
-						<StackPanel Grid.Column="3">
+						<StackPanel Grid.Column="2">
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
 								<Run Text="조명탄:　"/>
 								<Run Text="{Binding FlareUsed, Mode=OneWay}"
-									 FontSize="12"
-									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+									 FontSize="12">
+									<Run.Style>
+										<Style TargetType="{x:Type Run}">
+											<Setter Property="Foreground" Value="#FFFFFFFF" />
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding FlareUsed, Mode=OneWay}" Value="발동 안됨">
+													<Setter Property="Foreground" Value="#80FFFFFF" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Run.Style>
+								</Run>
 							</TextBlock>
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
 								<Run Text="야간정찰:"/>
 								<Run Text="{Binding NightReconScouted, Mode=OneWay}"
-									 FontSize="12"
-									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+									 FontSize="12">
+									<Run.Style>
+										<Style TargetType="{x:Type Run}">
+											<Setter Property="Foreground" Value="#FFFFFFFF" />
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding NightReconScouted, Mode=OneWay}" Value="발동 안됨">
+													<Setter Property="Foreground" Value="#80FFFFFF" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Run.Style>
+								</Run>
 							</TextBlock>
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
 								<Run Text="대공컷인:"/>
 								<Run Text="{Binding AntiAirFired, Mode=OneWay}"
-									 FontSize="12"
-									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
+									 FontSize="12">
+									<Run.Style>
+										<Style TargetType="{x:Type Run}">
+											<Setter Property="Foreground" Value="#FFFFFFFF" />
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding AntiAirFired, Mode=OneWay}" Value="발동 안됨">
+													<Setter Property="Foreground" Value="#80FFFFFF" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Run.Style>
+								</Run>
 							</TextBlock>
 						</StackPanel>
 <!--
@@ -151,7 +190,7 @@
 										Foreground="White"
 										Background="{Binding CellEvent, Converter={StaticResource CellEventToEventColor}}">
 								<Run Text="{Binding CellName, Mode=OneWay}" />
-								<Run Text="{Binding CellEvent, Mode=OneWay, Converter={StaticResource CellEventToEventName}}"/>
+								<Run Text="{Binding CellText, Mode=OneWay}"/>
 
 								<TextBlock.Style>
 									<Style TargetType="TextBlock">
@@ -257,12 +296,14 @@
 
 			<Expander Grid.Row="3"
 					  Margin="0,10,0,0"
+					  Padding="0,4,0,0"
 					  ExpandDirection="Right"
 					  Header="설정">
 				<StackPanel Orientation="Vertical">
 					<StackPanel Margin="2"
 								Orientation="Horizontal">
-						<TextBlock Text="설정:" />
+						<TextBlock Margin="0,0,4,0"
+								   Text="설정:" />
 						
 						<CheckBox Content="세부 항공전 표시"
 								  IsChecked="{Binding DetailKouku}"
@@ -277,12 +318,13 @@
 								  Margin="5,0,5,0" />
 					</StackPanel>
 
-					<Border Height="1" Margin="4,0" Background="#33FFFFFF"/>
+					<Border Height="1" Margin="2,1" Background="#33FFFFFF"/>
 
 					<StackPanel Margin="2"
 								Orientation="Horizontal">
-						<TextBlock Text="알림:" />
-						
+						<TextBlock Margin="0,0,4,0"
+								   Text="알림:" />
+
 						<CheckBox Content="비활성화때만"
 								  IsChecked="{Binding IsNotifyOnlyWhenInactive}"
 								  Margin="5,0,5,0" />

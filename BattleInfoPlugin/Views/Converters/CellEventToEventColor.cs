@@ -33,7 +33,8 @@ namespace BattleInfoPlugin.Views.Converters
 					case 10:
 						return "#FF51A6C5";
 					default:
-						return "Transparent";
+						return "#48FFFFFF";
+						// return "Transparent";
 				}
 			}
 			return "";

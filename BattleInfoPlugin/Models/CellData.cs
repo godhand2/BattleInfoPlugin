@@ -8,8 +8,9 @@ namespace BattleInfoPlugin.Models
 {
 	public class CellData
 	{
-		public string CellName { get; set; } = "";
-		public string CellEvent { get; set; } = "";
+		public string CellName { get; set; } = null;
+		public string CellEvent { get; set; } = null;
+		public string CellText { get; set; } = null;
 
 		public bool IsOld { get; set; } = false;
 	}

@@ -489,7 +489,10 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
-			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire, data.api_kouku2?.api_stage2?.api_air_fire);
+			this.UpdateUsedFlag(
+				data.api_kouku?.api_stage2?.api_air_fire,
+				data.api_kouku2?.api_stage2?.api_air_fire
+			);
 			this.UpdateUsedFlag(data.api_support_info);
 
 			this.FirstFleet.CalcDamages(
@@ -687,6 +690,7 @@ namespace BattleInfoPlugin.Models
 			{
 				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.Cell).Value ?? this.Cell,
 				CellEvent = this.CellEvent.ToString(),
+				CellText = "연습전",
 				IsOld = false
 			});
 			this.RaisePropertyChanged(nameof(this.Cells));
@@ -758,7 +762,10 @@ namespace BattleInfoPlugin.Models
 			this.UpdateMaxHP(data.api_maxhps);
 			this.UpdateNowHP(data.api_nowhps);
 
-			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire, data.api_kouku2?.api_stage2?.api_air_fire);
+			this.UpdateUsedFlag(
+				data.api_kouku?.api_stage2?.api_air_fire,
+				data.api_kouku2?.api_stage2?.api_air_fire
+			);
 			this.UpdateUsedFlag(data.api_support_info);
 
 			this.FirstFleet.CalcDamages(
@@ -1072,16 +1079,14 @@ namespace BattleInfoPlugin.Models
 			this.CellEvent = startNext.api_event_id;
 			this.Cell = "";
 			if (startNext.api_no != 0)
-			{
 				this.Cell = startNext.api_maparea_id + "-" + startNext.api_mapinfo_no + "-" + startNext.api_no;
-			}
+
 			this.RankResult = Rank.없음;
 			this.AirRankResult = Rank.없음;
 
 			if (api_deck_id != null) // api_deck_id 가 null 인 경우는 next 인 경우
 			{
 				this.CurrentDeckId = int.Parse(api_deck_id);
-
 				this.Cells.Clear();
 			}
 
@@ -1090,6 +1095,7 @@ namespace BattleInfoPlugin.Models
 			{
 				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.Cell).Value ?? this.Cell,
 				CellEvent = this.CellEvent.ToString(),
+				CellText = getCellText(startNext),
 				IsOld = false
 			});
 			this.RaisePropertyChanged(nameof(this.Cells));
@@ -1726,6 +1732,46 @@ namespace BattleInfoPlugin.Models
 			temp.Append("(" + current + "/" + max + ") ");
 			temp.Append(Math.Round(percent * 100, 2, MidpointRounding.AwayFromZero) + "%");
 			return temp.ToString();
+		}
+
+		private string getCellText(map_start_next data)
+		{
+			string[] resources = new string[]
+			{
+				"연료", "탄약", "강재", "보크사이트",
+				"고속건조재", "고속수복재",
+				"개발자재", "개수자재"
+			};
+			int eventId = data.api_event_id;
+
+			switch (eventId)
+			{
+				case 2:
+					if (data.api_itemget == null) return "자원획득";
+					return string.Format(
+						"{0} +{1}",
+						resources[data.api_itemget.api_id - 1],
+						data.api_itemget.api_getcount
+					);
+				case 3:
+					if (data.api_happening == null) return "소용돌이";
+					return string.Format(
+						"{0} -{1}",
+						resources[data.api_happening.api_type - 1],
+						data.api_happening.api_count
+					);
+				case 4:
+				case 31:
+					return "적군조우";
+				case 5:
+					return "보스전";
+				case 6:
+					if(data.api_select_route == null) return "기분탓";
+					return "능동분기";
+				case 10:
+					return "공습전";
+			}
+			return "?";
 		}
 	}
 }

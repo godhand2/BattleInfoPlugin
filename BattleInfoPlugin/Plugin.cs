@@ -26,6 +26,14 @@ namespace BattleInfoPlugin
 		public Plugin()
 		{
 			this.vm = new ToolViewModel(this);
+
+			// 기존 설정 불러오기..?
+			if (BattleInfoPlugin.Properties.Settings.Default.UpdateSettings)
+			{
+				BattleInfoPlugin.Properties.Settings.Default.Upgrade();
+				BattleInfoPlugin.Properties.Settings.Default.UpdateSettings = false;
+				BattleInfoPlugin.Properties.Settings.Default.Save();
+			}
 		}
 
 		public void Initialize()

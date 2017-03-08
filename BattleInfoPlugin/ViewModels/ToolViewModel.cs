@@ -240,6 +240,22 @@ namespace BattleInfoPlugin.ViewModels
 		}
 		#endregion
 
+		#region AutoBackTab
+		public bool AutoBackTab
+		{
+			get { return settings.Default.AutoBackTab; }
+			set
+			{
+				if (settings.Default.AutoBackTab != value)
+				{
+					settings.Default.AutoBackTab = value;
+					settings.Default.Save();
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
 		#region IsNotifyOnlyWhenInactive変更通知プロパティ
 		// ここ以外で変更しないのでModel変更通知は受け取らない雑対応
 		public bool IsNotifyOnlyWhenInactive

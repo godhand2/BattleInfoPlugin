@@ -178,5 +178,17 @@ namespace BattleInfoPlugin.Properties {
                 this["CriticalAlways"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoBackTab {
+            get {
+                return ((bool)(this["AutoBackTab"]));
+            }
+            set {
+                this["AutoBackTab"] = value;
+            }
+        }
     }
 }

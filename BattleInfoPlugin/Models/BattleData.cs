@@ -428,10 +428,26 @@ namespace BattleInfoPlugin.Models
 			if (Settings.Default.AutoSelectTab)
 			{
 				var info = Grabacr07.KanColleViewer.WindowService.Current.Information;
+
+				info.SelectedItem.IsSelected = false;
+				info.Tools.IsSelected = true;
+
 				info.SelectedItem = info.Tools;
 
 				info.Tools.SelectedTool = info.Tools.Tools
 					.FirstOrDefault(x => x.Name == "BattleInfo");
+			}
+		}
+		private void AutoBackTab()
+		{
+			if (Settings.Default.AutoBackTab)
+			{
+				var info = Grabacr07.KanColleViewer.WindowService.Current.Information;
+
+				info.SelectedItem.IsSelected = false;
+				info.Overview.IsSelected = true;
+
+				info.SelectedItem = info.Overview;
 			}
 		}
 
@@ -1239,6 +1255,8 @@ namespace BattleInfoPlugin.Models
 		{
 			if (this.FirstFleet != null) this.FirstFleet.TotalDamaged = 0;
 			if (this.SecondFleet != null) this.SecondFleet.TotalDamaged = 0;
+
+			AutoBackTab();
 		}
 		private void Clear()
 		{

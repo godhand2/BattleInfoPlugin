@@ -344,6 +344,7 @@ namespace BattleInfoPlugin.Models
 
 
 		private int CurrentDeckId { get; set; }
+		private bool IsInSortie = false;
 
 		public BattleData()
 		{
@@ -1090,6 +1091,7 @@ namespace BattleInfoPlugin.Models
 
 		private void UpdateFleetsByStartNext(map_start_next startNext, string api_deck_id = null)
 		{
+			this.IsInSortie = true;
 			this.Clear();
 
 			this.CellEvent = startNext.api_event_id;
@@ -1256,7 +1258,8 @@ namespace BattleInfoPlugin.Models
 			if (this.FirstFleet != null) this.FirstFleet.TotalDamaged = 0;
 			if (this.SecondFleet != null) this.SecondFleet.TotalDamaged = 0;
 
-			AutoBackTab();
+			if(this.IsInSortie) AutoBackTab();
+			this.IsInSortie = false;
 		}
 		private void Clear()
 		{

@@ -1757,34 +1757,56 @@ namespace BattleInfoPlugin.Models
 
 		private string getCellText(map_start_next data)
 		{
-			string[] resources = new string[]
+			Dictionary<int, string> resources = new Dictionary<int, string>()
 			{
-				"연료", "탄약", "강재", "보크사이트",
-				"고속건조재", "고속수복재",
-				"개발자재", "개수자재"
+				{  0, "연료" },
+				{  1, "탄약" },
+				{  2, "강재" },
+				{  3, "보크사이트" },
+				{  4, "고속건조재" },
+				{  5, "고속수복재" },
+				{  6, "개발자재" },
+				{  7, "개수자재" },
+				{ 10, "가구함(소)" },
+				{ 11, "가구함(중)" },
+				{ 12, "가구함(대)" },
 			};
+
 			int eventId = data.api_event_id;
 
 			switch (eventId)
 			{
 				case 2:
-					if (data.api_itemget == null) return "자원획득";
+					if (data.api_itemget == null)
+						return "자원획득";
 
 					return string.Join(
 						" ",
 						data.api_itemget
-							.Select(x => string.Format(
-								"{0} +{1}", resources[x.api_id - 1], x.api_getcount
-							))
+							.Select(x => {
+								var resname = resources.ContainsKey(x.api_id - 1)
+									? resources[x.api_id - 1]
+									: (x.api_name?.Length > 0 ? x.api_name : "???");
+
+								return x.api_getcount > 1
+									? string.Format("{0} +{1}", resname, x.api_getcount)
+									: resname;
+							})
 							.ToArray()
 					);
 				case 3:
-					if (data.api_happening == null || data.api_happening.api_count == 0) return "소용돌이";
-					return string.Format(
-						"{0} -{1}",
-						resources[data.api_happening.api_type - 1],
-						data.api_happening.api_count
-					);
+					if (data.api_happening == null || data.api_happening.api_count == 0)
+						return "소용돌이";
+
+					{
+						var resname = resources.ContainsKey(data.api_happening.api_type - 1)
+							? resources[data.api_happening.api_type - 1]
+							: "???";
+
+						return data.api_happening.api_count > 1
+							? string.Format("{0} -{1}", resname, data.api_happening.api_count)
+							: resname;
+					}
 				case 4:
 				case 31:
 					return "적군조우";

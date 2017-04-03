@@ -11,6 +11,7 @@ using BattleInfoPlugin.Properties;
 using System.Text;
 using System.Diagnostics;
 using System.Windows;
+using kcsapi_port = Grabacr07.KanColleWrapper.Models.Raw.kcsapi_port;
 
 namespace BattleInfoPlugin.Models
 {
@@ -352,8 +353,7 @@ namespace BattleInfoPlugin.Models
 
 			var proxy = KanColleClient.Current.Proxy;
 
-			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_port/port")
-				.TryParse<battle_midnight_battle>().Subscribe(x => this.ResultClear());
+			proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => this.ResultClear());
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_battle_midnight/battle")
 				.TryParse<battle_midnight_battle>().Subscribe(x => this.Update(x.Data));
@@ -421,7 +421,7 @@ namespace BattleInfoPlugin.Models
 				.TryParse<map_start_next>().Subscribe(x => this.UpdateFleetsByStartNext(x.Data, x.Request["api_deck_id"]));
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/next")
-				.TryParse<map_start_next>().Subscribe(x => this.UpdateFleetsByStartNext(x.Data));
+				.TryParse<map_start_next>().Subscribe(x => this.UpdateFleetsByStartNext(x.Data, null, true));
 		}
 
 		private void AutoSelectTab()
@@ -1089,7 +1089,7 @@ namespace BattleInfoPlugin.Models
 			}
 		}
 
-		private void UpdateFleetsByStartNext(map_start_next startNext, string api_deck_id = null)
+		private void UpdateFleetsByStartNext(map_start_next startNext, string api_deck_id = null, bool isNext = false)
 		{
 			this.IsInSortie = true;
 			this.Clear();
@@ -1102,7 +1102,7 @@ namespace BattleInfoPlugin.Models
 			this.RankResult = Rank.없음;
 			this.AirRankResult = Rank.없음;
 
-			if (api_deck_id != null) // api_deck_id 가 null 인 경우는 next 인 경우
+			if (!isNext) // 인자를 새로 만들었음...
 			{
 				this.CurrentDeckId = int.Parse(api_deck_id);
 				this.Cells.Clear();
@@ -1815,6 +1815,20 @@ namespace BattleInfoPlugin.Models
 				case 6:
 					if(data.api_select_route == null) return "기분탓";
 					return "능동분기";
+				case 8: // EO (1-6)
+					{
+						var x = data.api_itemget_eo_comment;
+						if (x == null)
+							return "자원획득";
+
+						var resname = resources.ContainsKey(x.api_id - 1)
+							? resources[x.api_id - 1]
+							: (x.api_name?.Length > 0 ? x.api_name : "???");
+
+						return x.api_getcount > 1
+							? string.Format("{0} +{1}", resname, x.api_getcount)
+							: resname;
+					}
 				case 10:
 					return "공습전";
 			}

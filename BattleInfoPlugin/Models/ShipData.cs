@@ -507,7 +507,7 @@ namespace BattleInfoPlugin.Models
 
 			this.Condition = -1;
 
-			var isEnemyID = 500 < this.Source.Id && this.Source.Id < 901;
+			var isEnemyID = this.Source.Id > 1500;
 			var m = Plugin.RawStart2.api_mst_ship.Single(x => x.api_id == this.Source.Id);
 			this.AdditionalName = isEnemyID ? m.api_yomi : "";
 			this.TypeName = this.Source.ShipType.Name;

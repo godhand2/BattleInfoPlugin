@@ -1776,7 +1776,8 @@ namespace BattleInfoPlugin.Models
 
 			switch (eventId)
 			{
-				case 2:
+				case 2: // 일반 자원획득
+				case 7: // 항공정찰 자원획득
 					if (data.api_itemget == null)
 						return "자원획득";
 

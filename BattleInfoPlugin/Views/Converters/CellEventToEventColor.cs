@@ -30,6 +30,8 @@ namespace BattleInfoPlugin.Views.Converters
 						return "#FFD40C0C";
 					case 6:
 						return "#FF0A8AB9";
+					case 7:
+						return "#FF929A11";
 					case 10:
 						return "#FF51A6C5";
 					default:

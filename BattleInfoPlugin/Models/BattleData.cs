@@ -418,10 +418,10 @@ namespace BattleInfoPlugin.Models
 
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/start")
-				.TryParse<map_start_next>().Subscribe(x => this.UpdateFleetsByStartNext(x.Data, x.Request["api_deck_id"]));
+				.Subscribe(x => this.UpdateFleetsByStartNext(x));
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/next")
-				.TryParse<map_start_next>().Subscribe(x => this.UpdateFleetsByStartNext(x.Data, null, true));
+				.Subscribe(x => this.UpdateFleetsByStartNext(x, true));
 		}
 
 		private void AutoSelectTab()
@@ -1089,8 +1089,14 @@ namespace BattleInfoPlugin.Models
 			}
 		}
 
-		private void UpdateFleetsByStartNext(map_start_next startNext, string api_deck_id = null, bool isNext = false)
+		private void UpdateFleetsByStartNext(Nekoxy.Session session, bool isNext = false)
 		{
+			SvData<map_start_next> data;
+			if (!SvData.TryParse<map_start_next>(session, out data)) return;
+
+			var startNext = data.Data;
+			string api_deck_id = data.Request["api_deck_id"];
+
 			this.IsInSortie = true;
 			this.Clear();
 
@@ -1113,7 +1119,7 @@ namespace BattleInfoPlugin.Models
 			{
 				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.Cell).Value ?? this.Cell,
 				CellEvent = this.CellEvent.ToString(),
-				CellText = getCellText(startNext),
+				CellText = getCellText(startNext, session),
 				IsOld = false
 			});
 			this.RaisePropertyChanged(nameof(this.Cells));
@@ -1755,7 +1761,7 @@ namespace BattleInfoPlugin.Models
 			return temp.ToString();
 		}
 
-		private string getCellText(map_start_next data)
+		private string getCellText(map_start_next data, Nekoxy.Session session)
 		{
 			Dictionary<int, string> resources = new Dictionary<int, string>()
 			{
@@ -1777,7 +1783,6 @@ namespace BattleInfoPlugin.Models
 			switch (eventId)
 			{
 				case 2: // 일반 자원획득
-				case 7: // 항공정찰 자원획득
 					if (data.api_itemget == null)
 						return "자원획득";
 
@@ -1816,6 +1821,23 @@ namespace BattleInfoPlugin.Models
 				case 6:
 					if(data.api_select_route == null) return "기분탓";
 					return "능동분기";
+				case 7: // 항공정찰 자원획득
+					SvData<map_start_next2> svdata;
+					if (!SvData.TryParse<map_start_next2>(session, out svdata))
+						return "정찰 실패";
+
+					var data2 = svdata.Data;
+					if (data2.api_itemget == null) return "정찰 실패";
+
+					{
+						var resname = resources.ContainsKey(data2.api_itemget.api_id - 1)
+							? resources[data2.api_itemget.api_id - 1]
+							: (data2.api_itemget.api_name?.Length > 0 ? data2.api_itemget.api_name : "???");
+
+						return data2.api_itemget.api_getcount > 1
+							? string.Format("{0} +{1}", resname, data2.api_itemget.api_getcount)
+							: resname;
+					}
 				case 8: // EO (1-6)
 					{
 						var x = data.api_itemget_eo_comment;

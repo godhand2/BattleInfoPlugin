@@ -87,7 +87,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 			var browserImage = image.Resize().GetBitmapBytes();
 			var confirmPursuitImage = Resources.ConfirmPursuit.Resize().GetBitmapBytes();
 			var diff = browserImage.Zip(confirmPursuitImage, (a, b) => Math.Abs(a - b)).Average();
-			System.Diagnostics.Debug.WriteLine(diff);
+			// System.Diagnostics.Debug.WriteLine(diff); Shut up
 			if (diff < 0.9)
 			{
 				// ボタンマウスオーバー状態とかでも大体0.5くらいまでに収まる

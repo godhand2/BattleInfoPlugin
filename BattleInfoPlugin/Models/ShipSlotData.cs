@@ -80,27 +80,19 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
-		public int Firepower { get; set; }
-		public int Torpedo { get; set; }
-		public int AA { get; set; }
-		public int Armer { get; set; }
-		public int Bomb { get; set; }
-		public int ASW { get; set; }
-		public int Hit { get; set; }
-		public int Evade { get; set; }
-		public int LOS { get; set; }
+		public int Firepower => this.Source?.Firepower ?? 0;
+		public int Torpedo => this.Source?.Torpedo ?? 0;
+		public int AA => this.Source?.AA ?? 0;
+		public int Armer => this.Source?.Armer ?? 0;
+		public int Bomb => this.Source?.Bomb ?? 0;
+		public int ASW => this.Source?.ASW ?? 0;
+		public int Hit => this.Source?.Hit ?? 0;
+		public int Evade => this.Source?.Evade ?? 0;
+		public int LOS => this.Source?.ViewRange ?? 0;
 
-		public Type2 Type2 { get; set; }
+		public Type2 Type2 => (Type2)this.Source?.RawData.api_type[1];
 
-		public string ToolTip => (this.Firepower != 0 ? "화력:" + this.Firepower : "")
-								 + (this.Torpedo != 0 ? " 뇌장:" + this.Torpedo : "")
-								 + (this.AA != 0 ? " 대공:" + this.AA : "")
-								 + (this.Armer != 0 ? " 장갑:" + this.Armer : "")
-								 + (this.Bomb != 0 ? " 폭장:" + this.Bomb : "")
-								 + (this.ASW != 0 ? " 대잠:" + this.ASW : "")
-								 + (this.Hit != 0 ? " 명중:" + this.Hit : "")
-								 + (this.Evade != 0 ? " 회피:" + this.Evade : "")
-								 + (this.LOS != 0 ? " 색적:" + this.LOS : "");
+		public string ToolTip => this.Source?.ToolTipData;
 
 		public ShipSlotData(SlotItemInfo item, int maximum = -1, int current = -1, int level = 0, int proficiency = 0)
 		{
@@ -109,21 +101,6 @@ namespace BattleInfoPlugin.Models
 			this.Current = current;
 			this.Level = level;
 			this.Proficiency = proficiency;
-
-			if (item == null) return;
-
-			var m = Plugin.RawStart2.api_mst_slotitem.SingleOrDefault(x => x.api_id == item.Id);
-			if (m == null) return;
-			this.Armer = m.api_souk;
-			this.Firepower = m.api_houg;
-			this.Torpedo = m.api_raig;
-			this.Bomb = m.api_baku;
-			this.AA = m.api_tyku;
-			this.ASW = m.api_tais;
-			this.Hit = m.api_houm;
-			this.Evade = m.api_houk;
-			this.LOS = m.api_saku;
-			this.Type2 = (Type2)m.api_type[1];
 		}
 
 		public ShipSlotData(ShipSlot slot) : this(slot.Item?.Info, slot.Maximum, slot.Current, slot.Item?.Level ?? 0, slot.Item?.Proficiency ?? 0)

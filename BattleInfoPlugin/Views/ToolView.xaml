@@ -175,36 +175,63 @@
 			</DockPanel>
 
 			<StackPanel Grid.Row="1" Orientation="Vertical">
-				<ItemsControl ItemsSource="{Binding Cells}"
-							  HorizontalAlignment="Right">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<StackPanel Orientation="Horizontal"/>
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
-										Margin="4,2"
-										Padding="10,2"
-										Foreground="White"
-										Background="{Binding CellEvent, Converter={StaticResource CellEventToEventColor}}">
-								<Run Text="{Binding CellName, Mode=OneWay}" />
-								<Run Text="{Binding CellText, Mode=OneWay}"/>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
 
-								<TextBlock.Style>
-									<Style TargetType="TextBlock">
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding IsOld}" Value="True">
-												<Setter Property="Opacity" Value="0.46"/>
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</TextBlock.Style>
-							</TextBlock>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+					<TextBlock HorizontalAlignment="Left"
+							   VerticalAlignment="Center"
+							   Margin="4,2"
+							   Padding="10,2"
+							   Foreground="White"
+							   Background="{DynamicResource AccentBrushKey}">
+						<Run Text="{Binding CurrentMap, Mode=OneWay}" />
+
+						<TextBlock.Style>
+							<Style TargetType="TextBlock">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding CurrentMap}" Value="">
+										<Setter Property="Visibility" Value="Collapsed" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
+					</TextBlock>
+					
+					<ItemsControl ItemsSource="{Binding Cells}"
+								  Grid.Column="1"
+								  HorizontalAlignment="Right">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Horizontal"/>
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+											Margin="4,2"
+											Padding="10,2"
+											Foreground="White"
+											Background="{Binding CellEvent, Converter={StaticResource CellEventToEventColor}}">
+									<Run Text="{Binding CellName, Mode=OneWay}" />
+									<Run Text="{Binding CellText, Mode=OneWay}"/>
+
+									<TextBlock.Style>
+										<Style TargetType="TextBlock">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsOld}" Value="True">
+													<Setter Property="Opacity" Value="0.46"/>
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</TextBlock.Style>
+								</TextBlock>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</Grid>
 				<StackPanel Orientation="Horizontal"
 							HorizontalAlignment="Center">
 					<TextBlock Padding="10,6"

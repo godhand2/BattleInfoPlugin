@@ -55,34 +55,16 @@ namespace BattleInfoPlugin.Models
 
 		#region CellEvent変更通知プロパティ
 		private int _CellEvent;
-
 		public int CellEvent
 		{
-			get
-			{ return this._CellEvent; }
+			get { return this._CellEvent; }
 			set
 			{
-				if (this._CellEvent == value)
-					return;
-				this._CellEvent = value;
-				this.RaisePropertyChanged();
-			}
-		}
-		#endregion
-
-		#region Cell変更通知プロパティ
-		private string _Cell;
-
-		public string Cell
-		{
-			get
-			{ return this._Cell; }
-			set
-			{
-				if (this._Cell == value)
-					return;
-				this._Cell = value;
-				this.RaisePropertyChanged();
+				if (this._CellEvent != value)
+				{
+					this._CellEvent = value;
+					this.RaisePropertyChanged();
+				}
 			}
 		}
 		#endregion
@@ -97,6 +79,22 @@ namespace BattleInfoPlugin.Models
 				if (this._Cells != value)
 				{
 					this._Cells = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
+		#region CurrentMap変更通知プロパティ
+		private string _CurrentMap;
+		public string CurrentMap
+		{
+			get { return this._CurrentMap; }
+			set
+			{
+				if (this._CurrentMap != value)
+				{
+					this._CurrentMap = value;
 					this.RaisePropertyChanged();
 				}
 			}
@@ -699,18 +697,19 @@ namespace BattleInfoPlugin.Models
 			this.Name = "연습 - 주간전";
 
 			this.CellEvent = (int)CellType.연습전;
-			this.Cell = "";
 			this.Cells.Clear();
 
 			this.Cells.ForEach(x => x.IsOld = true);
 			this.Cells.Add(new CellData
 			{
-				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.Cell).Value ?? this.Cell,
+				CellName = "",
 				CellEvent = this.CellEvent.ToString(),
 				CellText = "연습전",
 				IsOld = false
 			});
 			this.RaisePropertyChanged(nameof(this.Cells));
+
+			this.CurrentMap = "";
 
 			this.UpdateFleets(data.api_dock_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps);
@@ -1100,10 +1099,12 @@ namespace BattleInfoPlugin.Models
 			this.IsInSortie = true;
 			this.Clear();
 
+			string Cell = "";
 			this.CellEvent = startNext.api_event_id;
-			this.Cell = "";
 			if (startNext.api_no != 0)
-				this.Cell = startNext.api_maparea_id + "-" + startNext.api_mapinfo_no + "-" + startNext.api_no;
+				Cell = startNext.api_maparea_id + "-" + startNext.api_mapinfo_no + "-" + startNext.api_no;
+
+			this.CurrentMap = getMapText(startNext);
 
 			this.RankResult = Rank.없음;
 			this.AirRankResult = Rank.없음;
@@ -1117,7 +1118,7 @@ namespace BattleInfoPlugin.Models
 			this.Cells.ForEach(x => x.IsOld = true);
 			this.Cells.Add(new CellData
 			{
-				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == this.Cell).Value ?? this.Cell,
+				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == Cell).Value ?? Cell,
 				CellEvent = this.CellEvent.ToString(),
 				CellText = getCellText(startNext, session),
 				IsOld = false
@@ -1805,8 +1806,8 @@ namespace BattleInfoPlugin.Models
 						return "소용돌이";
 
 					{
-						var resname = resources.ContainsKey(data.api_happening.api_type - 1)
-							? resources[data.api_happening.api_type - 1]
+						var resname = resources.ContainsKey(data.api_happening.api_mst_id - 1)
+							? resources[data.api_happening.api_mst_id - 1]
 							: "???";
 
 						return data.api_happening.api_count > 1
@@ -1856,6 +1857,18 @@ namespace BattleInfoPlugin.Models
 					return "공습전";
 			}
 			return "?";
+		}
+		private string getMapText(map_start_next startNext)
+		{
+			int maparea_id, mapinfo_no;
+			maparea_id = startNext.api_maparea_id;
+			mapinfo_no = startNext.api_mapinfo_no;
+
+			return string.Format(
+				"{0}-{1}",
+				maparea_id > 30 ? "E" : maparea_id.ToString(),
+				mapinfo_no
+			);
 		}
 	}
 }

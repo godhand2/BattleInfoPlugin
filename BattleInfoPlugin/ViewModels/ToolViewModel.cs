@@ -34,6 +34,7 @@ namespace BattleInfoPlugin.ViewModels
 				: "";
 
 		public CellData[] Cells => this.BattleData?.Cells?.ToArray();
+		public string CurrentMap => this.BattleData?.CurrentMap ?? "";
 
 		public string RankResult
 			=> this.BattleData.RankResult.ToString();
@@ -286,6 +287,10 @@ namespace BattleInfoPlugin.ViewModels
 				{
 					nameof(this.BattleData.Cells),
 					(_, __) => this.RaisePropertyChanged(() => this.Cells)
+				},
+				{
+					nameof(this.BattleData.CurrentMap),
+					(_, __) => this.RaisePropertyChanged(() => this.CurrentMap)
 				},
 				{
 					nameof(this.BattleData.Name),

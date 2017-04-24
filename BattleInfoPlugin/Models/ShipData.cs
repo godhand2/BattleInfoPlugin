@@ -253,6 +253,44 @@ namespace BattleInfoPlugin.Models
 
 		#endregion
 
+		#region ASW 変更通知プロパティ
+
+		private int _ASW;
+
+		/// <summary>
+		/// 対潜のステータス値を取得します。
+		/// </summary>
+		public int ASW
+		{
+			get { return this._ASW; }
+			set
+			{
+				this._ASW = value;
+				this.RaisePropertyChanged();
+			}
+		}
+
+		#endregion
+
+		#region Evade 変更通知プロパティ
+
+		private int _Evade;
+
+		/// <summary>
+		/// 回避のステータス値を取得します。
+		/// </summary>
+		public int Evade
+		{
+			get { return this._Evade; }
+			set
+			{
+				this._Evade = value;
+				this.RaisePropertyChanged();
+			}
+		}
+
+		#endregion
+
 		#region Slots変更通知プロパティ
 		private IEnumerable<ShipSlotData> _Slots;
 
@@ -364,6 +402,13 @@ namespace BattleInfoPlugin.Models
 		public int SumTorpedo => 0 < this.Torpedo ? this.Torpedo + this.SlotsTorpedo : this.Torpedo;
 		public int SumAA => 0 < this.AA ? this.AA + this.SlotsAA : this.AA;
 		public int SumArmer => 0 < this.Armer ? this.Armer + this.SlotsArmer : this.Armer;
+		public int SumASW => this.ASW + this.SlotsASW;
+		public int SumEvade => this.Evade; // + this.SlotsEvade;
+
+		public int ShipEvade => this.Evade - this.SlotsEvade;
+
+		// 선제대잠 가능 여부
+		public bool OpeningASW => SumASW >= 100;
 
 		public LimitedValue HP => new LimitedValue(this.NowHP, this.MaxHP, 0);
 
@@ -376,7 +421,9 @@ namespace BattleInfoPlugin.Models
 			: AttackType.통상;
 
 		public AttackType NightAttackType
-			=> this.Count(Type2.어뢰) >= 2 ? AttackType.뇌격컷인
+			=> this.SubmarineRaderCount() >= 1 && this.LateModelTorpedoCount() >= 1 ? AttackType.후기어뢰전탐컷인
+			: this.LateModelTorpedoCount() >= 2 ? AttackType.후기어뢰컷인
+			: this.Count(Type2.어뢰) >= 2 ? AttackType.뇌격컷인
 			: this.Count(Type2.주포) >= 3 ? AttackType.주주주컷인
 			: this.Count(Type2.주포) == 2 && this.Count(Type2.부포) >= 1 ? AttackType.주주부컷인
 			: this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 1 ? AttackType.주뢰컷인
@@ -400,7 +447,8 @@ namespace BattleInfoPlugin.Models
 	{
 		public static int Count(this ShipData data, Type2 type2)
 		{
-			return data.Slots.Count(x => x.Type2 == type2);
+			return data.Slots.Count(x => x.Type2 == type2)
+				+ (data.ExSlot?.Type2 == type2 ? 1 : 0);
 		}
 
 		public static bool HasScout(this ShipData data)
@@ -409,6 +457,27 @@ namespace BattleInfoPlugin.Models
 				.Where(x => x.Source.Type == SlotItemType.水上偵察機
 							|| x.Source.Type == SlotItemType.水上爆撃機)
 				.Any(x => 0 < x.Current);
+		}
+
+		public static int SubmarineRaderCount(this ShipData data)
+		{
+			var SubmarineRaders = new int[]
+			{
+				210, // 潜水艦搭載電探&水防式望遠鏡
+				211, // 潜水艦搭載電探&逆探(E27)
+			};
+			return data.Slots.Count(x => SubmarineRaders.Contains(x.Source.Id))
+				+ (SubmarineRaders.Contains(data.ExSlot?.Source.Id ?? 0) ? 1 : 0);
+		}
+		public static int LateModelTorpedoCount(this ShipData data)
+		{
+			var LateModelTorpedos = new int[]
+			{
+				213, // 後期型艦首魚雷(6門)
+				214, // 熟練聴音員+後期型艦首魚雷(6門)
+			};
+			return data.Slots.Count(x => LateModelTorpedos.Contains(x.Source.Id))
+				+ (LateModelTorpedos.Contains(data.ExSlot?.Source.Id ?? 0) ? 1 : 0);
 		}
 	}
 
@@ -468,6 +537,9 @@ namespace BattleInfoPlugin.Models
 			this.AA = this.Source.AA.Current;
 			this.Armer = this.Source.Armer.Current;
 			this.Luck = this.Source.Luck.Current;
+
+			this.ASW = this.Source.ASW.Current;
+			this.Evade = this.Source.RawData.api_kaihi[0];
 		}
 	}
 

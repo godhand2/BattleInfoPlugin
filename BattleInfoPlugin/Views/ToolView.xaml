@@ -186,7 +186,7 @@
 							   Margin="4,2"
 							   Padding="10,2"
 							   Foreground="White"
-							   Background="{DynamicResource AccentBrushKey}">
+							   Background="#FF007ACC">
 						<Run Text="{Binding CurrentMap, Mode=OneWay}" />
 
 						<TextBlock.Style>

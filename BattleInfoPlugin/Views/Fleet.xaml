@@ -219,26 +219,60 @@
 										<Run>
 											<Run.Text>
 												<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
-													<Binding Path="Armer"
-																Converter="{StaticResource UnknownValueConverter}"/>
+													<Binding Path="Armer" Converter="{StaticResource UnknownValueConverter}"/>
 													<Binding Path="SlotsArmer"/>
 												</MultiBinding>
 											</Run.Text>
 										</Run>
 									</TextBlock>
 
-									<TextBlock Grid.Column="2" Grid.Row="0" Text="대잠" Margin="4,0,0,0" />
-									<TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding SlotsASW, Mode=OneWay, StringFormat={}(+{0})}" />
+									<TextBlock Grid.Column="2" Grid.Row="0" Text="대잠" Margin="10,0,0,0" />
+									<TextBlock Grid.Column="3" Grid.Row="0">
+										<Run Text="{Binding SumASW, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
+											 FontSize="12">
+											<Run.Style>
+												<Style BasedOn="{StaticResource EmphaticTextElementStyleKey}" TargetType="{x:Type Run}">
+													<Style.Triggers>
+														<DataTrigger Binding="{Binding OpeningASW, Mode=OneWay}" Value="True">
+															<Setter Property="Foreground" Value="#FF95C5EA" />
+															<Setter Property="FontWeight" Value="Bold" />
+														</DataTrigger>
+													</Style.Triggers>
+												</Style>
+											</Run.Style>
+										</Run>
+										<Run>
+											<Run.Text>
+												<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
+													<Binding Path="ASW" Converter="{StaticResource UnknownValueConverter}"/>
+													<Binding Path="SlotsASW"/>
+												</MultiBinding>
+											</Run.Text>
+										</Run>
+									</TextBlock>
 
-									<TextBlock Grid.Column="2" Grid.Row="1" Text="명중" Margin="4,0,0,0" />
-									<TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding SlotsHit, Mode=OneWay, StringFormat={}(+{0})}" />
 
-									<TextBlock Grid.Column="2" Grid.Row="2" Text="회피" Margin="4,0,0,0" />
-									<TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding SlotsEvade, Mode=OneWay, StringFormat={}(+{0})}" />
+									<TextBlock Grid.Column="2" Grid.Row="1" Text="회피" Margin="10,0,0,0" />
+									<TextBlock Grid.Column="3" Grid.Row="1">
+										<Run Text="{Binding SumEvade, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
+											 Style="{DynamicResource EmphaticTextElementStyleKey}"
+											 FontSize="12"/>
+										<Run>
+											<Run.Text>
+												<MultiBinding StringFormat="{}({0}+{1})" Mode="OneWay">
+													<Binding Path="ShipEvade" Converter="{StaticResource UnknownValueConverter}"/>
+													<Binding Path="SlotsEvade"/>
+												</MultiBinding>
+											</Run.Text>
+										</Run>
+									</TextBlock>
+
+									<TextBlock Grid.Column="2" Grid.Row="2" Text="명중" Margin="10,0,0,0" />
+									<TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding SlotsHit, Mode=OneWay, StringFormat={}(+{0})}" />
 
 
 									<StackPanel Orientation="Horizontal"
-												Margin="4,0,0,0"
+												Margin="10,0,0,0"
 												Grid.Column="2" Grid.Row="3"
 												Grid.ColumnSpan="3">
 										<TextBlock Text="cond." />
@@ -264,24 +298,24 @@
 									</StackPanel>
 
 
-									<TextBlock Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Text="공격종류" Margin="4,0,0,0" />
+									<TextBlock Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Text="공격종류" Margin="10,0,0,0" />
 
-									<TextBlock Grid.Column="4" Grid.Row="1" Text="주간" Margin="4,0" />
+									<TextBlock Grid.Column="4" Grid.Row="1" Text="주간" Margin="10,0,4,0" />
 									<TextBlock Grid.Column="5" Grid.Row="1"
 											   Text="{Binding DayAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
 											   Style="{DynamicResource EmphaticTextStyleKey}"
 											   FontSize="{DynamicResource DefaultFontSizeKey}" />
 
-									<TextBlock Grid.Column="4" Grid.Row="2" Text="야전" Margin="4,0" />
+									<TextBlock Grid.Column="4" Grid.Row="2" Text="야전" Margin="10,0,4,0" />
 									<TextBlock Grid.Column="5" Grid.Row="2"
 											   Text="{Binding NightAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
 											   Style="{DynamicResource EmphaticTextStyleKey}"
 											   FontSize="{DynamicResource DefaultFontSizeKey}" />
 								</Grid>
 
-								<StackPanel Orientation="Vertical">
-									<ItemsControl ItemsSource="{Binding Slots}"
-												  Margin="7,0">
+								<StackPanel Orientation="Vertical"
+											Margin="10,0,0,0">
+									<ItemsControl ItemsSource="{Binding Slots}">
 										<ItemsControl.ItemTemplate>
 											<DataTemplate>
 												<StackPanel Orientation="Horizontal">
@@ -359,7 +393,7 @@
 										</ItemsControl.ItemTemplate>
 									</ItemsControl>
 
-									<StackPanel Orientation="Vertical" Margin="7,0">
+									<StackPanel Orientation="Vertical">
 										<Rectangle Height="1"
 												   Margin="0,4,0,0"
 												   Style="{DynamicResource SeparatorRectangleStyleKey}" />

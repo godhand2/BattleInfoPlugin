@@ -342,12 +342,15 @@ namespace BattleInfoPlugin.Models
 		#endregion
 
 
+		private MVPOracle mvpOracle { get; set; }
+
 		private int CurrentDeckId { get; set; }
 		private bool IsInSortie = false;
 
 		public BattleData()
 		{
 			this.Cells = new List<CellData>();
+			this.mvpOracle = new MVPOracle();
 
 			var proxy = KanColleClient.Current.Proxy;
 
@@ -468,8 +471,10 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
-			this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+			mvpOracle.Update(data);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
+			this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 
 			this.RankResult = this.CalcRank(false, true, BeforedayBattleHP, EnemyBeforedayBattle);
@@ -486,8 +491,10 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
-			this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
+			this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 
 			this.FriendAirSupremacy = AirSupremacy.항공전없음;
@@ -503,6 +510,9 @@ namespace BattleInfoPlugin.Models
 			this.UpdateFleets(data.api_deck_id, data, data.api_formation);
 			this.UpdateMaxHP(data.api_maxhps, data.api_maxhps_combined);
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
+
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data, true);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
 			this.UpdateUsedFlag(
 				data.api_kouku?.api_stage2?.api_air_fire,
@@ -552,6 +562,9 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 			this.UpdateUsedFlag(data.api_support_info);
+
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data, true);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
 			this.FirstFleet.CalcDamages(
 				data.api_air_base_injection.GetFirstFleetDamages(),
@@ -603,6 +616,9 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 			this.UpdateUsedFlag(data.api_support_info);
+
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data, true);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
 			this.FirstFleet.CalcDamages(
 				data.api_air_base_injection.GetFirstFleetDamages(),
@@ -662,8 +678,10 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
-			this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+			mvpOracle.Update(data, true);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
+			this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 
 			this.RankResult = this.CalcRank(true, true, BeforedayBattleHP, EnemyBeforedayBattle);
@@ -680,8 +698,10 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
-			this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data, true);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
+			this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 
 			this.FriendAirSupremacy = AirSupremacy.항공전없음;
@@ -716,6 +736,9 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps);
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
+
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
 			this.FirstFleet.CalcPracticeDamages(
 				data.api_air_base_injection.GetFirstFleetDamages(),
@@ -762,8 +785,10 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
-			this.FirstFleet.CalcPracticeDamages(data.api_hougeki.GetFriendDamages());
+			mvpOracle.Update(data);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
+			this.FirstFleet.CalcPracticeDamages(data.api_hougeki.GetFriendDamages());
 			this.Enemies.CalcPracticeDamages(data.api_hougeki.GetEnemyDamages());
 
 			this.RankResult = this.CalcRank(false, true, BeforedayBattleHP, EnemyBeforedayBattle);
@@ -783,6 +808,9 @@ namespace BattleInfoPlugin.Models
 				data.api_kouku2?.api_stage2?.api_air_fire
 			);
 			this.UpdateUsedFlag(data.api_support_info);
+
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
 			this.FirstFleet.CalcDamages(
 				data.api_air_base_injection.GetFirstFleetDamages(),
@@ -819,6 +847,9 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 			this.UpdateUsedFlag(data.api_support_info);
+
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
 			this.FirstFleet.CalcDamages(
 				data.api_air_base_injection.GetFirstFleetDamages(),
@@ -862,6 +893,9 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
+
 			this.FirstFleet.CalcDamages(
 				data.api_air_base_injection.GetFirstFleetDamages(),
 				data.api_injection_kouku.GetFirstFleetDamages(),
@@ -891,6 +925,9 @@ namespace BattleInfoPlugin.Models
 			this.UpdateNowHP(data.api_nowhps, data.api_nowhps_combined);
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
+
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data, true);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
 			this.FirstFleet.CalcDamages(
 				data.api_air_base_injection.GetFirstFleetDamages(),
@@ -928,6 +965,9 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 			this.UpdateUsedFlag(data.api_support_info);
+
+			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data, isCombined);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
 			if (isCombined)
 			{
@@ -1054,6 +1094,9 @@ namespace BattleInfoPlugin.Models
 
 			this.UpdateUsedFlag(data.api_flare_pos, data.api_touch_plane);
 
+			mvpOracle.Update(data, true);
+			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
+
 			if (data.api_active_deck[0] == 1) this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 			else this.SecondFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
 
@@ -1070,20 +1113,24 @@ namespace BattleInfoPlugin.Models
 			//this.DropShipName = KanColleClient.Current.Translations.GetTranslation(data.api_get_ship?.api_ship_name, TranslationType.Ships, true);
 			this.DropShipName = KanColleClient.Current.Master.Ships.SingleOrDefault(x => x.Value.Id == data.api_get_ship?.api_ship_id).Value?.Name;
 
+			UpdateMVP(data.api_mvp, data.api_mvp_combined);
+		}
+		private void UpdateMVP(int mvp1 = 0, int mvp2 = 0)
+		{
 			foreach (var item in FirstFleet.Ships) item.IsMvp = false;
 			foreach (var item in SecondFleet.Ships) item.IsMvp = false;
 
 			bool[] firstMvp = new bool[6] { false, false, false, false, false, false };
 			bool[] secondMvp = new bool[6] { false, false, false, false, false, false };
 
-			if (data.api_mvp > 0 && FirstFleet != null)
+			if (mvp1 > 0 && FirstFleet != null)
 			{
-				firstMvp[data.api_mvp - 1] = true;
+				firstMvp[mvp1 - 1] = true;
 				FirstFleet.Ships.SetValues(firstMvp, (s, v) => s.IsMvp = v);
 			}
-			if (data.api_mvp_combined > 0 && SecondFleet != null)
+			if (mvp2 > 0 && SecondFleet != null)
 			{
-				secondMvp[(data.api_mvp_combined > 6 ? data.api_mvp_combined - 6 : data.api_mvp_combined) - 1] = true;
+				secondMvp[(mvp2 > 6 ? mvp2 - 6 : mvp2) - 1] = true;
 				SecondFleet.Ships.SetValues(secondMvp, (s, v) => s.IsMvp = v);
 			}
 		}
@@ -1722,9 +1769,9 @@ namespace BattleInfoPlugin.Models
 			{
 				if (data1 == null && data2 == null)
 					this.AntiAirFired = AirFireFlag.Unused;
-				else if (data1 != null)
+				else if (data2 == null)
 					this.AntiAirFired = AirFireFlag.Used1;
-				else if (data2 != null)
+				else if (data1 == null)
 					this.AntiAirFired = AirFireFlag.Used2;
 				else
 					this.AntiAirFired = AirFireFlag.UsedAll;

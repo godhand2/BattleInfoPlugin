@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using BattleInfoPlugin.Models;
 using BattleInfoPlugin.ViewModels;
 using BattleInfoPlugin.Views;
 using Grabacr07.KanColleViewer.Composition;
@@ -18,7 +19,9 @@ namespace BattleInfoPlugin
 	[ExportMetadata("Author", "@veigr")]
 	public class Plugin : IPlugin, ITool, IRequestNotify
 	{
-		private readonly ToolViewModel vm;
+		internal BrowserExtension browserEx { get; }
+		private ToolViewModel vm { get; }
+
 		internal static KcsResourceWriter ResourceWriter { get; private set; }
 		internal static SortieDataListener SortieListener { get; private set; }
 		// internal static kcsapi_start2 RawStart2 { get; private set; }
@@ -34,12 +37,16 @@ namespace BattleInfoPlugin
 			}
 
 			this.vm = new ToolViewModel(this);
+			browserEx = new Models.BrowserExtension();
 		}
 
 		public void Initialize()
 		{
-			/* For Enemy Info Data
+			/* For Display Overlay Patch
+			KanColleClient.Current.Proxy.api_start2.Subscribe(x => this.browserEx.Startup());
+			*/
 
+			/* For Enemy Info Data
 			KanColleClient.Current.Proxy.api_start2.TryParse<kcsapi_start2>().Subscribe(x =>
 			{
 				RawStart2 = x.Data;

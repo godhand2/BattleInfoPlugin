@@ -390,13 +390,13 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
-		public int SlotsFirepower => this.Slots.Sum(x => x.Firepower);
-		public int SlotsTorpedo => this.Slots.Sum(x => x.Torpedo);
-		public int SlotsAA => this.Slots.Sum(x => x.AA);
-		public int SlotsArmer => this.Slots.Sum(x => x.Armer);
-		public int SlotsASW => this.Slots.Sum(x => x.ASW);
-		public int SlotsHit => this.Slots.Sum(x => x.Hit);
-		public int SlotsEvade => this.Slots.Sum(x => x.Evade);
+		public int SlotsFirepower => this.Slots.Sum(x => x.Firepower) + (this.ExSlot?.Firepower ?? 0);
+		public int SlotsTorpedo => this.Slots.Sum(x => x.Torpedo) + (this.ExSlot?.Torpedo ?? 0);
+		public int SlotsAA => this.Slots.Sum(x => x.AA) + (this.ExSlot?.AA ?? 0);
+		public int SlotsArmer => this.Slots.Sum(x => x.Armer) + (this.ExSlot?.Armer ?? 0);
+		public int SlotsASW => this.Slots.Sum(x => x.ASW) + (this.ExSlot?.ASW ?? 0);
+		public int SlotsHit => this.Slots.Sum(x => x.Hit) + (this.ExSlot?.Hit ?? 0);
+		public int SlotsEvade => this.Slots.Sum(x => x.Evade) + (this.ExSlot?.Evade ?? 0);
 
 		public int SumFirepower => 0 < this.Firepower ? this.Firepower + this.SlotsFirepower : this.Firepower;
 		public int SumTorpedo => 0 < this.Torpedo ? this.Torpedo + this.SlotsTorpedo : this.Torpedo;
@@ -514,7 +514,9 @@ namespace BattleInfoPlugin.Models
 		{
 			this.Id = this.Source.Id;
 			this.Name = this.Source.Info.Name;
-			this.TypeName = this.Source.Info.ShipType.Name;
+			this.TypeName = this.Source.Speed == ShipSpeed.Immovable
+				? "육상기지"
+				: this.Source.Info.ShipType.Name;
 			this.Level = this.Source.Level;
 			this.Situation = this.Source.Situation;
 			this.NowHP = this.Source.HP.Current;

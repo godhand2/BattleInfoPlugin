@@ -104,6 +104,7 @@
     <Compile Include="Annotations\ElementalAttribute.cs" />
     <Compile Include="Annotations\LightAttribute.cs" />
     <Compile Include="Models\AirFireFlag.cs" />
+    <Compile Include="Models\BrowserExtension.cs" />
     <Compile Include="Models\CellData.cs" />
     <Compile Include="Models\MapAreaData.cs" />
     <Compile Include="Models\MVPOracle.cs" />

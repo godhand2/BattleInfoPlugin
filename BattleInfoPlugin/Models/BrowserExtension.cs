@@ -97,7 +97,7 @@ namespace BattleInfoPlugin.Models
 					{
 						target.createStyleSheet().cssText = "#battleinfo_display_overlay { position:fixed; left:0; top:0; width:800px; height:480px; z-index:9145; pointer-events:none; font:bold 22px sans-serif; }"
 							+ "#battleinfo_display_overlay > .overlay_node { position:absolute; display:inline-block; text-shadow: #F5F5F5 1px 1px 2px, #F5F5F5 0 0 2px; color:#333; font:inherit; }"
-							+ "#battleinfo_display_overlay > .overlay_marker { position:absolute; display:block; border:2px solid #37373f; border-radius:9999px; }";
+							+ "#battleinfo_display_overlay > .overlay_marker { position:absolute; display:block; border:2px solid #37373f; border-radius:9999px; background-color:#F5F5F5 }";
 
 						layer = target.createElement("div");
 						layer.id = "battleinfo_display_overlay";
@@ -164,8 +164,8 @@ namespace BattleInfoPlugin.Models
 					html += string.Format(
 						"<div class=\"overlay_node\" style=\"left:{1}px; top:{2}px\">{0}</div>",
 						letter.Key,
-						letter.Value[0],
-						letter.Value[1]
+						letter.Value[0] + 20,
+						letter.Value[1] + 20
 					);
 				}
 			}
@@ -176,8 +176,8 @@ namespace BattleInfoPlugin.Models
 					html += string.Format(
 						"<img class=\"overlay_marker\" style=\"left:{1}px; top:{2}px; width:{3}px; height:{4}px\" src=\"https://raw.githubusercontent.com/KC3Kai/KC3Kai/master/src/assets/img/{0}\">",
 						marker.img,
-						marker.pos[0],
-						marker.pos[1],
+						marker.pos[0] + 20,
+						marker.pos[1] + 20,
 						marker.size[0],
 						marker.size[1]
 					);

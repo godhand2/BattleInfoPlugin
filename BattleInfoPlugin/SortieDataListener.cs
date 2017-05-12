@@ -4,6 +4,16 @@ using BattleInfoPlugin.Models.Raw;
 using BattleInfoPlugin.Models.Repositories;
 using Grabacr07.KanColleWrapper;
 
+#region Alias
+using practice_battle = BattleInfoPlugin.Models.Raw.sortie_battle;
+using battle_midnight_sp_midnight = BattleInfoPlugin.Models.Raw.battle_midnight_battle;
+using practice_midnight_battle = BattleInfoPlugin.Models.Raw.battle_midnight_battle;
+using sortie_ld_airbattle = BattleInfoPlugin.Models.Raw.sortie_airbattle;
+using combined_battle_battle_water = BattleInfoPlugin.Models.Raw.combined_battle_battle;
+using combined_battle_ld_airbattle = BattleInfoPlugin.Models.Raw.combined_battle_airbattle;
+using combined_battle_sp_midnight = BattleInfoPlugin.Models.Raw.combined_battle_midnight_battle;
+#endregion
+
 namespace BattleInfoPlugin
 {
 	class SortieDataListener

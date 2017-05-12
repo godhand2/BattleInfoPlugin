@@ -202,5 +202,17 @@ namespace BattleInfoPlugin.Properties {
                 this["UpdateSettings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseBrowserOverlay {
+            get {
+                return ((bool)(this["UseBrowserOverlay"]));
+            }
+            set {
+                this["UseBrowserOverlay"] = value;
+            }
+        }
     }
 }

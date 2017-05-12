@@ -14,6 +14,7 @@ using Grabacr07.KanColleViewer.Views.Controls;
 using Grabacr07.KanColleViewer;
 using Grabacr07.KanColleWrapper;
 using mshtml;
+using System.Net;
 using Dispatcher = System.Windows.Threading.Dispatcher;
 
 namespace BattleInfoPlugin.Models
@@ -45,15 +46,22 @@ namespace BattleInfoPlugin.Models
 			#region Read data JSON
 			try
 			{
-				var bytes = Encoding.UTF8.GetBytes(Properties.Resources.display_overlay_data);
-				var serializer = new DataContractJsonSerializer(typeof(overlayData), new DataContractJsonSerializerSettings { UseSimpleDictionaryFormat = true });
-				using (var stream = new MemoryStream(bytes))
+				HttpWebRequest rq = WebRequest.Create("https://raw.githubusercontent.com/KC3Kai/KC3Kai/master/src/data/nodes.json") as HttpWebRequest;
+				rq.Timeout = 5000;
+				HttpWebResponse response = rq.GetResponse() as HttpWebResponse;
+
+				using (var reader = new StreamReader(response.GetResponseStream()))
 				{
-					var rawResult = serializer.ReadObject(stream) as overlayData;
-					this.overlayTableData = rawResult;
+					var bytes = Encoding.UTF8.GetBytes(reader.ReadToEnd());
+					var serializer = new DataContractJsonSerializer(typeof(overlayData), new DataContractJsonSerializerSettings { UseSimpleDictionaryFormat = true });
+					using (var stream = new MemoryStream(bytes))
+					{
+						var rawResult = serializer.ReadObject(stream) as overlayData;
+						this.overlayTableData = rawResult;
+					}
 				}
 			}
-			catch(Exception e)
+			catch
 			{
 				return;
 			}
@@ -87,7 +95,7 @@ namespace BattleInfoPlugin.Models
 					var target = gameFrame?.document as HTMLDocument;
 					if (target != null)
 					{
-						target.createStyleSheet().cssText = "#battleinfo_display_overlay { position:absolute; left:0; top:0; width:800px; height:480px; z-index:9145; pointer-events:none; font:bold 16px sans-serif; }"
+						target.createStyleSheet().cssText = "#battleinfo_display_overlay { position:fixed; left:0; top:0; width:800px; height:480px; z-index:9145; pointer-events:none; font:bold 16px sans-serif; }"
 							+ "#battleinfo_display_overlay > .overlay_node { position:absolute; display:inline-block; text-shadow:0 0 9px #000,0 0 6px #000; color:#FFF; font:inherit; }"
 							+ "#battleinfo_display_overlay > .overlay_marker { position:absolute; display:block; border:2px solid #37373f; border-radius:9999px; }";
 

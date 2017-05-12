@@ -5,6 +5,16 @@ using System.Text;
 using BattleInfoPlugin.Models.Raw;
 using SlotItemType = Grabacr07.KanColleWrapper.Models.SlotItemType;
 
+#region Alias
+using practice_battle = BattleInfoPlugin.Models.Raw.sortie_battle;
+using battle_midnight_sp_midnight = BattleInfoPlugin.Models.Raw.battle_midnight_battle;
+using practice_midnight_battle = BattleInfoPlugin.Models.Raw.battle_midnight_battle;
+using sortie_ld_airbattle = BattleInfoPlugin.Models.Raw.sortie_airbattle;
+using combined_battle_battle_water = BattleInfoPlugin.Models.Raw.combined_battle_battle;
+using combined_battle_ld_airbattle = BattleInfoPlugin.Models.Raw.combined_battle_airbattle;
+using combined_battle_sp_midnight = BattleInfoPlugin.Models.Raw.combined_battle_midnight_battle;
+#endregion
+
 namespace BattleInfoPlugin.Models
 {
 	public class MVPOracle
@@ -50,7 +60,7 @@ namespace BattleInfoPlugin.Models
 		public MVPOracle Initialize(params FleetData[] shipDatas)
 		{
 			this.AliasDamages = new DamageContainer[13]; // dummy + 6 + 6
-			for(var i=0; i<this.AliasDamages.Length;i++)
+			for (var i = 0; i < this.AliasDamages.Length; i++)
 				this.AliasDamages[i].Index = i;
 
 			this.shipData = shipDatas.Where(x => x != null)
@@ -338,13 +348,6 @@ namespace BattleInfoPlugin.Models
 				api_hougeki = data.api_hougeki
 			}, isCombined);
 		}
-		public void Update(combined_battle_sp_midnight data, bool isCombined = false)
-		{
-			this.Update(new CommonBattleData
-			{
-				api_hougeki = data.api_hougeki
-			}, isCombined);
-		}
 		public void Update(sortie_battle data, bool isCombined = false)
 		{
 			this.Update(new CommonBattleData
@@ -366,14 +369,6 @@ namespace BattleInfoPlugin.Models
 				api_injection_kouku = data.api_injection_kouku,
 				api_kouku = data.api_kouku,
 				api_kouku2 = data.api_kouku2
-			}, isCombined);
-		}
-		public void Update(combined_battle_ld_airbattle data, bool isCombined = false)
-		{
-			this.Update(new CommonBattleData
-			{
-				api_injection_kouku = data.api_injection_kouku,
-				api_kouku = data.api_kouku
 			}, isCombined);
 		}
 		public void Update(combined_battle_each_battle data, bool isCombined)

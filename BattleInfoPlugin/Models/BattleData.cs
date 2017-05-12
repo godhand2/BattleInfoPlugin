@@ -11,16 +11,17 @@ using BattleInfoPlugin.Properties;
 using System.Text;
 using System.Diagnostics;
 using System.Windows;
-using kcsapi_port = Grabacr07.KanColleWrapper.Models.Raw.kcsapi_port;
+using kcsapi_port = BattleInfoPlugin.Models.Raw.kcsapi_port;
 
-// Alias
+#region Alias
 using practice_battle = BattleInfoPlugin.Models.Raw.sortie_battle;
 using battle_midnight_sp_midnight = BattleInfoPlugin.Models.Raw.battle_midnight_battle;
 using practice_midnight_battle = BattleInfoPlugin.Models.Raw.battle_midnight_battle;
-using sortie_ld_airbattle_ = BattleInfoPlugin.Models.Raw.sortie_airbattle;
+using sortie_ld_airbattle = BattleInfoPlugin.Models.Raw.sortie_airbattle;
 using combined_battle_battle_water = BattleInfoPlugin.Models.Raw.combined_battle_battle;
 using combined_battle_ld_airbattle = BattleInfoPlugin.Models.Raw.combined_battle_airbattle;
 using combined_battle_sp_midnight = BattleInfoPlugin.Models.Raw.combined_battle_midnight_battle;
+#endregion
 
 namespace BattleInfoPlugin.Models
 {
@@ -350,6 +351,22 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
+		#region MechanismOn変更通知プロパティ
+		private bool _MechanismOn;
+		public bool MechanismOn
+		{
+			get { return this._MechanismOn; }
+			set
+			{
+				if (this._MechanismOn != value)
+				{
+					this._MechanismOn = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
 		#endregion
 
 		/// <summary>
@@ -374,7 +391,7 @@ namespace BattleInfoPlugin.Models
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/next")
 				.Subscribe(x => this.ProcessStartNext(x, true));
 
-			proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => this.ResultClear());
+			proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => this.ResultClear(x.Data));
 			#endregion
 
 			#region 통상 - 주간전 / 연습 - 주간전
@@ -401,7 +418,7 @@ namespace BattleInfoPlugin.Models
 				.TryParse<sortie_airbattle>().Subscribe(x => this.Update(x.Data, ApiTypes.sortie_airbattle));
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_sortie/ld_airbattle")
-				.TryParse<sortie_ld_airbattle_>().Subscribe(x => this.Update(x.Data, ApiTypes.sortie_ld_airbattle));
+				.TryParse<sortie_ld_airbattle>().Subscribe(x => this.Update(x.Data, ApiTypes.sortie_ld_airbattle));
 			#endregion
 
 			#region 연합함대 - 주간전
@@ -1219,13 +1236,15 @@ namespace BattleInfoPlugin.Models
 			this.SecondEnemies.Ships.SetValues(api_maxhps_combined.GetEnemyData(), (s, v) => s.MaxHP = v);
 		}
 
-		private void ResultClear()
+		private void ResultClear(kcsapi_port port)
 		{
 			if (this.FirstFleet != null) this.FirstFleet.TotalDamaged = 0;
 			if (this.SecondFleet != null) this.SecondFleet.TotalDamaged = 0;
 
 			if(this.IsInSortie) AutoBackTab();
 			this.IsInSortie = false;
+
+			this.MechanismOn = (port.api_event_object.api_m_flag2 == 1);
 		}
 		private void Clear()
 		{
@@ -1247,6 +1266,8 @@ namespace BattleInfoPlugin.Models
 			if (this.FirstFleet != null) this.FirstFleet.Formation = Formation.없음;
 			this.Enemies = new FleetData();
 			this.SecondEnemies = new FleetData();
+
+			this.MechanismOn = false;
 		}
 
 		private bool CalcOverKill(int MaxCount, int SinkCount)

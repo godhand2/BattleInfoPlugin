@@ -69,14 +69,5 @@ namespace BattleInfoPlugin.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
-        /// <summary>
-        ///   {&quot;World 1-1&quot;:{&quot;letters&quot;:{&quot;A&quot;:[246,168],&quot;B&quot;:[368,88],&quot;C&quot;:[357,238]}},&quot;World 1-2&quot;:{&quot;letters&quot;:{&quot;A&quot;:[338,104],&quot;B&quot;:[500,84],&quot;C&quot;:[290,217],&quot;D&quot;:[408,295]},&quot;markers&quot;:[{&quot;img&quot;:&quot;client/ammo.png&quot;,&quot;pos&quot;:[265,246],&quot;size&quot;:[18,18]}]},&quot;World 1-3&quot;:{&quot;letters&quot;:{&quot;A&quot;:[293,96],&quot;B&quot;:[242,222],&quot;C&quot;:[396,198],&quot;D&quot;:[490,142],&quot;E&quot;:[338,294],&quot;F&quot;:[463,308],&quot;G&quot;:[628,280]},&quot;markers&quot;:[{&quot;img&quot;:&quot;client/fuel.png&quot;,&quot;pos&quot;:[402,230],&quot;size&quot;:[18,18]},{&quot;img&quot;:&quot;client/fuel.png&quot;,&quot;pos&quot;:[484,176],&quot;size&quot;:[18,18]}]},&quot;World 1-4&quot;:{&quot;letters&quot;:{&quot;A&quot;:[236,85],&quot;B&quot;:[276[나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        internal static string display_overlay_data {
-            get {
-                return ResourceManager.GetString("display_overlay_data", resourceCulture);
-            }
-        }
     }
 }

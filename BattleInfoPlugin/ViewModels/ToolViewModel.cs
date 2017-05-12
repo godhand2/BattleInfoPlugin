@@ -64,6 +64,9 @@ namespace BattleInfoPlugin.ViewModels
 			=> (this.BattleData?.SupportUsed ?? UsedSupport.Unset).ToReadableString();
 
 
+		public bool MechanismOn
+			=> this.BattleData?.MechanismOn ?? false;
+
 		#region FirstFleet変更通知プロパティ
 		private FleetViewModel _FirstFleet;
 		public FleetViewModel FirstFleet
@@ -202,6 +205,22 @@ namespace BattleInfoPlugin.ViewModels
 				if (settings.Default.EnableColorChange != value)
 				{
 					settings.Default.EnableColorChange = value;
+					settings.Default.Save();
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
+		#region UseBrowserOverlay
+		public bool UseBrowserOverlay
+		{
+			get { return settings.Default.UseBrowserOverlay; }
+			set
+			{
+				if (settings.Default.UseBrowserOverlay != value)
+				{
+					settings.Default.UseBrowserOverlay = value;
 					settings.Default.Save();
 					this.RaisePropertyChanged();
 				}

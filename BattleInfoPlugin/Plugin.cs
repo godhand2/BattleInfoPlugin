@@ -15,7 +15,7 @@ namespace BattleInfoPlugin
 	[ExportMetadata("Guid", "3CFE46C3-E3AF-4737-BFB7-CAD1865C10CA")]
 	[ExportMetadata("Title", "BattleInfo")]
 	[ExportMetadata("Description", "전투정보를 표시합니다. 대파알림 및 랭크예측등을 제공합니다")]
-	[ExportMetadata("Version", "1.7.0.18")]
+	[ExportMetadata("Version", "1.7.1.1")]
 	[ExportMetadata("Author", "@veigr")]
 	public class Plugin : IPlugin, ITool, IRequestNotify
 	{
@@ -42,9 +42,9 @@ namespace BattleInfoPlugin
 
 		public void Initialize()
 		{
-			/* For Display Overlay Patch
-			KanColleClient.Current.Proxy.api_start2.Subscribe(x => this.browserEx.Startup());
-			*/
+			// For Display Overlay Patch
+			if (BattleInfoPlugin.Properties.Settings.Default.UseBrowserOverlay)
+				KanColleClient.Current.Proxy.api_start2.Subscribe(x => this.browserEx.Startup());
 
 			/* For Enemy Info Data
 			KanColleClient.Current.Proxy.api_start2.TryParse<kcsapi_start2>().Subscribe(x =>

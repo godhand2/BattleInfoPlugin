@@ -1339,7 +1339,7 @@ namespace BattleInfoPlugin.Models
 				decimal AliasDamagedRate = AliasTotalDamaged / (decimal)AliasMax; // 아군이 받은 총 데미지
 
 				decimal DamageRate = AliasDamagedRate == 0
-					? -1 // 별도 처리
+					? 2 // same with x2.5
 					: (decimal)EnemyDamagedRate / AliasDamagedRate;
 
 				this.FirstFleet.AttackGauge = this.MakeGaugeText(EnemyTotalDamaged, EnemyMax, EnemyDamagedRate);

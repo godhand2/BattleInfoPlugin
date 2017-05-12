@@ -96,8 +96,10 @@ namespace BattleInfoPlugin.Models
 					if (target != null)
 					{
 						target.createStyleSheet().cssText = "#battleinfo_display_overlay { position:fixed; left:0; top:0; width:800px; height:480px; z-index:9145; pointer-events:none; font:bold 22px sans-serif; }"
-							+ "#battleinfo_display_overlay > .overlay_node { position:absolute; display:inline-block; text-shadow: #F5F5F5 1px 1px 2px, #F5F5F5 0 0 2px; color:#333; font:inherit; }"
-							+ "#battleinfo_display_overlay > .overlay_marker { position:absolute; display:block; border:2px solid #37373f; border-radius:9999px; background-color:#F5F5F5 }";
+							+ "@keyframes fadeOut { from { opacity: 1 } to { opacity: 0 } }"
+							+ "#battleinfo_display_overlay > .overlay_node, #battleinfo_display_overlay > .overlay_marker { animation-duration: 2s; animation-fill-mode: both; animation-delay: 5s; }"
+							+ "#battleinfo_display_overlay > .overlay_node { position:absolute; display:inline-block; text-shadow: #F5F5F5 1px 1px 2px, #F5F5F5 0 0 2px; color:#333; font:inherit; animation-name: fadeOut }"
+							+ "#battleinfo_display_overlay > .overlay_marker { position:absolute; display:block; border:2px solid #37373f; border-radius:9999px; background-color:#F5F5F5; animation-name: fadeOut }";
 
 						layer = target.createElement("div");
 						layer.id = "battleinfo_display_overlay";

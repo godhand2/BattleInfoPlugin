@@ -166,7 +166,7 @@ namespace BattleInfoPlugin.Models
 					html += string.Format(
 						"<div class=\"overlay_node\" style=\"left:{1}px; top:{2}px\">{0}</div>",
 						letter.Key,
-						letter.Value[0] + 20,
+						letter.Value[0] + 32,
 						letter.Value[1] + 20
 					);
 				}

@@ -317,7 +317,7 @@
 						   TextAlignment="Center"
 						   Text="기믹이 발동되었습니다"
 						   Foreground="#FF40C820"
-						   Visibility="{Binding MechanismOn, Mode=OneWay}" />
+						   Visibility="{Binding MechanismOn, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}" />
 
 			</StackPanel>
 

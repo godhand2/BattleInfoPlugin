@@ -1046,7 +1046,12 @@ namespace BattleInfoPlugin.Models
 				.SingleOrDefault(x => x.Value.Id == data.api_get_ship?.api_ship_id).Value
 				?.Name;
 
-			this.RankResult = RankExtension.ConvertRank(data.api_win_rank);
+			if (this.RankResult != Rank.완전승리S)
+			{
+				var rank = RankExtension.ConvertRank(data.api_win_rank);
+				if (rank != Rank.에러)
+					this.RankResult = rank;
+			}
 
 			UpdateMVP(data.api_mvp, data.api_mvp_combined);
 		}

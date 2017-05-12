@@ -39,9 +39,16 @@ namespace BattleInfoPlugin.Models
 		}
 		public static Rank ConvertRank(string rank)
 		{
-			int x;
-			if (!int.TryParse(rank, out x)) return Rank.에러;
-			return ConvertRank(x);
+			switch (rank)
+			{
+				case "S": return Rank.S승리;
+				case "A": return Rank.A승리;
+				case "B": return Rank.B승리;
+				case "C": return Rank.C패배;
+				case "D": return Rank.D패배;
+				case "E": return Rank.E패배;
+			}
+			return Rank.에러;
 		}
 	}
 }

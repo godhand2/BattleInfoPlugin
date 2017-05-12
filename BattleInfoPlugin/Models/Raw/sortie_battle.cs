@@ -1,9 +1,10 @@
 ﻿namespace BattleInfoPlugin.Models.Raw
 {
 	/// <summary>
-	/// 昼戦
+	/// 주간전
+	/// sortie_battle, practice_battle
 	/// </summary>
-	public class sortie_battle: ICommonFirstBattleMembers
+	public class sortie_battle : ICommonFirstBattleMembers
 	{
 		public int api_dock_id { get; set; }
 		public int[] api_ship_ke { get; set; }
@@ -18,7 +19,7 @@
 		public int[] api_search { get; set; }
 		public int[] api_formation { get; set; }
 		public Api_Air_Base_Injection api_air_base_injection { get; set; }
-		public Api_Injection_Kouku api_injection_kouku { get; set; }
+		public Api_Kouku api_injection_kouku { get; set; }
 		public Api_Air_Base_Attack[] api_air_base_attack { get; set; }
 		public int[] api_stage_flag { get; set; }
 		public Api_Kouku api_kouku { get; set; }

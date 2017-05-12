@@ -3,6 +3,8 @@
 
 	#region 航空戦
 
+	// 항공전 / 분식 항공전
+	// Api_Kouku, Api_Injection_Kouku
 	public class Api_Kouku
 	{
 		public int[][] api_plane_from { get; set; }
@@ -128,58 +130,23 @@
 
 	#endregion
 
-	#region 基地航空隊
 
-	public class Api_Air_Base_Attack
+	// 기지항공대 항공전
+	public class Api_Air_Base_Attack : Api_Kouku
 	{
 		public int api_base_id { get; set; }
 		public int[] api_stage_flag { get; set; }
-		public int[][] api_plane_from { get; set; }
 		public Api_Squadron_Plane[] api_squadron_plane { get; set; }
-		public Api_Stage1 api_stage1 { get; set; }
-		public Api_Stage2 api_stage2 { get; set; }
-		public Api_Stage3 api_stage3 { get; set; }  // e のみのデータ
-		public Api_Stage3 api_stage3_combined { get; set; }  // e のみのデータ
 	}
-
 	public class Api_Squadron_Plane
 	{
 		public int api_mst_id { get; set; }
 		public int api_count { get; set; }
 	}
 
-	#endregion
-
-	#region 噴式基地航空隊攻撃
-
-	public class Api_Air_Base_Injection
+	// 기지항공대 분식 항공전
+	public class Api_Air_Base_Injection : Api_Kouku
 	{
-		public int[][] api_plane_from { get; set; }
-		public Api_Air_Base_Data[] api_air_base_data { get; set; }
-		public Api_Stage1 api_stage1 { get; set; }
-		public Api_Stage2 api_stage2 { get; set; }
-		public Api_Stage3 api_stage3 { get; set; }
-		public Api_Stage3 api_stage3_combined { get; set; }
+		public Api_Squadron_Plane[] api_air_base_data { get; set; }
 	}
-
-	public class Api_Air_Base_Data
-	{
-		public int api_mst_id { get; set; }
-		public int api_count { get; set; }
-	}
-
-	#endregion
-
-	#region 噴式基地航空隊
-
-	public class Api_Injection_Kouku
-	{
-		public int[][] api_plane_from { get; set; }
-		public Api_Stage1 api_stage1 { get; set; }
-		public Api_Stage2 api_stage2 { get; set; }
-		public Api_Stage3 api_stage3 { get; set; }
-		public Api_Stage3 api_stage3_combined { get; set; }
-	}
-
-	#endregion
 }

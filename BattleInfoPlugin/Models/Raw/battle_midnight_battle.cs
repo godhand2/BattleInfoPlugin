@@ -1,7 +1,8 @@
 ﻿namespace BattleInfoPlugin.Models.Raw
 {
 	/// <summary>
-	/// 夜戦
+	/// 야전
+	/// battle_midnight_battle, practice_midnight_battle
 	/// </summary>
 	public class battle_midnight_battle : ICommonBattleMembers
 	{
@@ -18,5 +19,4 @@
 		public int[] api_flare_pos { get; set; }
 		public Midnight_Hougeki api_hougeki { get; set; }
 	}
-
 }

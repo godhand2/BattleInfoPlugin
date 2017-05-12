@@ -1,7 +1,8 @@
 ﻿namespace BattleInfoPlugin.Models.Raw
 {
 	/// <summary>
-	/// 連合艦隊-機動部隊
+	/// 연합함대 - 수상부대 / 기동부대
+	/// combined_battle_battle, combined_battle_battle_water
 	/// </summary>
 	public class combined_battle_battle : ICommonFirstBattleMembers
 	{
@@ -21,7 +22,7 @@
 		public int[] api_search { get; set; }
 		public int[] api_formation { get; set; }
 		public Api_Air_Base_Injection api_air_base_injection { get; set; }
-		public Api_Injection_Kouku api_injection_kouku { get; set; }
+		public Api_Kouku api_injection_kouku { get; set; }
 		public Api_Air_Base_Attack[] api_air_base_attack { get; set; }
 		public int[] api_stage_flag { get; set; }
 		public Api_Kouku api_kouku { get; set; }
@@ -33,8 +34,8 @@
 		public Raigeki api_opening_atack { get; set; }
 		public int[] api_hourai_flag { get; set; }
 		public Hougeki api_hougeki1 { get; set; }
-		public Raigeki api_raigeki { get; set; }
 		public Hougeki api_hougeki2 { get; set; }
 		public Hougeki api_hougeki3 { get; set; }
+		public Raigeki api_raigeki { get; set; }
 	}
 }

@@ -29,7 +29,7 @@ namespace BattleInfoPlugin.Models
 		}
 		private class CommonBattleData
 		{
-			public Api_Injection_Kouku api_injection_kouku { get; set; }
+			public Api_Kouku api_injection_kouku { get; set; }
 			public Api_Kouku api_kouku { get; set; }
 			public Api_Kouku api_kouku2 { get; set; }
 			public Hougeki api_opening_taisen { get; set; }
@@ -322,13 +322,6 @@ namespace BattleInfoPlugin.Models
 				api_raigeki = data.api_raigeki
 			}, isCombined);
 		}
-		public void Update(battle_midnight_sp_midnight data, bool isCombined = false)
-		{
-			this.Update(new CommonBattleData
-			{
-				api_hougeki = data.api_hougeki
-			}, isCombined);
-		}
 		public void Update(combined_battle_airbattle data, bool isCombined = false)
 		{
 			this.Update(new CommonBattleData
@@ -336,20 +329,6 @@ namespace BattleInfoPlugin.Models
 				api_injection_kouku = data.api_injection_kouku,
 				api_kouku = data.api_kouku,
 				api_kouku2 = data.api_kouku2
-			}, isCombined);
-		}
-		public void Update(combined_battle_battle_water data, bool isCombined = false)
-		{
-			this.Update(new CommonBattleData
-			{
-				api_injection_kouku = data.api_injection_kouku,
-				api_kouku = data.api_kouku,
-				api_opening_taisen = data.api_opening_taisen,
-				api_opening_atack = data.api_opening_atack,
-				api_hougeki1 = data.api_hougeki1,
-				api_hougeki2 = data.api_hougeki2,
-				api_hougeki3 = data.api_hougeki3,
-				api_raigeki = data.api_raigeki
 			}, isCombined);
 		}
 		public void Update(combined_battle_midnight_battle data, bool isCombined = false)
@@ -366,36 +345,6 @@ namespace BattleInfoPlugin.Models
 				api_hougeki = data.api_hougeki
 			}, isCombined);
 		}
-		public void Update(practice_battle data, bool isCombined = false)
-		{
-			this.Update(new CommonBattleData
-			{
-				api_injection_kouku = data.api_injection_kouku,
-				api_kouku = data.api_kouku,
-				api_opening_taisen = data.api_opening_taisen,
-				api_opening_atack = data.api_opening_atack,
-				api_hougeki1 = data.api_hougeki1,
-				api_hougeki2 = data.api_hougeki2,
-				api_hougeki3 = data.api_hougeki3,
-				api_raigeki = data.api_raigeki
-			}, isCombined);
-		}
-		public void Update(practice_midnight_battle data, bool isCombined = false)
-		{
-			this.Update(new CommonBattleData
-			{
-				api_hougeki = data.api_hougeki
-			}, isCombined);
-		}
-		public void Update(sortie_airbattle data, bool isCombined = false)
-		{
-			this.Update(new CommonBattleData
-			{
-				api_injection_kouku = data.api_injection_kouku,
-				api_kouku = data.api_kouku,
-				api_kouku2 = data.api_kouku2
-			}, isCombined);
-		}
 		public void Update(sortie_battle data, bool isCombined = false)
 		{
 			this.Update(new CommonBattleData
@@ -410,12 +359,13 @@ namespace BattleInfoPlugin.Models
 				api_raigeki = data.api_raigeki
 			}, isCombined);
 		}
-		public void Update(sortie_ld_airbattle data, bool isCombined = false)
+		public void Update(sortie_airbattle data, bool isCombined = false)
 		{
 			this.Update(new CommonBattleData
 			{
 				api_injection_kouku = data.api_injection_kouku,
-				api_kouku = data.api_kouku
+				api_kouku = data.api_kouku,
+				api_kouku2 = data.api_kouku2
 			}, isCombined);
 		}
 		public void Update(combined_battle_ld_airbattle data, bool isCombined = false)

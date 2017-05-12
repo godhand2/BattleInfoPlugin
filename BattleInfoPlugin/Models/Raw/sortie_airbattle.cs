@@ -1,7 +1,7 @@
 ﻿namespace BattleInfoPlugin.Models.Raw
 {
 	/// <summary>
-	/// 通常艦隊-航空戦
+	/// 통상함대 - 항공전, 장거리공습전
 	/// </summary>
 	public class sortie_airbattle : ICommonFirstBattleMembers
 	{
@@ -18,7 +18,7 @@
 		public int[] api_search { get; set; }
 		public int[] api_formation { get; set; }
 		public Api_Air_Base_Injection api_air_base_injection { get; set; }
-		public Api_Injection_Kouku api_injection_kouku { get; set; }
+		public Api_Kouku api_injection_kouku { get; set; }
 		public Api_Air_Base_Attack[] api_air_base_attack { get; set; }
 		public int[] api_stage_flag { get; set; }
 		public Api_Kouku api_kouku { get; set; }

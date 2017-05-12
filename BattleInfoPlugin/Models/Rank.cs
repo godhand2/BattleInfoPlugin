@@ -18,6 +18,30 @@ namespace BattleInfoPlugin.Models
 		C패배 = 5,
 		D패배 = 6,
 		E패배 = 7,
-		공습전 = 8,
+		공습전 = 8
+	}
+
+	public static class RankExtension
+	{
+		public static Rank ConvertRank(int rank)
+		{
+			switch (rank)
+			{
+				case 0: return Rank.E패배;
+				case 1: return Rank.D패배;
+				case 2: return Rank.C패배;
+				case 3: return Rank.B승리;
+				case 4: return Rank.A승리;
+				case 5: return Rank.S승리;
+				case 6: return Rank.완전승리S;
+			}
+			return Rank.없음;
+		}
+		public static Rank ConvertRank(string rank)
+		{
+			int x;
+			if (!int.TryParse(rank, out x)) return Rank.에러;
+			return ConvertRank(x);
+		}
 	}
 }

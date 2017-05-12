@@ -9,8 +9,7 @@ namespace BattleInfoPlugin.Models.Raw
 	{
 		private static readonly FleetDamages defaultValue = new FleetDamages();
 
-		#region 支援
-
+		#region 지원함대
 		public static FleetDamages GetEnemyDamages(this Api_Support_Info support)
 			=> support?.api_support_airatack?.api_stage3?.api_edam?.GetDamages()
 			   ?? support?.api_support_hourai?.api_damage?.GetDamages()
@@ -25,11 +24,9 @@ namespace BattleInfoPlugin.Models.Raw
 			=> support?.api_support_airatack?.api_stage3?.api_edam?.GetEachDamages(true)
 			   ?? support?.api_support_hourai?.api_damage?.GetEachDamages(true)
 			   ?? defaultValue;
-
 		#endregion
 
-		#region 砲撃
-
+		#region 포격전
 		public static FleetDamages GetFriendDamages(this Hougeki hougeki)
 			=> hougeki?.api_damage?.GetFriendDamages(hougeki.api_df_list)
 			   ?? defaultValue;
@@ -52,11 +49,9 @@ namespace BattleInfoPlugin.Models.Raw
 		public static FleetDamages GetEachSecondEnemyDamages(this Hougeki hougeki)
 			=> hougeki?.api_damage?.GetEachEnemyDamages(hougeki.api_df_list, hougeki.api_at_eflag, true)
 			   ?? defaultValue;
-
 		#endregion
 
-		#region 夜戦
-
+		#region 야전
 		public static FleetDamages GetFriendDamages(this Midnight_Hougeki hougeki)
 			=> hougeki?.api_damage?.GetFriendDamages(hougeki.api_df_list)
 			   ?? defaultValue;
@@ -64,11 +59,9 @@ namespace BattleInfoPlugin.Models.Raw
 		public static FleetDamages GetEnemyDamages(this Midnight_Hougeki hougeki)
 			=> hougeki?.api_damage?.GetEnemyDamages(hougeki.api_df_list)
 			   ?? defaultValue;
-
 		#endregion
 
-		#region 航空戦
-
+		#region 항공전
 		public static FleetDamages GetFirstFleetDamages(this Api_Kouku kouku)
 			=> kouku?.api_stage3?.api_fdam.GetDamages()
 			   ?? defaultValue;
@@ -106,11 +99,9 @@ namespace BattleInfoPlugin.Models.Raw
 		public static AirCombatResult ToResult(this Api_Stage2 stage2, string name)
 			=> stage2 == null ? new AirCombatResult(name)
 			: new AirCombatResult(name, stage2.api_f_count, stage2.api_f_lostcount, stage2.api_e_count, stage2.api_e_lostcount);
-
 		#endregion
 
 		#region 기지항공대
-
 		public static FleetDamages GetEachFirstEnemyDamages(this Api_Air_Base_Attack[] attacks)
 			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetDamages() ?? defaultValue)
 			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
@@ -122,14 +113,15 @@ namespace BattleInfoPlugin.Models.Raw
 		public static AirCombatResult[] ToResult(this Api_Air_Base_Attack[] attacks)
 		{
 			return attacks != null && Settings.Default.DetailKouku
-				? attacks.SelectMany(x => new[] { x.api_stage1.ToResult($"제 {x.api_base_id}항공대 공대공"), x.api_stage2.ToResult($"제 {x.api_base_id}항공대 공대함") }).ToArray()
+				? attacks.SelectMany(x => new[] {
+					x.api_stage1.ToResult($"제 {x.api_base_id}기항대 공대공"),
+					x.api_stage2.ToResult($"제 {x.api_base_id}기항대 공대함")
+				}).ToArray()
 				: new AirCombatResult[0];
 		}
-
 		#endregion
 
-		#region 噴式基地航空隊攻撃
-
+		#region 기지항공대 분식
 		public static FleetDamages GetFirstFleetDamages(this Api_Air_Base_Injection injection)
 			=> injection?.api_stage3?.api_fdam.GetDamages()
 			   ?? defaultValue;
@@ -145,31 +137,9 @@ namespace BattleInfoPlugin.Models.Raw
 		public static FleetDamages GetSecondEnemyDamages(this Api_Air_Base_Injection injection)
 			=> injection?.api_stage3_combined?.api_edam?.GetDamages()
 			   ?? defaultValue;
-
 		#endregion
 
-		#region 噴式基地航空隊
-
-		public static FleetDamages GetFirstFleetDamages(this Api_Injection_Kouku kouku)
-			=> kouku?.api_stage3?.api_fdam.GetDamages()
-			   ?? defaultValue;
-
-		public static FleetDamages GetSecondFleetDamages(this Api_Injection_Kouku kouku)
-			=> kouku?.api_stage3_combined?.api_fdam?.GetDamages()
-			   ?? defaultValue;
-
-		public static FleetDamages GetEnemyDamages(this Api_Injection_Kouku kouku)
-			=> kouku?.api_stage3?.api_edam?.GetDamages()
-			   ?? defaultValue;
-
-		public static FleetDamages GetSecondEnemyDamages(this Api_Injection_Kouku kouku)
-			=> kouku?.api_stage3_combined?.api_edam?.GetDamages()
-			   ?? defaultValue;
-
-		#endregion
-
-		#region 雷撃戦
-
+		#region 선제뇌격 / 뇌격전
 		public static FleetDamages GetFriendDamages(this Raigeki raigeki)
 			=> raigeki?.api_fdam?.GetDamages()
 			   ?? defaultValue;
@@ -193,11 +163,9 @@ namespace BattleInfoPlugin.Models.Raw
 		public static FleetDamages GetEachSecondEnemyDamages(this Raigeki raigeki)
 			=> raigeki?.api_edam?.GetEachDamages(true)
 			   ?? defaultValue;
-
 		#endregion
 
-		#region ダメージ計算
-
+		#region 데미지 계산 공통
 		/// <summary>
 		/// 12項目中先頭6項目取得
 		/// </summary>
@@ -262,8 +230,7 @@ namespace BattleInfoPlugin.Models.Raw
 				.ToArray()
 				.ToFleetDamages();
 
-		#region 砲撃戦ダメージリスト算出
-
+		#region 포격전 데미지 리스트 산출
 		/// <summary>
 		/// 砲撃戦友軍ダメージリスト算出
 		/// </summary>
@@ -383,9 +350,7 @@ namespace BattleInfoPlugin.Models.Raw
 			}
 			return ret;
 		}
-
 		#endregion
-
 		#endregion
 	}
 }

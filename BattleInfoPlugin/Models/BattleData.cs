@@ -367,7 +367,7 @@ namespace BattleInfoPlugin.Models
 
 			var proxy = KanColleClient.Current.Proxy;
 
-
+			#region Start / Next / Port
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/start")
 				.Subscribe(x => this.ProcessStartNext(x));
 
@@ -375,7 +375,7 @@ namespace BattleInfoPlugin.Models
 				.Subscribe(x => this.ProcessStartNext(x, true));
 
 			proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => this.ResultClear());
-
+			#endregion
 
 			#region 통상 - 주간전 / 연습 - 주간전
 			proxy.api_req_sortie_battle
@@ -1055,11 +1055,6 @@ namespace BattleInfoPlugin.Models
 			this.IsInSortie = true;
 			this.Clear();
 
-			string Cell = "";
-			this.CellEvent = startNext.api_event_id;
-			if (startNext.api_no != 0)
-				Cell = startNext.api_maparea_id + "-" + startNext.api_mapinfo_no + "-" + startNext.api_no;
-
 			this.CurrentMap = getMapText(startNext);
 
 			this.RankResult = Rank.없음;
@@ -1072,10 +1067,15 @@ namespace BattleInfoPlugin.Models
 			}
 
 			#region Cell list
+			string Cell = "";
+			this.CellEvent = startNext.api_event_id;
+			if (startNext.api_no != 0)
+				Cell = startNext.api_maparea_id + "-" + startNext.api_mapinfo_no + "-" + startNext.api_no;
+
 			this.Cells.ForEach(x => x.IsOld = true);
 			this.Cells.Add(new CellData
 			{
-				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == Cell).Value ?? Cell,
+				CellName = MapAreaData.MapAreaTable.SingleOrDefault(x => x.Key == Cell).Value ?? (startNext.api_no.ToString()), // Cell,
 				CellEvent = this.CellEvent.ToString(),
 				CellText = getCellText(startNext, session),
 				IsOld = false
@@ -1249,7 +1249,7 @@ namespace BattleInfoPlugin.Models
 			this.SecondEnemies = new FleetData();
 		}
 
-		private bool IsOverKill(int MaxCount, int SinkCount)
+		private bool CalcOverKill(int MaxCount, int SinkCount)
 		{
 			if (MaxCount == 1)
 			{
@@ -1312,30 +1312,80 @@ namespace BattleInfoPlugin.Models
 				decimal EnemyDamagedRate = EnemyTotalDamaged / (decimal)EnemyMax; // 적이 받은 총 데미지
 				decimal AliasDamagedRate = AliasTotalDamaged / (decimal)AliasMax; // 아군이 받은 총 데미지
 
-				if (!IsShipSink)
+				decimal DamageRate = AliasDamagedRate == 0
+					? -1 // 별도 처리
+					: (decimal)EnemyDamagedRate / AliasDamagedRate;
+
+				this.FirstFleet.AttackGauge = this.MakeGaugeText(EnemyTotalDamaged, EnemyMax, EnemyDamagedRate);
+				this.Enemies.AttackGauge = this.MakeGaugeText(AliasTotalDamaged, AliasMax, AliasDamagedRate);
+
+
+				var IsOverKill = CalcOverKill(EnemyMaxCount, EnemySinkCount);
+				var IsOverKilled = CalcOverKill(MaxCount, SinkCount);
+
+				int damageType = 0;
+
+				if (IsShipSink && DamageRate > 3m) damageType = 2 | 4;
+				else if (DamageRate > 2.5m) damageType = 2;
+				else if (DamageRate > 1.0m) damageType = 1;
+				else damageType = 0;
+
+				if (AliasTotalDamaged == 0 && EnemyTotalDamaged == 0)
+					return Rank.D패배;
+
+				else if (EnemyDamagedRate < 0.0005m)
+					return Rank.D패배;
+
+				else if (IsShipSink)
 				{
-					if (EnemyMaxCount == this.Enemies.SinkCount)
+					if (EnemyFlag.NowHP <= 0)
 					{
-						if (AliasTotalDamaged == 0) return Rank.완전승리S;
-						else return Rank.S승리;
+						if (IsOverKill) return Rank.B승리;
+						else return Rank.D패배;
 					}
-					else if (IsOverKill(EnemyMaxCount, EnemySinkCount))
-						return Rank.A승리;
+					else if ((damageType &1)== 1) // Mid Damage
+						return Rank.C패배;
+
+					else
+					{
+						if (IsOverKilled) return Rank.E패배;
+						else
+						{
+							if (!IsOverKill && (damageType & 4) == 4) return Rank.B승리; // x3 damage (With sinked ship)
+							if (IsOverKill && (damageType & 2) == 2) return Rank.B승리; // Over damage (x2.5)
+							return Rank.C패배;
+						}
+					}
 				}
-				else if((EnemyFlag.NowHP<=0 && SinkCount < EnemySinkCount) || (decimal.Round((decimal)EnemyDamagedRate / AliasDamagedRate) > 2.5m))
-					return Rank.B승리;
 
+				else
+				{
+					if (EnemyFlag.NowHP <= 0)
+					{
+						if (EnemyMaxCount == this.Enemies.SinkCount)
+						{
+							if (AliasTotalDamaged > 0) return Rank.S승리;
+							else return Rank.완전승리S;
+						}
+						else
+						{
+							if (IsOverKill) return Rank.A승리;
+							else return Rank.B승리;
+						}
+					}
+					else
+					{
+						if (IsOverKill) return Rank.A승리;
 
+						if ((damageType & 2) == 2) return Rank.B승리;
+						else if ((damageType & 1) == 1) return Rank.C패배;
+						else if (damageType == 0) return Rank.D패배;
+						else return Rank.D패배;
+					}
+				}
+
+				#region OldCode
 				/*
-				bool IsThreeTime = false;
-				bool IsOverDamage = false;
-				bool IsMidDamage = false;
-				bool IsScratch = false;
-
-
-				this.FirstFleet.AttackGauge = this.MakeGaugeText(EnemyTotalDamaged, EnemyMax, EnemyDamagedPercent);
-				this.Enemies.AttackGauge = this.MakeGaugeText(AliasTotalDamaged, AliasMax, AliasDamagedPercent);
-
 				bool IsOverKill = CalcOverKill(EnemyMaxCount, this.Enemies.SinkCount);
 				bool IsOverKilled = CalcOverKill(MaxCount, SinkCount);
 
@@ -1424,12 +1474,14 @@ namespace BattleInfoPlugin.Models
 					}
 				}
 				*/
+				#endregion
 			}
 			catch (Exception ex)
 			{
 				// KanColleClient.Current.CatchedErrorLogWriter.ReportException(ex.Source, ex);
 				System.IO.File.AppendAllText("battleinfo_error.log", ex.ToString() + Environment.NewLine);
 				Debug.WriteLine(ex);
+
 				return Rank.에러;
 			}
 		}
@@ -1471,7 +1523,7 @@ namespace BattleInfoPlugin.Models
 				this.FirstFleet.AttackGauge = this.MakeGaugeText(EnemyTotal, EnemyMax, EnemyDamagedPercent);
 				this.Enemies.AttackGauge = this.MakeGaugeText(AliasTotal, AliasMax, AliasDamagedPercent);
 
-				bool IsOverKilled = IsOverKill(MaxCount, SinkCount);
+				bool IsOverKilled = CalcOverKill(MaxCount, SinkCount);
 
 				if (AliasTotal > 0)
 				{
@@ -1491,6 +1543,7 @@ namespace BattleInfoPlugin.Models
 				// KanColleClient.Current.CatchedErrorLogWriter.ReportException(ex.Source, ex);
 				System.IO.File.AppendAllText("battleinfo_error.log", ex.ToString() + Environment.NewLine);
 				Debug.WriteLine(ex);
+
 				return Rank.에러;
 			}
 		}
@@ -1629,34 +1682,54 @@ namespace BattleInfoPlugin.Models
 							: "???";
 
 						return data.api_happening.api_count > 1
-							? string.Format("{0} -{1}", resname, data.api_happening.api_count)
+							? string.Format("{0}-{1}", resname, data.api_happening.api_count)
 							: resname;
 					}
+
 				case 4:
 				case 31:
-					return "적군조우";
+					switch (data.api_event_kind) {
+						case 1: return "적군조우";
+						case 2: return "개막야전";
+						case 3: return "야전>주간전";
+						case 4: return "항공전";
+						case 5: return "심해연합";
+						case 6: return "공습전";
+					}
+					break;
+
 				case 5:
+					switch (data.api_event_kind)
+					{
+						case 2: return "보스 (개막야전)";
+						case 3: return "보스 (야전>주간전)";
+						case 5: return "보스 (심해연합)";
+					}
 					return "보스전";
+
 				case 6:
 					if(data.api_select_route == null) return "기분탓";
 					return "능동분기";
 				case 7: // 항공정찰 자원획득
-					SvData<map_start_next2> svdata;
-					if (!SvData.TryParse<map_start_next2>(session, out svdata))
-						return "정찰 실패";
-
-					var data2 = svdata.Data;
-					if (data2.api_itemget == null) return "정찰 실패";
-
+					if (data.api_event_kind == 0)
 					{
+						SvData<map_start_next2> svdata;
+						if (!SvData.TryParse<map_start_next2>(session, out svdata))
+							return "정찰실패";
+
+						var data2 = svdata.Data;
+						if (data2.api_itemget == null) return "정찰실패";
+
 						var resname = resources.ContainsKey(data2.api_itemget.api_id - 1)
 							? resources[data2.api_itemget.api_id - 1]
 							: (data2.api_itemget.api_name?.Length > 0 ? data2.api_itemget.api_name : "???");
 
 						return data2.api_itemget.api_getcount > 1
-							? string.Format("{0} +{1}", resname, data2.api_itemget.api_getcount)
+							? string.Format("{0}+{1}", resname, data2.api_itemget.api_getcount)
 							: resname;
 					}
+					else return "항공전";
+
 				case 8: // EO (1-6)
 					{
 						var x = data.api_itemget_eo_comment;
@@ -1668,9 +1741,11 @@ namespace BattleInfoPlugin.Models
 							: (x.api_name?.Length > 0 ? x.api_name : "???");
 
 						return x.api_getcount > 1
-							? string.Format("{0} +{1}", resname, x.api_getcount)
+							? string.Format("{0}+{1}", resname, x.api_getcount)
 							: resname;
 					}
+				case 9: // TP
+					return "수송지점";
 				case 10:
 					return "공습전";
 			}

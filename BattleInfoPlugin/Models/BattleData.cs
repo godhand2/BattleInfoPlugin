@@ -1339,7 +1339,7 @@ namespace BattleInfoPlugin.Models
 				decimal AliasDamagedRate = AliasTotalDamaged / (decimal)AliasMax; // 아군이 받은 총 데미지
 
 				decimal DamageRate = AliasDamagedRate == 0
-					? 2 // same with x2.5
+					? -1 // same with x2.5
 					: (decimal)EnemyDamagedRate / AliasDamagedRate;
 
 				this.FirstFleet.AttackGauge = this.MakeGaugeText(EnemyTotalDamaged, EnemyMax, EnemyDamagedRate);
@@ -1351,7 +1351,8 @@ namespace BattleInfoPlugin.Models
 
 				int damageType = 0;
 
-				if (IsShipSink && DamageRate > 3m) damageType = 2 | 4;
+				if (DamageRate < 0) damageType = 2;
+				else if (IsShipSink && DamageRate > 3m) damageType = 2 | 4;
 				else if (DamageRate > 2.5m) damageType = 2;
 				else if (DamageRate > 1.0m) damageType = 1;
 				else damageType = 0;

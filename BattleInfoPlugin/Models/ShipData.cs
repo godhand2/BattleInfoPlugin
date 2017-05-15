@@ -10,17 +10,32 @@ namespace BattleInfoPlugin.Models
 	{
 		#region Id変更通知プロパティ
 		private int _Id;
-
 		public int Id
 		{
-			get
-			{ return this._Id; }
+			get { return this._Id; }
 			set
 			{
-				if (this._Id == value)
-					return;
-				this._Id = value;
-				this.RaisePropertyChanged();
+				if (this._Id != value)
+				{
+					this._Id = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
+		#region MasterId変更通知プロパティ
+		private int _MasterId;
+		public int MasterId
+		{
+			get { return this._MasterId; }
+			set
+			{
+				if (this._MasterId != value)
+				{
+					this._MasterId = value;
+					this.RaisePropertyChanged();
+				}
 			}
 		}
 		#endregion
@@ -55,6 +70,38 @@ namespace BattleInfoPlugin.Models
 					return;
 				this._AdditionalName = value;
 				this.RaisePropertyChanged();
+			}
+		}
+		#endregion
+
+		#region ShipSpeed変更通知プロパティ
+		private ShipSpeed _ShipSpeed;
+		public ShipSpeed ShipSpeed
+		{
+			get { return this._ShipSpeed; }
+			set
+			{
+				if (this._ShipSpeed != value)
+				{
+					this._ShipSpeed = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
+		#region ShipType変更通知プロパティ
+		private int _ShipType;
+		public int ShipType
+		{
+			get { return this._ShipType; }
+			set
+			{
+				if (this._ShipType != value)
+				{
+					this._ShipType = value;
+					this.RaisePropertyChanged();
+				}
 			}
 		}
 		#endregion
@@ -408,7 +455,11 @@ namespace BattleInfoPlugin.Models
 		public int ShipEvade => this.Evade - this.SlotsEvade;
 
 		// 선제대잠 가능 여부
-		public bool OpeningASW => SumASW >= 100;
+		public bool OpeningASW
+			=> this.MasterId == 141 ? true // 이스즈改2
+				: this.ShipType == 1 ? SumASW >= 60 // 해방함
+				: this.ShipType == 7 && this.ShipSpeed == ShipSpeed.Slow ? SumASW >= 65 // 저속 경공모
+				: SumASW >= 100;
 
 		public LimitedValue HP => new LimitedValue(this.NowHP, this.MaxHP, 0);
 
@@ -438,8 +489,10 @@ namespace BattleInfoPlugin.Models
 			this._Name = "？？？";
 			this._AdditionalName = "";
 			this._TypeName = "？？？";
+			this._ShipType = 0;
 			this._Situation = ShipSituation.None;
 			this._Slots = new ShipSlotData[0];
+			this._ShipSpeed = ShipSpeed.Immovable;
 		}
 	}
 
@@ -513,7 +566,10 @@ namespace BattleInfoPlugin.Models
 		private void UpdateFromSource()
 		{
 			this.Id = this.Source.Id;
+			this.MasterId = this.Source.Info.Id;
 			this.Name = this.Source.Info.Name;
+			this.ShipType = this.Source.Info.ShipType.Id;
+			this.ShipSpeed = this.Source.Speed;
 			this.TypeName = this.Source.Speed == ShipSpeed.Immovable
 				? "육상기지"
 				: this.Source.Info.ShipType.Name;
@@ -583,7 +639,10 @@ namespace BattleInfoPlugin.Models
 
 			var isEnemyID = this.Source?.Id > 1500;
 			this.AdditionalName = isEnemyID ? this.Source?.RawData.api_yomi : "";
-			this.TypeName = this.Source?.ShipType.Name;
+			this.ShipSpeed = this.Source?.Speed ?? ShipSpeed.Immovable;
+			this.TypeName = this.Source?.Speed == ShipSpeed.Immovable
+				? "육상기지"
+				: this.Source?.ShipType.Name;
 		}
 	}
 }

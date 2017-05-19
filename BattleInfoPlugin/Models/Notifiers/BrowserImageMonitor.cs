@@ -23,6 +23,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 {
 	internal class BrowserImageMonitor
 	{
+		private static readonly Settings settings = Settings.Default;
 		private WebBrowser kanColleBrowser;
 
 		private bool isConfirmPursuitNotified;
@@ -79,6 +80,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 		{
 			if (!this.isInCombat) return;
 			if (this.isConfirmPursuitNotified) return;
+			if (!settings.IsPursuitEnabled) return;
 
 			var image = this.kanColleBrowser?.GetImage();
 			if (image == null) return;

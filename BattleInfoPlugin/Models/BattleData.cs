@@ -515,6 +515,8 @@ namespace BattleInfoPlugin.Models
 				case ApiTypes.practice_battle:
 					this.Name = "연습 - 주간전";
 
+					this.Clear();
+
 					this.CellEvent = (int)CellType.연습전;
 					this.Cells.Clear();
 
@@ -608,9 +610,9 @@ namespace BattleInfoPlugin.Models
 			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
 
 			if (apiType == ApiTypes.battle_midnight_sp_midnight)
-				this.RankResult = this.CalcRank(false, false, true, BeforedayBattleHP, EnemyBeforedayBattle);
-			else
 				this.RankResult = this.CalcRank();
+			else
+				this.RankResult = this.CalcRank(false, false, true, BeforedayBattleHP, EnemyBeforedayBattle);
 		}
 
 		private void Update(sortie_airbattle data, ApiTypes apiType)

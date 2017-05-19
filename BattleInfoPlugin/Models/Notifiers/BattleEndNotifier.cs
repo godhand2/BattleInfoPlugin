@@ -91,7 +91,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 				.Subscribe(_ => this.NotifyEndOfBattle());
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_practice/battle_result")
-				.Subscribe(_ => this.NotifyEndOfBattle());
+				.Subscribe(_ => this.NotifyEndOfBattle(true));
 
 			proxy.api_req_sortie_battleresult
 				.Subscribe(_ => this.NotifyEndOfBattle());
@@ -119,9 +119,9 @@ namespace BattleInfoPlugin.Models.Notifiers
 			}
 			else return false;
 		}
-		private void NotifyEndOfBattle()
+		private void NotifyEndOfBattle(bool isPractice = false)
 		{
-			if (!IsCriticalCheck() || !CriticalEnabled)
+			if (isPractice || !IsCriticalCheck() || !CriticalEnabled)
 				this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
 		}
 

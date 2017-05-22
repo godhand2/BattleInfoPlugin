@@ -789,49 +789,102 @@ namespace BattleInfoPlugin.Models
 			#region 연합 vs 심해연합
 			if (apiType != ApiTypes.combined_battle_ec_battle)
 			{
-				this.FirstFleet.CalcDamages(
-					data.api_injection_kouku.GetFirstFleetDamages(),
-					data.api_kouku.GetFirstFleetDamages(),
-					data.api_opening_taisen.GetEachFirstFriendDamages(),
-					data.api_opening_atack.GetEachFirstFriendDamages(),
-					data.api_hougeki1.GetEachFirstFriendDamages(),
-					data.api_raigeki.GetEachFirstFriendDamages(),
-					data.api_hougeki3.GetEachFirstFriendDamages()
-				);
-				this.SecondFleet.CalcDamages(
-					data.api_injection_kouku.GetSecondFleetDamages(),
-					data.api_kouku.GetSecondFleetDamages(),
-					data.api_opening_taisen.GetEachSecondFriendDamages(),
-					data.api_opening_atack.GetEachSecondFriendDamages(),
-					data.api_hougeki2.GetEachSecondFriendDamages(),
-					data.api_raigeki.GetEachSecondFriendDamages(),
-					data.api_hougeki3.GetEachSecondFriendDamages()
-				);
+				// 기동부대
+				if (apiType == ApiTypes.combined_battle_each_battle)
+				{
+					this.FirstFleet.CalcDamages(
+						data.api_injection_kouku.GetFirstFleetDamages(),
+						data.api_kouku.GetFirstFleetDamages(),
+						data.api_opening_taisen.GetEachFirstFriendDamages(),
+						data.api_opening_atack.GetEachFirstFriendDamages(),
+						data.api_hougeki1.GetEachFirstFriendDamages(),
+						data.api_raigeki.GetEachFirstFriendDamages(),
+						data.api_hougeki3.GetEachFirstFriendDamages()
+					);
+					this.SecondFleet.CalcDamages(
+						data.api_injection_kouku.GetSecondFleetDamages(),
+						data.api_kouku.GetSecondFleetDamages(),
+						data.api_opening_taisen.GetEachSecondFriendDamages(),
+						data.api_opening_atack.GetEachSecondFriendDamages(),
+						data.api_hougeki2.GetEachSecondFriendDamages(),
+						data.api_raigeki.GetEachSecondFriendDamages(),
+						data.api_hougeki3.GetEachSecondFriendDamages()
+					);
 
-				this.Enemies.CalcDamages(
-					data.api_air_base_injection.GetEnemyDamages(),
-					data.api_injection_kouku.GetEnemyDamages(),
-					data.api_air_base_attack.GetEachFirstEnemyDamages(),
-					data.api_support_info.GetEachFirstEnemyDamages(),
-					data.api_kouku.GetEnemyDamages(),
-					data.api_opening_taisen.GetEachFirstEnemyDamages(),
-					data.api_opening_atack.GetEachFirstEnemyDamages(),
-					data.api_hougeki1.GetEachFirstEnemyDamages(),
-					data.api_raigeki.GetEachFirstEnemyDamages(),
-					data.api_hougeki3.GetEachFirstEnemyDamages()
-				);
-				this.SecondEnemies.CalcDamages(
-					data.api_air_base_injection.GetSecondEnemyDamages(),
-					data.api_injection_kouku.GetSecondEnemyDamages(),
-					data.api_air_base_attack.GetEachSecondEnemyDamages(),
-					data.api_support_info.GetEachSecondEnemyDamages(),
-					data.api_kouku.GetSecondEnemyDamages(),
-					data.api_opening_taisen.GetEachSecondEnemyDamages(),
-					data.api_opening_atack.GetEachSecondEnemyDamages(),
-					data.api_hougeki2.GetEachSecondEnemyDamages(),
-					data.api_raigeki.GetEachSecondEnemyDamages(),
-					data.api_hougeki3.GetEachSecondEnemyDamages()
-				);
+					this.Enemies.CalcDamages(
+						data.api_air_base_injection.GetEnemyDamages(),
+						data.api_injection_kouku.GetEnemyDamages(),
+						data.api_air_base_attack.GetEachFirstEnemyDamages(),
+						data.api_kouku.GetEnemyDamages(),
+						data.api_support_info.GetEachFirstEnemyDamages(),
+						data.api_opening_taisen.GetEachFirstEnemyDamages(),
+						data.api_opening_atack.GetEachFirstEnemyDamages(),
+						data.api_hougeki1.GetEachFirstEnemyDamages(),
+						data.api_raigeki.GetEachFirstEnemyDamages(),
+						data.api_hougeki3.GetEachFirstEnemyDamages()
+					);
+					this.SecondEnemies.CalcDamages(
+						data.api_air_base_injection.GetSecondEnemyDamages(),
+						data.api_injection_kouku.GetSecondEnemyDamages(),
+						data.api_air_base_attack.GetEachSecondEnemyDamages(),
+						data.api_kouku.GetSecondEnemyDamages(),
+						data.api_support_info.GetEachSecondEnemyDamages(),
+						data.api_opening_taisen.GetEachSecondEnemyDamages(),
+						data.api_opening_atack.GetEachSecondEnemyDamages(),
+						data.api_hougeki2.GetEachSecondEnemyDamages(),
+						data.api_raigeki.GetEachSecondEnemyDamages(),
+						data.api_hougeki3.GetEachSecondEnemyDamages()
+					);
+				}
+
+				// 수상부대
+				else if (apiType == ApiTypes.combined_battle_each_battle_water)
+				{
+					this.FirstFleet.CalcDamages(
+						data.api_injection_kouku.GetFirstFleetDamages(),
+						data.api_kouku.GetFirstFleetDamages(),
+						data.api_opening_taisen.GetEachFirstFriendDamages(),
+						data.api_opening_atack.GetEachFirstFriendDamages(),
+						data.api_hougeki1.GetEachFirstFriendDamages(),
+						data.api_hougeki2.GetEachFirstFriendDamages(),
+						data.api_raigeki.GetEachFirstFriendDamages()
+					);
+					this.SecondFleet.CalcDamages(
+						data.api_injection_kouku.GetSecondFleetDamages(),
+						data.api_kouku.GetSecondFleetDamages(),
+						data.api_opening_taisen.GetEachSecondFriendDamages(),
+						data.api_opening_atack.GetEachSecondFriendDamages(),
+						data.api_hougeki2.GetEachSecondFriendDamages(),
+						data.api_hougeki3.GetEachSecondFriendDamages(),
+						data.api_raigeki.GetEachSecondFriendDamages()
+					);
+
+					this.Enemies.CalcDamages(
+						data.api_air_base_injection.GetEnemyDamages(),
+						data.api_injection_kouku.GetEnemyDamages(),
+						data.api_air_base_attack.GetEachFirstEnemyDamages(),
+						data.api_kouku.GetEnemyDamages(),
+						data.api_support_info.GetEachFirstEnemyDamages(),
+						data.api_opening_taisen.GetEachFirstEnemyDamages(),
+						data.api_opening_atack.GetEachFirstEnemyDamages(),
+						data.api_hougeki1.GetEachFirstEnemyDamages(),
+						data.api_hougeki2.GetEachFirstEnemyDamages(),
+						data.api_raigeki.GetEachFirstEnemyDamages()
+					);
+					this.SecondEnemies.CalcDamages(
+						data.api_air_base_injection.GetSecondEnemyDamages(),
+						data.api_injection_kouku.GetSecondEnemyDamages(),
+						data.api_air_base_attack.GetEachSecondEnemyDamages(),
+						data.api_kouku.GetSecondEnemyDamages(),
+						data.api_support_info.GetEachSecondEnemyDamages(),
+						data.api_opening_taisen.GetEachSecondEnemyDamages(),
+						data.api_opening_atack.GetEachSecondEnemyDamages(),
+						data.api_hougeki2.GetEachSecondEnemyDamages(),
+						data.api_hougeki3.GetEachSecondEnemyDamages(),
+						data.api_raigeki.GetEachSecondEnemyDamages()
+					);
+				}
+				// else == combined_battle_ec_battle
 			}
 			#endregion
 
@@ -853,8 +906,8 @@ namespace BattleInfoPlugin.Models
 					data.api_air_base_injection.GetEnemyDamages(),
 					data.api_injection_kouku.GetEnemyDamages(),
 					data.api_air_base_attack.GetEachFirstEnemyDamages(),
-					data.api_support_info.GetEachFirstEnemyDamages(),
 					data.api_kouku.GetEnemyDamages(),
+					data.api_support_info.GetEachFirstEnemyDamages(),
 					data.api_opening_taisen.GetEachFirstEnemyDamages(),
 					data.api_opening_atack.GetEachFirstEnemyDamages(),
 					data.api_raigeki.GetEachFirstEnemyDamages(),
@@ -866,8 +919,8 @@ namespace BattleInfoPlugin.Models
 					data.api_air_base_injection.GetSecondEnemyDamages(),
 					data.api_injection_kouku.GetSecondEnemyDamages(),
 					data.api_air_base_attack.GetEachSecondEnemyDamages(),
-					data.api_support_info.GetEachSecondEnemyDamages(),
 					data.api_kouku.GetSecondEnemyDamages(),
+					data.api_support_info.GetEachSecondEnemyDamages(),
 					data.api_opening_taisen.GetEachSecondEnemyDamages(),
 					data.api_opening_atack.GetEachSecondEnemyDamages(),
 					data.api_hougeki1.GetEachSecondEnemyDamages(),
@@ -1544,8 +1597,8 @@ namespace BattleInfoPlugin.Models
 
 					if (!IsShipSink) IsShipSink = this.SecondFleet.SinkCount > 0 ? true : false;
 					MaxCount += this.SecondFleet.Ships
-					.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
-					.Count();
+						.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
+						.Count();
 					SinkCount += this.SecondFleet.SinkCount;
 				}
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Windows;
+using System.Threading.Tasks;
 using BattleInfoPlugin.Properties;
 using Grabacr07.KanColleViewer;
 using Grabacr07.KanColleViewer.Composition;
@@ -97,15 +98,17 @@ namespace BattleInfoPlugin.Models.Notifiers
 				.Subscribe(_ => this.NotifyEndOfBattle());
 
 			proxy.api_req_map_start
-				.Subscribe(_ => this.IsCriticalCheck());
+				.Subscribe(async _ => await this.IsCriticalCheck());
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/next")
-				.Subscribe(x => this.IsCriticalCheck());
+				.Subscribe(async x => await this.IsCriticalCheck());
 
 			monitor.ConfirmPursuit += () => this.Notify(NotificationType.ConfirmPursuit, "추격확인", "야전을 실시할지 선택하시기 바랍니다");
 		}
-		private bool IsCriticalCheck()
+		private async Task<bool> IsCriticalCheck()
 		{
+			await Task.Delay(100);
+
 			if (!CriticalEnabled) return false;
 			if (Settings.Default.FirstIsCritical || Settings.Default.SecondIsCritical)
 			{
@@ -119,9 +122,9 @@ namespace BattleInfoPlugin.Models.Notifiers
 			}
 			else return false;
 		}
-		private void NotifyEndOfBattle(bool isPractice = false)
+		private async void NotifyEndOfBattle(bool isPractice = false)
 		{
-			if (isPractice || !IsCriticalCheck() || !CriticalEnabled)
+			if (isPractice || !(await IsCriticalCheck()) || !CriticalEnabled)
 				this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
 		}
 

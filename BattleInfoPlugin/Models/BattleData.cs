@@ -1251,7 +1251,7 @@ namespace BattleInfoPlugin.Models
 			if(this.IsInSortie) AutoBackTab();
 			this.IsInSortie = false;
 
-			this.MechanismOn = (port.api_event_object.api_m_flag2 == 1);
+			this.MechanismOn = (port.api_event_object?.api_m_flag2 == 1);
 		}
 		private void Clear()
 		{

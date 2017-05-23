@@ -60,6 +60,22 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
+		#region IsPractice変更通知プロパティ
+		private bool _IsPractice;
+		public bool IsPractice
+		{
+			get { return this._IsPractice; }
+			set
+			{
+				if (this._IsPractice != value)
+				{
+					this._IsPractice = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
 		#region IsCritical変更通知プロパティ
 		private bool _IsCritical;
 		public bool IsCritical
@@ -252,7 +268,7 @@ namespace BattleInfoPlugin.Models
 				fleet.IsCritical = fleet.Ships
 					.Where(x => x.MaxHP > 0)
 					.Where(x => (x.NowHP / (double)x.MaxHP) <= 0.25)
-					.Any(x => !(x.Situation.HasFlag(ShipSituation.DamageControlled) && !Settings.Default.CriticalAlways) &&
+					.Any(x => (!x.Situation.HasFlag(ShipSituation.DamageControlled) || Settings.Default.CriticalAlways) &&
 							  !x.Situation.HasFlag(ShipSituation.Evacuation) &&
 							  !x.Situation.HasFlag(ShipSituation.Tow)
 					);
@@ -265,7 +281,7 @@ namespace BattleInfoPlugin.Models
 				fleet.Ships.SetValues(dameconState, (s, d) =>
 				{
 					if (0 < s.NowHP) return;
-					s.IsUsedDamecon = d.HasDamecon || d.HasMegami;
+					s.IsUsedDamecon = (d.HasDamecon || d.HasMegami) && !fleet.IsPractice;
 
 					if (d.HasDamecon) s.NowHP = (int)Math.Floor(s.MaxHP * 0.2);
 					else if (d.HasMegami) s.NowHP = s.MaxHP;

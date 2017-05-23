@@ -541,6 +541,13 @@ namespace BattleInfoPlugin.Models
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 			this.UpdateUsedFlag(data.api_support_info);
 
+			if(apiType == ApiTypes.practice_battle)
+			{
+				// 다메콘 무시용
+				this.FirstFleet.IsPractice = true;
+				this.Enemies.IsPractice = true;
+			}
+
 			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data);
 			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 

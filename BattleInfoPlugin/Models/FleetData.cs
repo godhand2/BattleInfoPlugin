@@ -281,7 +281,8 @@ namespace BattleInfoPlugin.Models
 				fleet.Ships.SetValues(dameconState, (s, d) =>
 				{
 					if (0 < s.NowHP) return;
-					s.IsUsedDamecon = (d.HasDamecon || d.HasMegami) && !fleet.IsPractice;
+					if (fleet.IsPractice) return; // 연습전 무시...
+					s.IsUsedDamecon = (d.HasDamecon || d.HasMegami);
 
 					if (d.HasDamecon) s.NowHP = (int)Math.Floor(s.MaxHP * 0.2);
 					else if (d.HasMegami) s.NowHP = s.MaxHP;

@@ -301,90 +301,94 @@ namespace BattleInfoPlugin.ViewModels
 			this._SecondEnemies = new FleetViewModel("적호위함대");
 			this._Enemies = new FleetViewModel("적함대");
 
-			this.CompositeDisposable.Add(new PropertyChangedEventListener(this.BattleData)
-			{
-				{
-					nameof(this.BattleData.Cells),
-					(_, __) => this.RaisePropertyChanged(() => this.Cells)
-				},
-				{
-					nameof(this.BattleData.CurrentMap),
-					(_, __) => this.RaisePropertyChanged(() => this.CurrentMap)
-				},
-				{
-					nameof(this.BattleData.Name),
-					(_, __) => this.RaisePropertyChanged(nameof(this.BattleName))
-				},
-				{
-					nameof(this.BattleData.UpdatedTime),
-					(_, __) => this.RaisePropertyChanged(() => this.UpdatedTime)
-				},
-				{
-					nameof(this.BattleData.BattleSituation),
-					(_, __) => this.RaisePropertyChanged(() => this.BattleSituation)
-				},
-				{
-					nameof(this.BattleData.FriendAirSupremacy),
-					(_, __) => this.RaisePropertyChanged(() => this.FriendAirSupremacy)
-				},
-				{
-					nameof(this.BattleData.AirCombatResults),
-					(_, __) =>
-					{
-						this.RaisePropertyChanged(() => this.AirCombatResults);
-						this.FirstFleet.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.First)).ToArray();
-						this.SecondFleet.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.Second)).ToArray();
-						this.SecondEnemies.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.SecondEnemy)).ToArray();
-						this.Enemies.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.Enemy)).ToArray();
-					}
-				},
-				{
-					nameof(this.BattleData.DropShipName),
-					(_, __) => this.RaisePropertyChanged(() => this.DropShipName)
-				},
-				{
-					nameof(this.BattleData.FirstFleet),
-					(_, __) => this.FirstFleet.Fleet = this.BattleData.FirstFleet
-				},
-				{
-					nameof(this.BattleData.SecondFleet),
-					(_, __) => this.SecondFleet.Fleet = this.BattleData.SecondFleet
-				},
-				{
-					nameof(this.BattleData.SecondEnemies),
-					(_, __) => this.SecondEnemies.Fleet = this.BattleData.SecondEnemies
-				},
-				{
-					nameof(this.BattleData.Enemies),
-					(_, __) => this.Enemies.Fleet = this.BattleData.Enemies
-				},
-				{
-					nameof(this.BattleData.RankResult),
-					(_, __) => {
-						this.RaisePropertyChanged(nameof(this.RankResult));
-						this.RaisePropertyChanged(nameof(this.AirRankAvailable));
-					}
-				},
-				{
-					nameof(this.BattleData.AirRankResult),
-					(_, __) => this.RaisePropertyChanged(nameof(this.AirRankResult))
-				},
-				{
-					nameof(this.BattleData.FlareUsed),
-					(_, __) => this.RaisePropertyChanged(nameof(this.FlareUsed))
-				},
-				{
-					nameof(this.BattleData.NightReconScouted),
-					(_, __) => this.RaisePropertyChanged(nameof(this.NightReconScouted))
-				},
-				{
-					nameof(this.BattleData.AntiAirFired),
-					(_, __) => this.RaisePropertyChanged(nameof(this.AntiAirFired))
-				},
-				{
-					nameof(this.BattleData.SupportUsed),
-					(_, __) => this.RaisePropertyChanged(nameof(this.SupportUsed))
-				},
+            this.CompositeDisposable.Add(new PropertyChangedEventListener(this.BattleData)
+            {
+                {
+                    nameof(this.BattleData.Cells),
+                    (_, __) => this.RaisePropertyChanged(() => this.Cells)
+                },
+                {
+                    nameof(this.BattleData.CurrentMap),
+                    (_, __) => this.RaisePropertyChanged(() => this.CurrentMap)
+                },
+                {
+                    nameof(this.BattleData.Name),
+                    (_, __) => this.RaisePropertyChanged(nameof(this.BattleName))
+                },
+                {
+                    nameof(this.BattleData.UpdatedTime),
+                    (_, __) => this.RaisePropertyChanged(() => this.UpdatedTime)
+                },
+                {
+                    nameof(this.BattleData.BattleSituation),
+                    (_, __) => this.RaisePropertyChanged(() => this.BattleSituation)
+                },
+                {
+                    nameof(this.BattleData.FriendAirSupremacy),
+                    (_, __) => this.RaisePropertyChanged(() => this.FriendAirSupremacy)
+                },
+                {
+                    nameof(this.BattleData.AirCombatResults),
+                    (_, __) =>
+                    {
+                        this.RaisePropertyChanged(() => this.AirCombatResults);
+                        this.FirstFleet.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.First)).ToArray();
+                        this.SecondFleet.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.Second)).ToArray();
+                        this.SecondEnemies.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.SecondEnemy)).ToArray();
+                        this.Enemies.AirCombatResults = this.AirCombatResults.Select(x => new AirCombatResultViewModel(x, FleetType.Enemy)).ToArray();
+                    }
+                },
+                {
+                    nameof(this.BattleData.DropShipName),
+                    (_, __) => this.RaisePropertyChanged(() => this.DropShipName)
+                },
+                {
+                    nameof(this.BattleData.FirstFleet),
+                    (_, __) => this.FirstFleet.Fleet = this.BattleData.FirstFleet
+                },
+                {
+                    nameof(this.BattleData.SecondFleet),
+                    (_, __) => this.SecondFleet.Fleet = this.BattleData.SecondFleet
+                },
+                {
+                    nameof(this.BattleData.SecondEnemies),
+                    (_, __) => this.SecondEnemies.Fleet = this.BattleData.SecondEnemies
+                },
+                {
+                    nameof(this.BattleData.Enemies),
+                    (_, __) => this.Enemies.Fleet = this.BattleData.Enemies
+                },
+                {
+                    nameof(this.BattleData.RankResult),
+                    (_, __) => {
+                        this.RaisePropertyChanged(nameof(this.RankResult));
+                        this.RaisePropertyChanged(nameof(this.AirRankAvailable));
+                    }
+                },
+                {
+                    nameof(this.BattleData.AirRankResult),
+                    (_, __) => this.RaisePropertyChanged(nameof(this.AirRankResult))
+                },
+                {
+                    nameof(this.BattleData.FlareUsed),
+                    (_, __) => this.RaisePropertyChanged(nameof(this.FlareUsed))
+                },
+                {
+                    nameof(this.BattleData.NightReconScouted),
+                    (_, __) => this.RaisePropertyChanged(nameof(this.NightReconScouted))
+                },
+                {
+                    nameof(this.BattleData.AntiAirFired),
+                    (_, __) => this.RaisePropertyChanged(nameof(this.AntiAirFired))
+                },
+                {
+                    nameof(this.BattleData.SupportUsed),
+                    (_, __) => this.RaisePropertyChanged(nameof(this.SupportUsed))
+                },
+                {
+                    nameof(this.BattleData.MechanismOn),
+                    (_, __) => this.RaisePropertyChanged(nameof(this.MechanismOn))
+                }
 			});
 		}
 

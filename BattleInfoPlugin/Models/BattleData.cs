@@ -1121,7 +1121,7 @@ namespace BattleInfoPlugin.Models
                 }
 			}
 
-			UpdateMVP(data.api_mvp, data.api_mvp_combined);
+			UpdateMVP(data.api_mvp, data.api_mvp_combined ?? 0);
 		}
 		private void UpdateMVP(int mvp1 = 0, int mvp2 = 0)
 		{

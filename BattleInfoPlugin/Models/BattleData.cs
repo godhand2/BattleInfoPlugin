@@ -1111,8 +1111,14 @@ namespace BattleInfoPlugin.Models
 			if (this.RankResult != Rank.완전승리S)
 			{
 				var rank = RankExtension.ConvertRank(data.api_win_rank);
-				if (rank != Rank.에러)
-					this.RankResult = rank;
+                if (rank != Rank.에러)
+                {
+                    if (this.RankResult == Rank.공습전)
+                        this.AirRankResult = rank;
+
+                    else
+                        this.RankResult = rank;
+                }
 			}
 
 			UpdateMVP(data.api_mvp, data.api_mvp_combined);

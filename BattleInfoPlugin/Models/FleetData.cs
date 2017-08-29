@@ -60,22 +60,6 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
-		#region IsPractice変更通知プロパティ
-		private bool _IsPractice;
-		public bool IsPractice
-		{
-			get { return this._IsPractice; }
-			set
-			{
-				if (this._IsPractice != value)
-				{
-					this._IsPractice = value;
-					this.RaisePropertyChanged();
-				}
-			}
-		}
-		#endregion
-
 		#region IsCritical変更通知プロパティ
 		private bool _IsCritical;
 		public bool IsCritical
@@ -254,6 +238,7 @@ namespace BattleInfoPlugin.Models
 
 			if (fleet.Ships != null)
 			{
+				fleet.SinkCount = 0; // Re-calculate
 				foreach (var item in fleet.Ships)
 				{
 					if (!item.Situation.HasFlag(ShipSituation.Evacuation) && !item.Situation.HasFlag(ShipSituation.Tow))
@@ -273,6 +258,7 @@ namespace BattleInfoPlugin.Models
 							  !x.Situation.HasFlag(ShipSituation.Tow)
 					);
 			}
+
 			foreach (var damage in damages)
 			{
 				// 다메콘에 의한 회복 처리. 같은 전투에서 두 번 사용되지 않는다는 전제...
@@ -281,7 +267,6 @@ namespace BattleInfoPlugin.Models
 				fleet.Ships.SetValues(dameconState, (s, d) =>
 				{
 					if (0 < s.NowHP) return;
-					if (fleet.IsPractice) return; // 연습전 무시...
 					s.IsUsedDamecon = (d.HasDamecon || d.HasMegami);
 
 					if (d.HasDamecon) s.NowHP = (int)Math.Floor(s.MaxHP * 0.2);

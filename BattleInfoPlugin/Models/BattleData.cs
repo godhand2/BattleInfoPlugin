@@ -334,19 +334,19 @@ namespace BattleInfoPlugin.Models
 			}
 		}
 
-        private string _AntiAirFiredDetail;
-        public string AntiAirFiredDetail
-        {
-            get { return this._AntiAirFiredDetail; }
-            set
-            {
-                if (this._AntiAirFiredDetail != value)
-                {
-                    this._AntiAirFiredDetail = value;
-                    this.RaisePropertyChanged();
-                }
-            }
-        }
+		private string _AntiAirFiredDetail;
+		public string AntiAirFiredDetail
+		{
+			get { return this._AntiAirFiredDetail; }
+			set
+			{
+				if (this._AntiAirFiredDetail != value)
+				{
+					this._AntiAirFiredDetail = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
 		#endregion
 
 		#region SupportUsed変更通知プロパティ
@@ -555,38 +555,57 @@ namespace BattleInfoPlugin.Models
 			this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 			this.UpdateUsedFlag(data.api_support_info);
 
-			if(apiType == ApiTypes.practice_battle)
-			{
-				// 다메콘 무시용
-				this.FirstFleet.IsPractice = true;
-				this.Enemies.IsPractice = true;
-			}
-
 			mvpOracle.Initialize(this.FirstFleet, this.SecondFleet).Update(data);
 			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
-			this.FirstFleet.CalcDamages(
-				data.api_injection_kouku.GetFirstFleetDamages(),		// Fleet Jet
-				data.api_kouku.GetFirstFleetDamages(),					// Fleet Airstrike
-				data.api_opening_taisen.GetFriendDamages(),				// Opening ASW
-				data.api_opening_atack.GetFriendDamages(),				// Opening Torpedo
-				data.api_hougeki1.GetFriendDamages(),					// Duel 1
-				data.api_hougeki2.GetFriendDamages(),					// Duel 2
-				data.api_raigeki.GetFriendDamages()						// Torpedo
-			);
-
-			this.Enemies.CalcDamages(
-				data.api_air_base_injection.GetEnemyDamages(),			// AirBase Jet
-				data.api_injection_kouku.GetEnemyDamages(),				// Fleet Jet
-				data.api_air_base_attack.GetEachFirstEnemyDamages(),	// AirBase Airstrike
-				data.api_support_info.GetEnemyDamages(),				// Support-fleet Firestrike
-				data.api_kouku.GetEnemyDamages(),						// Fleet Airstrike
-				data.api_opening_taisen.GetEnemyDamages(),				// Opening ASW
-				data.api_opening_atack.GetEnemyDamages(),				// Opening Torpedo
-				data.api_hougeki1.GetEnemyDamages(),					// Duel 1
-				data.api_hougeki2.GetEnemyDamages(),					// Duel 2
-				data.api_raigeki.GetEnemyDamages()						// Torpedo
-			);
+			if (apiType == ApiTypes.practice_battle)
+			{
+				this.FirstFleet.CalcPracticeDamages(
+					data.api_injection_kouku.GetFirstFleetDamages(),		// Fleet Jet
+					data.api_kouku.GetFirstFleetDamages(),				  // Fleet Airstrike
+					data.api_opening_taisen.GetFriendDamages(),			 // Opening ASW
+					data.api_opening_atack.GetFriendDamages(),			  // Opening Torpedo
+					data.api_hougeki1.GetFriendDamages(),				   // Duel 1
+					data.api_hougeki2.GetFriendDamages(),				   // Duel 2
+					data.api_raigeki.GetFriendDamages()					 // Torpedo
+				);
+				this.Enemies.CalcPracticeDamages(
+					data.api_air_base_injection.GetEnemyDamages(),		  // AirBase Jet
+					data.api_injection_kouku.GetEnemyDamages(),			 // Fleet Jet
+					data.api_air_base_attack.GetEachFirstEnemyDamages(),	// AirBase Airstrike
+					data.api_support_info.GetEnemyDamages(),				// Support-fleet Firestrike
+					data.api_kouku.GetEnemyDamages(),					   // Fleet Airstrike
+					data.api_opening_taisen.GetEnemyDamages(),			  // Opening ASW
+					data.api_opening_atack.GetEnemyDamages(),			   // Opening Torpedo
+					data.api_hougeki1.GetEnemyDamages(),					// Duel 1
+					data.api_hougeki2.GetEnemyDamages(),					// Duel 2
+					data.api_raigeki.GetEnemyDamages()					  // Torpedo
+				);
+			}
+			else
+			{
+				this.FirstFleet.CalcDamages(
+					data.api_injection_kouku.GetFirstFleetDamages(),		// Fleet Jet
+					data.api_kouku.GetFirstFleetDamages(),				  // Fleet Airstrike
+					data.api_opening_taisen.GetFriendDamages(),			 // Opening ASW
+					data.api_opening_atack.GetFriendDamages(),			  // Opening Torpedo
+					data.api_hougeki1.GetFriendDamages(),				   // Duel 1
+					data.api_hougeki2.GetFriendDamages(),				   // Duel 2
+					data.api_raigeki.GetFriendDamages()					 // Torpedo
+				);
+				this.Enemies.CalcDamages(
+					data.api_air_base_injection.GetEnemyDamages(),		  // AirBase Jet
+					data.api_injection_kouku.GetEnemyDamages(),			 // Fleet Jet
+					data.api_air_base_attack.GetEachFirstEnemyDamages(),	// AirBase Airstrike
+					data.api_support_info.GetEnemyDamages(),				// Support-fleet Firestrike
+					data.api_kouku.GetEnemyDamages(),					   // Fleet Airstrike
+					data.api_opening_taisen.GetEnemyDamages(),			  // Opening ASW
+					data.api_opening_atack.GetEnemyDamages(),			   // Opening Torpedo
+					data.api_hougeki1.GetEnemyDamages(),					// Duel 1
+					data.api_hougeki2.GetEnemyDamages(),					// Duel 2
+					data.api_raigeki.GetEnemyDamages()					  // Torpedo
+				);
+			}
 
 			this.FriendAirSupremacy = data.api_kouku.GetAirSupremacy();
 			this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
@@ -627,8 +646,16 @@ namespace BattleInfoPlugin.Models
 			mvpOracle.Update(data);
 			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
-			this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
-			this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
+			if (apiType == ApiTypes.practice_battle)
+			{
+				this.FirstFleet.CalcPracticeDamages(data.api_hougeki.GetFriendDamages());
+				this.Enemies.CalcPracticeDamages(data.api_hougeki.GetEnemyDamages());
+			}
+			else
+			{
+				this.FirstFleet.CalcDamages(data.api_hougeki.GetFriendDamages());
+				this.Enemies.CalcDamages(data.api_hougeki.GetEnemyDamages());
+			}
 
 			if (apiType == ApiTypes.battle_midnight_sp_midnight)
 				this.RankResult = this.CalcRank();
@@ -1125,15 +1152,15 @@ namespace BattleInfoPlugin.Models
 			if (this.RankResult != Rank.완전승리S)
 			{
 				var rank = RankExtension.ConvertRank(data.api_win_rank);
-                if (rank != Rank.에러)
-                {
-                    if (this.RankResult == Rank.공습전)
-                        this.AirRankResult = rank == Rank.S승리
-                            ? Rank.완전승리S : rank;
+				if (rank != Rank.에러)
+				{
+					if (this.RankResult == Rank.공습전)
+						this.AirRankResult = rank == Rank.S승리
+							? Rank.완전승리S : rank;
 
-                    else
-                        this.RankResult = rank;
-                }
+					else
+						this.RankResult = rank;
+				}
 			}
 
 			UpdateMVP(data.api_mvp, data.api_mvp_combined ?? 0);

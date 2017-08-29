@@ -60,6 +60,9 @@ namespace BattleInfoPlugin.ViewModels
 		public string AntiAirFired
 			=> (this.BattleData?.AntiAirFired ?? AirFireFlag.Unset).ToReadableString();
 
+        public string AntiAirFiredDetail
+            => this.BattleData?.AntiAirFiredDetail ?? "";
+
 		public string SupportUsed
 			=> (this.BattleData?.SupportUsed ?? UsedSupport.Unset).ToReadableString();
 

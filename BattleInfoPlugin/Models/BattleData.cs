@@ -333,6 +333,20 @@ namespace BattleInfoPlugin.Models
 				}
 			}
 		}
+
+        private string _AntiAirFiredDetail;
+        public string AntiAirFiredDetail
+        {
+            get { return this._AntiAirFiredDetail; }
+            set
+            {
+                if (this._AntiAirFiredDetail != value)
+                {
+                    this._AntiAirFiredDetail = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
 		#endregion
 
 		#region SupportUsed変更通知プロパティ
@@ -1114,7 +1128,8 @@ namespace BattleInfoPlugin.Models
                 if (rank != Rank.에러)
                 {
                     if (this.RankResult == Rank.공습전)
-                        this.AirRankResult = rank;
+                        this.AirRankResult = rank == Rank.S승리
+                            ? Rank.완전승리S : rank;
 
                     else
                         this.RankResult = rank;

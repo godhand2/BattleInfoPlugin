@@ -311,15 +311,25 @@
 						</TextBlock.Style>
 					</TextBlock>
 				</StackPanel>
-				<TextBlock Padding="8,5"
-						   FontSize="16"
-						   FontWeight="Bold"
-						   TextAlignment="Center"
-						   Text="기믹이 발동되었습니다"
-						   Foreground="#FF40C820"
-						   Visibility="{Binding MechanismOn, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}" />
 
-			</StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+				    <TextBlock Padding="8,5"
+						       FontSize="16"
+						       FontWeight="Bold"
+						       TextAlignment="Center"
+						       Text="기믹 발동됨"
+						       Foreground="#FF40C820"
+						       Visibility="{Binding MechanismOn, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}" />
+                    <TextBlock Padding="8,5"
+						       FontSize="16"
+						       FontWeight="Bold"
+						       TextAlignment="Center"
+						       Text="맵 확장됨"
+						       Foreground="Gold"
+						       Visibility="{Binding MapExtended, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}" />
+                </StackPanel>
+            </StackPanel>
 
 			<StackPanel Grid.Row="2"
 						Orientation="Horizontal">

@@ -379,14 +379,30 @@ namespace BattleInfoPlugin.Models
 				}
 			}
 		}
-		#endregion
+        #endregion
 
-		#endregion
+        #region MapExtended変更通知プロパティ
+        private bool _MapExtended;
+        public bool MapExtended
+        {
+            get { return this._MapExtended; }
+            set
+            {
+                if (this._MapExtended != value)
+                {
+                    this._MechanismOn = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
 
-		/// <summary>
-		/// MVP 추적기
-		/// </summary>
-		private MVPOracle mvpOracle { get; set; }
+        #endregion
+
+        /// <summary>
+        /// MVP 추적기
+        /// </summary>
+        private MVPOracle mvpOracle { get; set; }
 
 		private int CurrentDeckId { get; set; }
 		private bool IsInSortie = false;
@@ -1163,7 +1179,10 @@ namespace BattleInfoPlugin.Models
 				}
 			}
 
-			UpdateMVP(data.api_mvp, data.api_mvp_combined ?? 0);
+            if (data.api_m1.HasValue)
+                this.MapExtended = (data.api_m1.Value == 1);
+
+            UpdateMVP(data.api_mvp, data.api_mvp_combined ?? 0);
 		}
 		private void UpdateMVP(int mvp1 = 0, int mvp2 = 0)
 		{
@@ -1383,6 +1402,7 @@ namespace BattleInfoPlugin.Models
 			this.SecondEnemies = new FleetData();
 
 			this.MechanismOn = false;
+            this.MapExtended = false;
 		}
 
 		private bool CalcOverKill(int MaxCount, int SinkCount)

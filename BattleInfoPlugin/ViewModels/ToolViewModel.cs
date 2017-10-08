@@ -70,8 +70,11 @@ namespace BattleInfoPlugin.ViewModels
 		public bool MechanismOn
 			=> this.BattleData?.MechanismOn ?? false;
 
-		#region FirstFleet変更通知プロパティ
-		private FleetViewModel _FirstFleet;
+        public bool MapExtended
+            => this.BattleData?.MapExtended ?? false;
+
+        #region FirstFleet変更通知プロパティ
+        private FleetViewModel _FirstFleet;
 		public FleetViewModel FirstFleet
 		{
 			get { return this._FirstFleet; }
@@ -391,8 +394,12 @@ namespace BattleInfoPlugin.ViewModels
                 {
                     nameof(this.BattleData.MechanismOn),
                     (_, __) => this.RaisePropertyChanged(nameof(this.MechanismOn))
+                },
+                {
+                    nameof(this.BattleData.MapExtended),
+                    (_, __) => this.RaisePropertyChanged(nameof(this.MapExtended))
                 }
-			});
+            });
 		}
 
 		public void OpenEnemyWindow()

@@ -24,12 +24,12 @@ namespace BattleInfoPlugin.ViewModels
 				: "No Data";
 
 		public string BattleSituation
-			=> this.BattleData != null && this.BattleData.BattleSituation != Models.BattleSituation.없음
+			=> this.BattleData != null && this.BattleData.BattleSituation != Models.BattleSituation.なし
 				? this.BattleData.BattleSituation.ToString()
 				: "";
 
 		public string FriendAirSupremacy
-			=> this.BattleData != null && this.BattleData.FriendAirSupremacy != AirSupremacy.항공전없음
+			=> this.BattleData != null && this.BattleData.FriendAirSupremacy != AirSupremacy.航空戦なし
 				? this.BattleData.FriendAirSupremacy.ToString()
 				: "";
 
@@ -43,7 +43,7 @@ namespace BattleInfoPlugin.ViewModels
 			=> this.BattleData.AirRankResult.ToString();
 
 		public bool AirRankAvailable
-			=> this.BattleData.RankResult == Rank.공습전;
+			=> this.BattleData.RankResult == Rank.空襲戦;
 
 		public string DropShipName
 			=> this.BattleData?.DropShipName;
@@ -302,10 +302,10 @@ namespace BattleInfoPlugin.ViewModels
 		public ToolViewModel(Plugin plugin)
 		{
 			this.notifier = new BattleEndNotifier(plugin);
-			this._FirstFleet = new FleetViewModel("기본함대");
-			this._SecondFleet = new FleetViewModel("호위함대");
-			this._SecondEnemies = new FleetViewModel("적호위함대");
-			this._Enemies = new FleetViewModel("적함대");
+			this._FirstFleet = new FleetViewModel("自艦隊");
+			this._SecondFleet = new FleetViewModel("護衛艦隊");
+			this._SecondEnemies = new FleetViewModel("敵護衛艦隊");
+			this._Enemies = new FleetViewModel("敵艦隊");
 
             this.CompositeDisposable.Add(new PropertyChangedEventListener(this.BattleData)
             {

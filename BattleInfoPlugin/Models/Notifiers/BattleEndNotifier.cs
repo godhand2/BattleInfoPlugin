@@ -103,7 +103,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/next")
 				.Subscribe(async x => await this.IsCriticalCheck());
 
-			monitor.ConfirmPursuit += () => this.Notify(NotificationType.ConfirmPursuit, "추격확인", "야전을 실시할지 선택하시기 바랍니다");
+			monitor.ConfirmPursuit += () => this.Notify(NotificationType.ConfirmPursuit, "追撃確認", "夜戦を行うかどうか選択してください。");
 		}
 		private async Task<bool> IsCriticalCheck()
 		{
@@ -114,8 +114,8 @@ namespace BattleInfoPlugin.Models.Notifiers
 			{
 				this.Notify(
 					NotificationType.CriticalState,
-					"대파알림",
-					"대파된 칸무스가 있습니다!",
+					"大破警告",
+					"大破している艦があります!",
 					true
 				);
 				return true;
@@ -125,7 +125,7 @@ namespace BattleInfoPlugin.Models.Notifiers
 		private async void NotifyEndOfBattle(bool isPractice = false)
 		{
 			if (isPractice || !(await IsCriticalCheck()) || !CriticalEnabled)
-				this.Notify(NotificationType.BattleEnd, "전투종료", "전투가 종료되었습니다");
+				this.Notify(NotificationType.BattleEnd, "戦闘終了", "戦闘が終了しました。");
 		}
 
 		private void Notify(string type, string title, string message, bool IsCritical = false)

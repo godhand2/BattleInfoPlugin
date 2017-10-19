@@ -9,10 +9,10 @@ namespace BattleInfoPlugin.Models
 	public enum Type2
 	{
 		Unknwon = 0,
-		주포 = 1,
-		부포 = 2,
-		어뢰 = 3,
-		전탐 = 8,
-		철갑탄 = 25,
+        主砲 = 1,
+        副砲 = 2,
+        魚雷 = 3,
+        電探 = 8,
+        徹甲弾 = 25,
 	}
 }

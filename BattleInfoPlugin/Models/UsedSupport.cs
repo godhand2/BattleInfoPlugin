@@ -21,11 +21,11 @@ namespace BattleInfoPlugin.Models
 			switch (flag)
 			{
 				case UsedSupport.Unused:
-					return "지원 없음";
+					return "支援なし";
 				case UsedSupport.Hourai:
-					return "포격/뇌격";
+					return "砲撃/雷撃";
 				case UsedSupport.Kouku:
-					return "항공 지원";
+					return "航空支援";
 				default:
 					return "";
 			}

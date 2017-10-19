@@ -12,7 +12,7 @@ namespace BattleInfoPlugin.Models
 
 		public bool Equipped => this.Source != null;
 
-		#region Maximum 변경통지 프로퍼티
+		#region Maximum 変更通知プロパティ
 		private int _Maximum { get; set; }
 		public int Maximum
 		{
@@ -29,7 +29,7 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
-		#region Current 변경통지 프로퍼티
+		#region Current 変更通知プロパティ
 		private int _Current { get; set; }
 		public int Current
 		{
@@ -48,7 +48,7 @@ namespace BattleInfoPlugin.Models
 
 		public int Lost => this.Maximum - this.Current;
 
-		#region Level 변경통지 프로퍼티
+		#region Level 変更通知プロパティ
 		private int _Level { get; set; }
 		public int Level
 		{
@@ -64,7 +64,7 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
-		#region Proficiency 변경통지 프로퍼티
+		#region Proficiency 変更通知プロパティ
 		private int _Proficiency { get; set; }
 		public int Proficiency
 		{

@@ -9,7 +9,7 @@ namespace BattleInfoPlugin.Models.Raw
 	{
 		private static readonly FleetDamages defaultValue = new FleetDamages();
 
-		#region 지원함대
+		#region 支援
 		public static FleetDamages GetEnemyDamages(this Api_Support_Info support)
 			=> support?.api_support_airatack?.api_stage3?.api_edam?.GetDamages()
 			   ?? support?.api_support_hourai?.api_damage?.GetDamages()
@@ -26,7 +26,7 @@ namespace BattleInfoPlugin.Models.Raw
 			   ?? defaultValue;
 		#endregion
 
-		#region 포격전
+		#region 砲撃
 		public static FleetDamages GetFriendDamages(this Hougeki hougeki)
 			=> hougeki?.api_damage?.GetFriendDamages(hougeki.api_df_list)
 			   ?? defaultValue;
@@ -51,7 +51,7 @@ namespace BattleInfoPlugin.Models.Raw
 			   ?? defaultValue;
 		#endregion
 
-		#region 야전
+		#region 夜戦
 		public static FleetDamages GetFriendDamages(this Midnight_Hougeki hougeki)
 			=> hougeki?.api_damage?.GetFriendDamages(hougeki.api_df_list)
 			   ?? defaultValue;
@@ -61,7 +61,7 @@ namespace BattleInfoPlugin.Models.Raw
 			   ?? defaultValue;
 		#endregion
 
-		#region 항공전
+		#region 航空戦
 		public static FleetDamages GetFirstFleetDamages(this Api_Kouku kouku)
 			=> kouku?.api_stage3?.api_fdam.GetDamages()
 			   ?? defaultValue;
@@ -79,15 +79,15 @@ namespace BattleInfoPlugin.Models.Raw
 			   ?? defaultValue;
 
 		public static AirSupremacy GetAirSupremacy(this Api_Kouku kouku)
-			=> (AirSupremacy)(kouku?.api_stage1?.api_disp_seiku ?? (int)AirSupremacy.항공전없음);
+			=> (AirSupremacy)(kouku?.api_stage1?.api_disp_seiku ?? (int)AirSupremacy.航空戦なし);
 
 		public static AirCombatResult[] ToResult(this Api_Kouku kouku, string prefixName = "")
 		{
 			return kouku != null
 				? new []
 				{
-					kouku.api_stage1.ToResult($"{prefixName}공대공"),
-					kouku.api_stage2.ToResult($"{prefixName}공대함")
+					kouku.api_stage1.ToResult($"{prefixName}空対空"),
+					kouku.api_stage2.ToResult($"{prefixName}空対艦")
 				}
 				: new AirCombatResult[0];
 		}
@@ -101,7 +101,7 @@ namespace BattleInfoPlugin.Models.Raw
 			: new AirCombatResult(name, stage2.api_f_count, stage2.api_f_lostcount, stage2.api_e_count, stage2.api_e_lostcount);
 		#endregion
 
-		#region 기지항공대
+		#region 基地航空隊
 		public static FleetDamages GetEachFirstEnemyDamages(this Api_Air_Base_Attack[] attacks)
 			=> attacks?.Select(x => x?.api_stage3?.api_edam?.GetDamages() ?? defaultValue)
 			?.Aggregate((a, b) => a.Add(b)) ?? defaultValue;
@@ -114,8 +114,8 @@ namespace BattleInfoPlugin.Models.Raw
 		{
 			return attacks != null && Settings.Default.DetailKouku
 				? attacks.SelectMany(x => new[] {
-					x.api_stage1.ToResult($"제 {x.api_base_id}기항대 공대공"),
-					x.api_stage2.ToResult($"제 {x.api_base_id}기항대 공대함")
+					x.api_stage1.ToResult($"제 {x.api_base_id}陸基 空対空"),
+					x.api_stage2.ToResult($"제 {x.api_base_id}陸基 空対艦")
 				}).ToArray()
 				: new AirCombatResult[0];
 		}
@@ -165,7 +165,7 @@ namespace BattleInfoPlugin.Models.Raw
 			   ?? defaultValue;
 		#endregion
 
-		#region 데미지 계산 공통
+		#region ダメージ計算
 		/// <summary>
 		/// 12項目中先頭6項目取得
 		/// </summary>

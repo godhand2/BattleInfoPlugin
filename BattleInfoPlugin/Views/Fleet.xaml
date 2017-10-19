@@ -106,7 +106,7 @@
 								<Run Text="{Binding LostCount, Mode=OneWay, StringFormat=(-{0})}"/>
 							</TextBlock>
 						</StackPanel>
-						<TextBlock Text="없음"
+						<TextBlock Text="なし"
 								   Style="{DynamicResource EmphaticTextStyleKey}"
 								   FontSize="12"
 								   Visibility="{Binding IsHappen, Converter={StaticResource FalseToVisibleConverter}}"/>
@@ -181,7 +181,7 @@
 										</Run>
 									</TextBlock>
 
-									<TextBlock Grid.Column="0" Grid.Row="1" Text="뇌장" />
+									<TextBlock Grid.Column="0" Grid.Row="1" Text="雷装" />
 									<TextBlock Grid.Column="1" Grid.Row="1">
 										<Run Text="{Binding SumTorpedo, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
 											 Style="{DynamicResource EmphaticTextElementStyleKey}"
@@ -196,7 +196,7 @@
 										</Run>
 									</TextBlock>
 
-									<TextBlock Grid.Column="0" Grid.Row="2" Text="대공" />
+									<TextBlock Grid.Column="0" Grid.Row="2" Text="対空" />
 									<TextBlock Grid.Column="1" Grid.Row="2">
 										<Run Text="{Binding SumAA, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
 											 Style="{DynamicResource EmphaticTextElementStyleKey}"
@@ -211,7 +211,7 @@
 										</Run>
 									</TextBlock>
 
-									<TextBlock Grid.Column="0" Grid.Row="3" Text="장갑" />
+									<TextBlock Grid.Column="0" Grid.Row="3" Text="装甲" />
 									<TextBlock Grid.Column="1" Grid.Row="3">
 										<Run Text="{Binding SumArmer, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
 												Style="{DynamicResource EmphaticTextElementStyleKey}"
@@ -226,7 +226,7 @@
 										</Run>
 									</TextBlock>
 
-									<TextBlock Grid.Column="2" Grid.Row="0" Text="대잠" Margin="10,0,0,0" />
+									<TextBlock Grid.Column="2" Grid.Row="0" Text="対潜" Margin="10,0,0,0" />
 									<TextBlock Grid.Column="3" Grid.Row="0">
 										<Run Text="{Binding SumASW, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
 											 FontSize="12">
@@ -252,7 +252,7 @@
 									</TextBlock>
 
 
-									<TextBlock Grid.Column="2" Grid.Row="1" Text="회피" Margin="10,0,0,0" />
+									<TextBlock Grid.Column="2" Grid.Row="1" Text="回避" Margin="10,0,0,0" />
 									<TextBlock Grid.Column="3" Grid.Row="1">
 										<Run Text="{Binding SumEvade, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
 											 Style="{DynamicResource EmphaticTextElementStyleKey}"
@@ -267,7 +267,7 @@
 										</Run>
 									</TextBlock>
 
-									<TextBlock Grid.Column="2" Grid.Row="2" Text="명중" Margin="10,0,0,0" />
+									<TextBlock Grid.Column="2" Grid.Row="2" Text="命中" Margin="10,0,0,0" />
 									<TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding SlotsHit, Mode=OneWay, StringFormat={}(+{0})}" />
 
 
@@ -298,15 +298,15 @@
 									</StackPanel>
 
 
-									<TextBlock Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Text="공격종류" Margin="10,0,0,0" />
+									<TextBlock Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Text="攻撃種別" Margin="10,0,0,0" />
 
-									<TextBlock Grid.Column="4" Grid.Row="1" Text="주간" Margin="10,0,4,0" />
+									<TextBlock Grid.Column="4" Grid.Row="1" Text="昼戦" Margin="10,0,4,0" />
 									<TextBlock Grid.Column="5" Grid.Row="1"
 											   Text="{Binding DayAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
 											   Style="{DynamicResource EmphaticTextStyleKey}"
 											   FontSize="{DynamicResource DefaultFontSizeKey}" />
 
-									<TextBlock Grid.Column="4" Grid.Row="2" Text="야전" Margin="10,0,4,0" />
+									<TextBlock Grid.Column="4" Grid.Row="2" Text="夜戦" Margin="10,0,4,0" />
 									<TextBlock Grid.Column="5" Grid.Row="2"
 											   Text="{Binding NightAttackType, Mode=OneWay, Converter={StaticResource AttackTypeConverter}}"
 											   Style="{DynamicResource EmphaticTextStyleKey}"
@@ -562,7 +562,7 @@
 								  Margin="3,2,3,0">
 								<Border Background="{DynamicResource FleetRepairingBrushKey}"
 										Opacity=".4" />
-								<TextBlock Text="대피완료"
+								<TextBlock Text="退避済"
 										   Style="{DynamicResource EmphaticTextStyleKey}"
 										   HorizontalAlignment="Center" />
 							</Grid>
@@ -573,7 +573,7 @@
 								  Margin="3,2,3,0">
 								<Border Background="{DynamicResource FleetRepairingBrushKey}"
 										Opacity=".4" />
-								<TextBlock Text="대피완료"
+								<TextBlock Text="退避済"
 										   Style="{DynamicResource EmphaticTextStyleKey}"
 										   HorizontalAlignment="Center" />
 							</Grid>
@@ -584,7 +584,7 @@
 													   Width="14"
 													   Visibility="{Binding IsUsedDamecon, Converter={StaticResource TrueToVisibleConverter}}"
 													   Margin="0,0,3,0"/>
-								<TextBlock Text="사용"
+								<TextBlock Text="使用"
 										   Style="{DynamicResource EmphaticTextStyleKey}"
 										   FontSize="12"
 										   VerticalAlignment="Center"

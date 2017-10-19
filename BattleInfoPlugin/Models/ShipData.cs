@@ -421,7 +421,7 @@ namespace BattleInfoPlugin.Models
 		}
 		#endregion
 
-		#region IsMvp 변경통지 프로퍼티
+		#region IsMvp 変更通知プロパティ
 		private bool _IsMvp;
 		public bool IsMvp
 		{
@@ -454,35 +454,35 @@ namespace BattleInfoPlugin.Models
 
 		public int ShipEvade => this.Evade - this.SlotsEvade;
 
-		// 선제대잠 가능 여부
+		// 先制対潜状況
 		public bool OpeningASW
-			=> this.MasterId == 141 ? true // 이스즈改2
-				: this.ShipType == 1 ? SumASW >= 60 // 해방함
-				: this.ShipType == 7 && this.ShipSpeed == ShipSpeed.Slow ? SumASW >= 65 // 저속 경공모
+			=> this.MasterId == 141 ? true // 五十鈴改二
+				: this.ShipType == 1 ? SumASW >= 60 // 解放さ
+				: this.ShipType == 7 && this.ShipSpeed == ShipSpeed.Slow ? SumASW >= 65 // 低速 軽空母
 				: SumASW >= 100;
 
 		public LimitedValue HP => new LimitedValue(this.NowHP, this.MaxHP, 0);
 
 		public AttackType DayAttackType
-			=> this.HasScout() && this.Count(Type2.주포) == 2 && this.Count(Type2.철갑탄) == 1 ? AttackType.주주컷인
-			: this.HasScout() && this.Count(Type2.주포) == 1 && this.Count(Type2.부포) == 1 && this.Count(Type2.철갑탄) == 1 ? AttackType.주철컷인
-			: this.HasScout() && this.Count(Type2.주포) == 1 && this.Count(Type2.부포) == 1 && this.Count(Type2.전탐) == 1 ? AttackType.주전컷인
-			: this.HasScout() && this.Count(Type2.주포) >= 1 && this.Count(Type2.부포) >= 1 ? AttackType.주부컷인
-			: this.HasScout() && this.Count(Type2.주포) >= 2 ? AttackType.연격
-			: AttackType.통상;
+            => this.HasScout() && this.Count(Type2.主砲) == 2 && this.Count(Type2.徹甲弾) == 1 ? AttackType.カットイン主主
+            : this.HasScout() && this.Count(Type2.主砲) == 1 && this.Count(Type2.副砲) == 1 && this.Count(Type2.徹甲弾) == 1 ? AttackType.カットイン主徹
+            : this.HasScout() && this.Count(Type2.主砲) == 1 && this.Count(Type2.副砲) == 1 && this.Count(Type2.電探) == 1 ? AttackType.カットイン主電
+            : this.HasScout() && this.Count(Type2.主砲) >= 1 && this.Count(Type2.副砲) >= 1 ? AttackType.カットイン主副
+            : this.HasScout() && this.Count(Type2.主砲) >= 2 ? AttackType.連撃
+            : AttackType.通常;
 
 		public AttackType NightAttackType
-			=> this.SubmarineRaderCount() >= 1 && this.LateModelTorpedoCount() >= 1 ? AttackType.후기어뢰전탐컷인
-			: this.LateModelTorpedoCount() >= 2 ? AttackType.후기어뢰컷인
-			: this.Count(Type2.어뢰) >= 2 ? AttackType.뇌격컷인
-			: this.Count(Type2.주포) >= 3 ? AttackType.주주주컷인
-			: this.Count(Type2.주포) == 2 && this.Count(Type2.부포) >= 1 ? AttackType.주주부컷인
-			: this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 1 ? AttackType.주뢰컷인
-			: this.Count(Type2.주포) == 1 && this.Count(Type2.어뢰) == 1 ? AttackType.주뢰컷인
-			: this.Count(Type2.주포) == 2 && this.Count(Type2.부포) == 0 && this.Count(Type2.어뢰) == 0 ? AttackType.연격
-			: this.Count(Type2.주포) == 1 && this.Count(Type2.부포) >= 1 && this.Count(Type2.어뢰) == 0 ? AttackType.연격
-			: this.Count(Type2.주포) == 0 && this.Count(Type2.부포) >= 2 && this.Count(Type2.어뢰) <= 1 ? AttackType.연격
-			: AttackType.통상;
+			=> this.SubmarineRaderCount() >= 1 && this.LateModelTorpedoCount() >= 1 ? AttackType.カットイン後期魚雷逆探
+			: this.LateModelTorpedoCount() >= 2 ? AttackType.カットイン後期魚雷
+			: this.Count(Type2.魚雷) >= 2 ? AttackType.カットイン雷
+			: this.Count(Type2.主砲) >= 3 ? AttackType.カットイン主主主
+			: this.Count(Type2.主砲) == 2 && this.Count(Type2.副砲) >= 1 ? AttackType.カットイン主主副
+			: this.Count(Type2.主砲) == 2 && this.Count(Type2.副砲) == 0 && this.Count(Type2.魚雷) == 1 ? AttackType.カットイン主雷
+			: this.Count(Type2.主砲) == 1 && this.Count(Type2.魚雷) == 1 ? AttackType.カットイン主雷
+			: this.Count(Type2.主砲) == 2 && this.Count(Type2.副砲) == 0 && this.Count(Type2.魚雷) == 0 ? AttackType.連撃
+			: this.Count(Type2.主砲) == 1 && this.Count(Type2.副砲) >= 1 && this.Count(Type2.魚雷) == 0 ? AttackType.連撃
+			: this.Count(Type2.主砲) == 0 && this.Count(Type2.副砲) >= 2 && this.Count(Type2.魚雷) <= 1 ? AttackType.連撃
+			: AttackType.通常;
 
 		public ShipData()
 		{
@@ -571,7 +571,7 @@ namespace BattleInfoPlugin.Models
 			this.ShipType = this.Source.Info.ShipType.Id;
 			this.ShipSpeed = this.Source.Speed;
 			this.TypeName = this.Source.Speed == ShipSpeed.Immovable
-				? "육상기지"
+				? "陸基"
 				: this.Source.Info.ShipType.Name;
 			this.Level = this.Source.Level;
 			this.Situation = this.Source.Situation;
@@ -647,7 +647,7 @@ namespace BattleInfoPlugin.Models
             // resolve build error due to "Speed" define not exists in original KCV
             //this.ShipSpeed = this.Source?.Speed ?? ShipSpeed.Immovable;
             //this.TypeName = this.Source?.Speed == ShipSpeed.Immovable
-            //	? "육상기지"
+            //	? "陸基"
             //	: this.Source?.ShipType.Name;
             this.TypeName = this.Source.ShipType.Name;
         }

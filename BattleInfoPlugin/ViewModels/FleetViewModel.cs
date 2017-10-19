@@ -57,7 +57,7 @@ namespace BattleInfoPlugin.ViewModels
 				: string.Empty;
 
 		public string FleetFormation =>
-			(this.Fleet?.Formation ?? Formation.없음) != Formation.없음
+			(this.Fleet?.Formation ?? Formation.なし) != Formation.なし
 				? this.Fleet.Formation.ToString()
 				: "";
 

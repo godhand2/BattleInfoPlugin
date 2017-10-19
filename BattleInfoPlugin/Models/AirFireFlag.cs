@@ -24,16 +24,16 @@ namespace BattleInfoPlugin.Models
 			switch (flag)
 			{
 				case AirFireFlag.Unused:
-					return "발동 안됨";
+					return "発動しない";
 				case AirFireFlag.Used:
-					return "발동";
+					return "発動";
 
 				case AirFireFlag.Used1:
-					return "1차 발동";
+					return "1次発動";
 				case AirFireFlag.Used2:
-					return "2차 발동";
+					return "2次発動";
 				case AirFireFlag.UsedAll:
-					return "전부 발동";
+					return "すべて発動";
 				default:
 					return "";
 			}

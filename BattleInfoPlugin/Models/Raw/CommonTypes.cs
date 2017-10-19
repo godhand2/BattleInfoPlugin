@@ -1,6 +1,6 @@
 ﻿namespace BattleInfoPlugin.Models.Raw
 {
-	#region 항공전
+	#region 航空戦
 	// 항공전 / 분식 항공전
 	// Api_Kouku, Api_Injection_Kouku
 	public class Api_Kouku
@@ -51,7 +51,7 @@
 	}
 	#endregion
 
-	#region 지원함대
+	#region 支援
 	public class Api_Support_Info
 	{
 		public Api_Support_Airatack api_support_airatack { get; set; }
@@ -77,7 +77,7 @@
 	}
 	#endregion
 
-	#region 선제뇌격 / 뇌격전
+	#region 先制雷撃 / 雷撃前
 	public class Raigeki
 	{
 		public int[] api_frai { get; set; }
@@ -91,7 +91,7 @@
 	}
 	#endregion
 
-	#region 포격전
+	#region 砲撃
 	public class Hougeki
 	{
 		public int[] api_at_eflag { get; set; }
@@ -115,7 +115,7 @@
 	}
 	#endregion
 
-	#region 기지항공대
+	#region 基地航空隊
 	// 기지항공대 항공전
 	public class Api_Air_Base_Attack : Api_Kouku
 	{

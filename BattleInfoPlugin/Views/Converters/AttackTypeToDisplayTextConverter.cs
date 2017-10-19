@@ -16,30 +16,30 @@ namespace BattleInfoPlugin.Views.Converters
 			if (!(value is AttackType)) return "";
 			switch ((AttackType)value)
 			{
-				case AttackType.주주컷인:
-					return "컷인 (x1.5)";
-				case AttackType.주철컷인:
-					return "컷인 (x1.3)";
-				case AttackType.주전컷인:
-					return "컷인 (x1.2)";
-				case AttackType.주부컷인:
-					return "컷인 (x1.1)";
-				case AttackType.주주주컷인:
-					return "컷인 (x2.0)";
-				case AttackType.주주부컷인:
-					return "컷인 (x1.75)";
-				case AttackType.주뢰컷인:
-					return "컷인 (x1.3 x2)";
-				case AttackType.연격:
-					return "연격 (x1.2 x2)";
-				case AttackType.뇌격컷인:
-					return "컷인 (x1.5 x2)";
-				case AttackType.후기어뢰전탐컷인:
-					return "컷인 (x1.75 x2)";
-				case AttackType.후기어뢰컷인:
-					return "컷인 (x1.6 x2)";
+				case AttackType.カットイン主主:
+					return "カットイン (x1.5)";
+				case AttackType.カットイン主徹:
+					return "カットイン (x1.3)";
+				case AttackType.カットイン主電:
+					return "カットイン (x1.2)";
+				case AttackType.カットイン主副:
+					return "カットイン (x1.1)";
+				case AttackType.カットイン主主主:
+					return "カットイン (x2.0)";
+				case AttackType.カットイン主主副:
+					return "カットイン (x1.75)";
+				case AttackType.カットイン主雷:
+					return "カットイン (x1.3 x2)";
+				case AttackType.連撃:
+					return "連撃 (x1.2 x2)";
+				case AttackType.カットイン雷:
+					return "カットイン (x1.5 x2)";
+				case AttackType.カットイン後期魚雷逆探:
+					return "カットイン (x1.75 x2)";
+				case AttackType.カットイン後期魚雷:
+					return "カットイン (x1.6 x2)";
 				default:
-					return "통상";
+					return "通常";
 			}
 		}
 

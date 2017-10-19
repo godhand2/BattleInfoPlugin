@@ -25,21 +25,21 @@ namespace BattleInfoPlugin.ViewModels.Enemies
 		public string Name
 			=> this.Fleet?.Name ?? "？？？";
 
-		public string Rank
-			=> string.Join(", ", this.Fleet?.Rank.Where(x => 0 < x).Select(x =>
-			{
-				switch (x)
-				{
-					case 1:
-						return "병";
-					case 2:
-						return "을";
-					case 3:
-						return "갑";
-					default:
-						return "？";
-				}
-			}));
+        public string Rank
+            => string.Join(", ", this.Fleet?.Rank.Where(x => 0 < x).Select(x =>
+            {
+                switch (x)
+                {
+                    case 1:
+                        return "丙";
+                    case 2:
+                        return "乙";
+                    case 3:
+                        return "甲";
+                    default:
+                        return "？";
+                }
+            }));
 
 		public Visibility RankVisibility
 			=> !string.IsNullOrEmpty(this.Rank) ? Visibility.Visible : Visibility.Collapsed;
@@ -80,8 +80,8 @@ namespace BattleInfoPlugin.ViewModels.Enemies
 		{
 			System.Diagnostics.Debug.WriteLine($"DeleteEnemy:{this.Key}");
 			if (MessageBoxResult.OK != MessageBox.Show(
-				$"{this.Name}(key:{this.Key})의 데이터를 소거합니다",
-				"확인",
+				$"{this.Name}(key:{this.Key})のデータを削除してよろしいですか？",
+				"確認",
 				MessageBoxButton.OKCancel,
 				MessageBoxImage.Question))
 				return;

@@ -14,7 +14,7 @@
 				   xmlns:enemies="clr-namespace:BattleInfoPlugin.ViewModels.Enemies"
 				   xmlns:behaviors="clr-namespace:BattleInfoPlugin.Views.Behaviors"
 				   mc:Ignorable="d" 
-				   Title="적 정보 목록"
+				   Title="既知の敵一覧"
 				   Width="1000"
 				   Height="900"
 				   FontSize="12"
@@ -90,7 +90,7 @@
 								  BandVisibility="Collapsed" />
 
 				<TextBlock Grid.Column="1"
-						   Text="적 정보 목록"
+						   Text="既知の敵一覧"
 						   Style="{DynamicResource CaptionTextStyleKey}"
 						   Margin="2,0,8,0" />
 
@@ -192,32 +192,32 @@
 							</Style>
 						</StackPanel.Resources>
 						<TextBlock>
-													<Run Text="에리어 "/>
+													<Run Text="エリア "/>
 													<Run Text="{Binding /Info.MapArea.Name, Mode=OneTime}"
 															 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 												</TextBlock>
 												<TextBlock>
-													<Run Text="맵 "/>
+													<Run Text="マップ "/>
 													<Run Text="{Binding /Name, Mode=OneTime}"
 															 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 												</TextBlock>
 												<TextBlock>
-													<Run Text="난이도 Lv."/>
+													<Run Text="難易度 Lv."/>
 													<Run Text="{Binding /Info.Level, Mode=OneTime}"
 															 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 												</TextBlock>
 												<TextBlock>
-													<Run Text="필요격파횟수 "/>
+													<Run Text="必要撃破回数 "/>
 													<Run Text="{Binding /RequiredDefeatCount, Mode=OneTime}"
 															 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 												</TextBlock>
 
-												<TextBlock Text="작전명"
+												<TextBlock Text="作戦名"
 																							 Margin="5,30,5,0"/>
 												<TextBlock Text="{Binding /Info.OperationName, Mode=OneTime}"
 																							 Style="{DynamicResource EmphaticTextStyleKey}"
 																							 Margin="5,5,5,0"/>
-												<TextBlock Text="작전개요"/>
+												<TextBlock Text="作戦概要"/>
 												<TextBlock Text="{Binding /Info.OperationSummary, Mode=OneTime, Converter={StaticResource BrTagToNewLineConverter}}"
 																							 Style="{DynamicResource EmphaticTextStyleKey}"
 																							 Margin="5,5,5,0"
@@ -247,9 +247,9 @@
 												<TextBlock Text="Map Data Not Found"
 								   FontSize="20"
 								   HorizontalAlignment="Center"/>
-												<TextBlock Text="・로컬에 저장된 맵 데이터가 표시됩니다"
+												<TextBlock Text="・ローカルに保存されたマップデータが表示されます"
 																							 Style="{DynamicResource DefaultTextStyleKey}"/>
-												<TextBlock Text="・맵 데이터는 브라우저 캐시가 없는 상태에서 출격했을시 저장됩니다"
+												<TextBlock Text="・マップデータはブラウザキャッシュがない状態で出撃した際に保存されます"
 																							 Style="{DynamicResource DefaultTextStyleKey}"/>
 											</StackPanel>
 
@@ -270,7 +270,7 @@
 												<TextBlock Text="Required Assembly Not Found"
 								   FontSize="20"
 								   HorizontalAlignment="Center"/>
-												<TextBlock Text="・SwfFormat.dll 나 ICSharpCode.SharpZipLib.dll 를 찾을 수 없습니다"
+												<TextBlock Text="・SwfFormat.dll か ICSharpCode.SharpZipLib.dll が見つかりません"
 																							 Style="{DynamicResource DefaultTextStyleKey}"/>
 											</StackPanel>
 
@@ -452,7 +452,7 @@
 														  Background="Transparent">
 														<Grid.ContextMenu>
 															<ContextMenu DataContext="{Binding RelativeSource={RelativeSource Self}, Path=PlacementTarget.Tag}">
-																															<MenuItem Header="Enemy ID를 복사">
+																															<MenuItem Header="Enemy ID をコピー">
 																																<i:Interaction.Triggers>
 																																	<i:EventTrigger EventName="Click">
 																																		<l:LivetCallMethodAction MethodTarget="{Binding}"
@@ -460,7 +460,7 @@
 																																	</i:EventTrigger>
 																																</i:Interaction.Triggers>
 																															</MenuItem>
-																															<MenuItem Header="삭제">
+																															<MenuItem Header="削除">
 																																<i:Interaction.Triggers>
 																		<i:EventTrigger EventName="Click">
 																			<l:LivetCallMethodAction MethodTarget="{Binding}"
@@ -525,7 +525,7 @@
 																	<Style TargetType="{x:Type Border}">
 																		<Setter Property="Visibility" Value="Collapsed"/>
 																		<Style.Triggers>
-																																					<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=항공전}"
+																																					<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=航空戦}"
 																																																														 Value="True">
 																																						<Setter Property="Visibility"
 																																										Value="Visible"/>
@@ -533,7 +533,7 @@
 																																				</Style.Triggers>
 																																			</Style>
 																																		</Border.Style>
-																																		<TextBlock Text="항공전"
+																																		<TextBlock Text="航空戦"
 																																																							 Margin="9,2"
 																																																							 HorizontalAlignment="Center"/>
 																																	</Border>
@@ -546,7 +546,7 @@
 																																			<Style TargetType="{x:Type Border}">
 																																				<Setter Property="Visibility" Value="Collapsed"/>
 																																				<Style.Triggers>
-																																					<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=야전}"
+																																					<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=夜戦}"
 																																											 Value="True">
 																																						<Setter Property="Visibility"
 																																										Value="Visible"/>
@@ -554,7 +554,7 @@
 																																				</Style.Triggers>
 																																			</Style>
 																																		</Border.Style>
-																																		<TextBlock Text="야전"
+																																		<TextBlock Text="夜戦"
 																																							 Margin="9,2"
 																																							 HorizontalAlignment="Center"/>
 																																	</Border>
@@ -567,7 +567,7 @@
 																																			<Style TargetType="{x:Type Border}">
 																																				<Setter Property="Visibility" Value="Collapsed"/>
 																																				<Style.Triggers>
-																																					<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=공습전}"
+																																					<DataTrigger Binding="{Binding ParentCell.CellType, Converter={StaticResource HasFlagConverter}, ConverterParameter=空襲戦}"
 																																											 Value="True">
 																																						<Setter Property="Visibility"
 																																										Value="Visible"/>
@@ -575,13 +575,13 @@
 																																				</Style.Triggers>
 																																			</Style>
 																																		</Border.Style>
-																																		<TextBlock Text="공습전"
+																																		<TextBlock Text="空襲戦"
 																																																							 Margin="9,2"
 																																																							 HorizontalAlignment="Center"/>
 																																	</Border>
 
 																																	<TextBlock Margin="5,10,5,0">
-																																		<Run Text="진형:"
+																																		<Run Text="陣形:"
 																																				 FontSize="12"/>
 																																		<Run Text="{Binding Formation, Mode=OneTime}"
 																																				 Style="{DynamicResource EmphaticTextElementStyleKey}"
@@ -590,7 +590,7 @@
 
 																																	<TextBlock Margin="5,10,5,0"
 																																						 Visibility="{Binding RankVisibility}">
-																																		<Run Text="난이도:"
+																																		<Run Text="難易度:"
 																																				 FontSize="12"/>
 																<Run Text="{Binding Rank, Mode=OneTime}"
 																	 Style="{DynamicResource EmphaticTextElementStyleKey}"
@@ -695,7 +695,7 @@
 
 									<TextBlock Grid.Column="3"
 											   Grid.Row="0"
-											   Text="화력"/>
+											   Text="火力"/>
 									<TextBlock Grid.Column="3"
 											   Grid.Row="1">
 										<Run Text="{Binding SumFirepower, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
@@ -713,7 +713,7 @@
 
 									<TextBlock Grid.Column="4"
 											   Grid.Row="0"
-											   Text="뇌장"/>
+											   Text="雷装"/>
 									<TextBlock Grid.Column="4"
 											   Grid.Row="1">
 										<Run Text="{Binding SumTorpedo, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
@@ -731,7 +731,7 @@
 
 									<TextBlock Grid.Column="5"
 											   Grid.Row="0"
-											   Text="대공"/>
+											   Text="対空"/>
 									<TextBlock Grid.Column="5"
 											   Grid.Row="1">
 										<Run Text="{Binding SumAA, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
@@ -749,7 +749,7 @@
 
 									<TextBlock Grid.Column="6"
 											   Grid.Row="0"
-											   Text="장갑"/>
+											   Text="装甲"/>
 									<TextBlock Grid.Column="6"
 											   Grid.Row="1">
 										<Run Text="{Binding SumArmer, Mode=OneTime, Converter={StaticResource UnknownValueConverter}}"
@@ -767,7 +767,7 @@
 
 									<TextBlock Grid.Column="7"
 											   Grid.Row="0"
-											   Text="대잠"/>
+											   Text="対潜"/>
 									<TextBlock Grid.Column="7"
 											   Grid.Row="1"
 											   Text="{Binding SlotsASW, Mode=OneTime, StringFormat={}(+{0})}"/>
@@ -775,7 +775,7 @@
 
 									<TextBlock Grid.Column="8"
 											   Grid.Row="0"
-											   Text="명중"/>
+											   Text="命中"/>
 									<TextBlock Grid.Column="8"
 											   Grid.Row="1"
 											   Text="{Binding SlotsHit, Mode=OneTime, StringFormat={}(+{0})}"/>
@@ -783,7 +783,7 @@
 
 									<TextBlock Grid.Column="9"
 											   Grid.Row="0"
-											   Text="회피"/>
+											   Text="回避"/>
 									<TextBlock Grid.Column="9"
 											   Grid.Row="1"
 											   Text="{Binding SlotsEvade, Mode=OneTime, StringFormat={}(+{0})}"/>
@@ -791,18 +791,18 @@
 
 									<TextBlock Grid.Column="10"
 											   Grid.Row="0"
-											   Text="공격종류"/>
+											   Text="攻撃種別"/>
 									<StackPanel Grid.Column="10"
 												Grid.Row="1"
 												Grid.RowSpan="2">
 										<TextBlock>
-											<Run Text="주간"/>
+											<Run Text="昼戦"/>
 											<Run Text="{Binding DayAttackType, Mode=OneTime, Converter={StaticResource AttackTypeConverter}}"
 												 Style="{DynamicResource EmphaticTextElementStyleKey}"
 												 FontSize="{DynamicResource DefaultFontSizeKey}"/>
 										</TextBlock>
 										<TextBlock>
-											<Run Text="야전"/>
+											<Run Text="夜戦"/>
 											<Run Text="{Binding NightAttackType, Mode=OneTime, Converter={StaticResource AttackTypeConverter}}"
 												 Style="{DynamicResource EmphaticTextElementStyleKey}"
 												 FontSize="{DynamicResource DefaultFontSizeKey}"/>

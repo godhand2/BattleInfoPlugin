@@ -22,13 +22,13 @@ namespace BattleInfoPlugin.Models
 			switch (flag)
 			{
 				case UsedFlag.Unused:
-					return "발동 안됨";
+					return "発動しない";
 				case UsedFlag.Used:
-					return "아군 발동";
+					return "味方発動";
 				case UsedFlag.EnemyUsed:
-					return "적 발동";
+					return "敵発動";
 				case UsedFlag.BothUsed:
-					return "쌍방 발동";
+					return "双方発動";
 				default:
 					return "";
 			}

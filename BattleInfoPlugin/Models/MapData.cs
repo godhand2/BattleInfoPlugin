@@ -50,42 +50,42 @@ namespace BattleInfoPlugin.Models
 			return data.EventId.ToCellType();
 		}
 
-		public void Merge(string[] filePathList)
-		{
-			foreach (var filePath in filePathList)
-			{
-				Action<Task<bool>> continuationAction = x =>
-				{
-					try
-					{
-						var result = x.Result;
-						if (result)
-							MergeResult?.Invoke(result, $"병합성공 : {filePath}");
-						else
-							MergeResult?.Invoke(result, $"병합실패 : {filePath}");
-					}
-					catch (Exception)
-					{
-						MergeResult?.Invoke(false, $"병합실패 : {filePath}");
-					}
-				};
+        public void Merge(string[] filePathList)
+        {
+            foreach (var filePath in filePathList)
+            {
+                Action<Task<bool>> continuationAction = x =>
+                {
+                    try
+                    {
+                        var result = x.Result;
+                        if (result)
+                            MergeResult?.Invoke(result, $"マージに成功しました。 : {filePath}");
+                        else
+                            MergeResult?.Invoke(result, $"マージに失敗しました。 : {filePath}");
+                    }
+                    catch (Exception)
+                    {
+                        MergeResult?.Invoke(false, $"マージに失敗しました。 : {filePath}");
+                    }
+                };
 
-				var info = new FileInfo(filePath);
-				if (info.Name == Settings.Default.EnemyDataFileName)
-				{
-					this.EnemyData.Merge(filePath)
-						.ContinueWith(continuationAction, TaskScheduler.FromCurrentSynchronizationContext());
-				}else if (info.Name == Settings.Default.MasterDataFileName)
-				{
-					Master.Current.Merge(filePath)
-						.ContinueWith(continuationAction, TaskScheduler.FromCurrentSynchronizationContext());
-				}
-				else
-				{
-					MergeResult?.Invoke(false, "병합대상의 파일명이 아닙니다");
-				}
-			}
-		}
+                var info = new FileInfo(filePath);
+                if (info.Name == Settings.Default.EnemyDataFileName)
+                {
+                    this.EnemyData.Merge(filePath)
+                        .ContinueWith(continuationAction, TaskScheduler.FromCurrentSynchronizationContext());
+                }else if (info.Name == Settings.Default.MasterDataFileName)
+                {
+                    Master.Current.Merge(filePath)
+                        .ContinueWith(continuationAction, TaskScheduler.FromCurrentSynchronizationContext());
+                }
+                else
+                {
+                    MergeResult?.Invoke(false, "マージ対象のファイル名ではありません。");
+                }
+            }
+        }
 
 		public event Action<bool, string> MergeResult;
 	}

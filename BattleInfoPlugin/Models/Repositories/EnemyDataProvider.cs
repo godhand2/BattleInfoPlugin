@@ -123,7 +123,7 @@ namespace BattleInfoPlugin.Models.Repositories
 		{
 			return this.EnemyData.EnemyFormation.ContainsKey(enemyId)
 				? this.EnemyData.EnemyFormation[enemyId]
-				: Formation.불명;
+                : Formation.不明;
 		}
 
 		private int[] GetEnemyEncounterRankFromId(string enemyId)

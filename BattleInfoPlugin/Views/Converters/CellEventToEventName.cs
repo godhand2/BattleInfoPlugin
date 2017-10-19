@@ -18,20 +18,20 @@ namespace BattleInfoPlugin.Views.Converters
 				switch (cellevent)
 				{
 					case -1:
-						return "연습전";
+						return "演習";
 					case 2:
-						return "자원획득";
+						return "資源獲得";
 					case 3:
-						return "소용돌이";
+						return "渦潮";
 					case 4:
 					case 31:
-						return "적군조우";
+						return "敵遭遇";
 					case 5:
-						return "보스전";
+						return "ボス戦";
 					case 6:
-						return "기분탓";
+						return "気のせい";
 					case 10:
-						return "공습전";
+						return "空襲戦";
 					default:
 						return "";
 				}

@@ -53,19 +53,19 @@
 
 						<StackPanel Margin="0,0,10,0">
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="전투종류:"/>
+								<Run Text="戦闘種別:"/>
 								<Run Text="{Binding BattleName, Mode=OneWay}"
 									 FontSize="12"
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 							</TextBlock>
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="교전형태:"/>
+								<Run Text="交戦形態:"/>
 								<Run Text="{Binding BattleSituation, Mode=OneWay}"
 									 FontSize="12"
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 							</TextBlock>
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="제공종류:"/>
+								<Run Text="制空結果:"/>
 								<Run Text="{Binding FriendAirSupremacy, Mode=OneWay}"
 									 FontSize="12"
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
@@ -74,26 +74,26 @@
 						<StackPanel Grid.Column="1"
 									MinWidth="144">
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="갱신일시:"/>
+								<Run Text="更新日時:"/>
 								<Run Text="{Binding UpdatedTime, Mode=OneWay}"
 									 FontSize="12"
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 							</TextBlock>
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="드롭:"/>
+								<Run Text="ドロップ:"/>
 								<Run Text="{Binding DropShipName, Mode=OneWay}"
 									 FontSize="12"
 									 Style="{DynamicResource EmphaticTextElementStyleKey}"/>
 							</TextBlock>
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="지원함대:"/>
+								<Run Text="支援艦隊:"/>
 								<Run Text="{Binding SupportUsed, Mode=OneWay}"
 									 FontSize="12">
 									<Run.Style>
 										<Style TargetType="{x:Type Run}">
 											<Setter Property="Foreground" Value="#FFFFFFFF" />
 											<Style.Triggers>
-												<DataTrigger Binding="{Binding SupportUsed, Mode=OneWay}" Value="지원 없음">
+												<DataTrigger Binding="{Binding SupportUsed, Mode=OneWay}" Value="支援 なし">
 													<Setter Property="Foreground" Value="#80FFFFFF" />
 												</DataTrigger>
 											</Style.Triggers>
@@ -104,14 +104,14 @@
 						</StackPanel>
 						<StackPanel Grid.Column="2">
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="조명탄:　"/>
+								<Run Text="照明弾:　"/>
 								<Run Text="{Binding FlareUsed, Mode=OneWay}"
 									 FontSize="12">
 									<Run.Style>
 										<Style TargetType="{x:Type Run}">
 											<Setter Property="Foreground" Value="#FFFFFFFF" />
 											<Style.Triggers>
-												<DataTrigger Binding="{Binding FlareUsed, Mode=OneWay}" Value="발동 안됨">
+												<DataTrigger Binding="{Binding FlareUsed, Mode=OneWay}" Value="発動しない">
 													<Setter Property="Foreground" Value="#80FFFFFF" />
 												</DataTrigger>
 											</Style.Triggers>
@@ -120,14 +120,14 @@
 								</Run>
 							</TextBlock>
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="야간정찰:"/>
+								<Run Text="夜間偵察:"/>
 								<Run Text="{Binding NightReconScouted, Mode=OneWay}"
 									 FontSize="12">
 									<Run.Style>
 										<Style TargetType="{x:Type Run}">
 											<Setter Property="Foreground" Value="#FFFFFFFF" />
 											<Style.Triggers>
-												<DataTrigger Binding="{Binding NightReconScouted, Mode=OneWay}" Value="발동 안됨">
+												<DataTrigger Binding="{Binding NightReconScouted, Mode=OneWay}" Value="発動しない">
 													<Setter Property="Foreground" Value="#80FFFFFF" />
 												</DataTrigger>
 											</Style.Triggers>
@@ -136,14 +136,14 @@
 								</Run>
 							</TextBlock>
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
-								<Run Text="대공컷인:"/>
+								<Run Text="対空カットイン:"/>
 								<Run Text="{Binding AntiAirFired, Mode=OneWay}"
 									 FontSize="12">
 									<Run.Style>
 										<Style TargetType="{x:Type Run}">
 											<Setter Property="Foreground" Value="#FFFFFFFF" />
 											<Style.Triggers>
-												<DataTrigger Binding="{Binding AntiAirFired, Mode=OneWay}" Value="발동 안됨">
+												<DataTrigger Binding="{Binding AntiAirFired, Mode=OneWay}" Value="発動しない">
 													<Setter Property="Foreground" Value="#80FFFFFF" />
 												</DataTrigger>
 											</Style.Triggers>
@@ -154,7 +154,7 @@
 						</StackPanel>
 <!--
 						<Button Grid.Column="3"
-								Content="적 정보 목록"
+								Content="既知の敵一覧"
 								VerticalAlignment="Stretch"
 								HorizontalAlignment="Right"
 								Margin="0,3,4,0">
@@ -242,34 +242,34 @@
 						<TextBlock.Style>
 							<Style TargetType="TextBlock">
 								<Style.Triggers>
-									<DataTrigger Binding="{Binding RankResult}" Value="에러">
+									<DataTrigger Binding="{Binding RankResult}" Value="エラー">
 										<Setter Property="Foreground" Value="Red"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding RankResult}" Value="없음">
+									<DataTrigger Binding="{Binding RankResult}" Value="なし">
 										<Setter Property="Foreground" Value="Transparent"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding RankResult}" Value="완전승리S">
+									<DataTrigger Binding="{Binding RankResult}" Value="完全勝利S">
 										<Setter Property="Foreground" Value="#FFFFE558"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding RankResult}" Value="S승리">
+									<DataTrigger Binding="{Binding RankResult}" Value="S勝利">
 										<Setter Property="Foreground" Value="Gold"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding RankResult}" Value="A승리">
+									<DataTrigger Binding="{Binding RankResult}" Value="A勝利">
 										<Setter Property="Foreground" Value="#FFD10000"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding RankResult}" Value="B승리">
+									<DataTrigger Binding="{Binding RankResult}" Value="B勝利">
 										<Setter Property="Foreground" Value="#FFD43353"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding RankResult}" Value="C패배">
+									<DataTrigger Binding="{Binding RankResult}" Value="C敗北">
 										<Setter Property="Foreground" Value="#FF42428F"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding RankResult}" Value="D패배">
+									<DataTrigger Binding="{Binding RankResult}" Value="D敗北">
 										<Setter Property="Foreground" Value="#FF42428F"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding RankResult}" Value="E패배">
+									<DataTrigger Binding="{Binding RankResult}" Value="E敗北">
 										<Setter Property="Foreground" Value="#FF42428F"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding RankResult}" Value="공습전">
+									<DataTrigger Binding="{Binding RankResult}" Value="空襲戦">
 										<Setter Property="Foreground" Value="#FF52A661"/>
 									</DataTrigger>
 								</Style.Triggers>
@@ -288,22 +288,22 @@
 									<DataTrigger Binding="{Binding AirRankAvailable}" Value="True">
 										<Setter Property="Visibility" Value="Visible"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding AirRankResult}" Value="완전승리S">
+									<DataTrigger Binding="{Binding AirRankResult}" Value="完全勝利S">
 										<Setter Property="Foreground" Value="#FFFFE558"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding AirRankResult}" Value="A승리">
+									<DataTrigger Binding="{Binding AirRankResult}" Value="A勝利">
 										<Setter Property="Foreground" Value="#FFD10000"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding AirRankResult}" Value="B승리">
+									<DataTrigger Binding="{Binding AirRankResult}" Value="B勝利">
 										<Setter Property="Foreground" Value="#FFD43353"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding AirRankResult}" Value="C패배">
+									<DataTrigger Binding="{Binding AirRankResult}" Value="C敗北">
 										<Setter Property="Foreground" Value="#FF42428F"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding AirRankResult}" Value="D패배">
+									<DataTrigger Binding="{Binding AirRankResult}" Value="D敗北">
 										<Setter Property="Foreground" Value="#FF42428F"/>
 									</DataTrigger>
-									<DataTrigger Binding="{Binding AirRankResult}" Value="E패배">
+									<DataTrigger Binding="{Binding AirRankResult}" Value="E敗北">
 										<Setter Property="Foreground" Value="#FF42428F"/>
 									</DataTrigger>
 								</Style.Triggers>
@@ -318,14 +318,14 @@
 						       FontSize="16"
 						       FontWeight="Bold"
 						       TextAlignment="Center"
-						       Text="기믹 발동됨"
+						       Text="ギミック発動される"
 						       Foreground="#FF40C820"
 						       Visibility="{Binding MechanismOn, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}" />
                     <TextBlock Padding="8,5"
 						       FontSize="16"
 						       FontWeight="Bold"
 						       TextAlignment="Center"
-						       Text="맵 확장됨"
+						       Text="マップ拡張さ"
 						       Foreground="Gold"
 						       Visibility="{Binding MapExtended, Mode=OneWay, Converter={StaticResource TrueToVisibleConverter}}" />
                 </StackPanel>
@@ -343,14 +343,14 @@
 					  Margin="0,10,0,0"
 					  Padding="0,4,0,0"
 					  ExpandDirection="Right"
-					  Header="설정">
+					  Header="設定">
 				<StackPanel Orientation="Vertical">
 					<StackPanel Margin="2"
 								Orientation="Horizontal">
 						<TextBlock Margin="0,0,4,0"
-								   Text="추가:" />
+								   Text="追加:" />
 
-						<CheckBox Content="오버레이 표시 사용 (재시작 필요)"
+						<CheckBox Content="オーバーレイ表示の使用 (再起動が必要)"
 								  IsChecked="{Binding UseBrowserOverlay}"
 								  Margin="5,0,5,0" />
 					</StackPanel>
@@ -360,21 +360,21 @@
 					<StackPanel Margin="2"
 								Orientation="Horizontal">
 						<TextBlock Margin="0,0,4,0"
-								   Text="설정:" />
+								   Text="設定:" />
 						
-						<CheckBox Content="세부 항공전 표시"
+						<CheckBox Content="詳細航空戦表示"
 								  IsChecked="{Binding DetailKouku}"
 								  Margin="5,0,5,0" />
 						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
-						<CheckBox Content="대파시 색 변경"
+						<CheckBox Content="大破時の色を変更"
 								  IsChecked="{Binding EnableColorChange}"
 								  Margin="5,0,5,0" />
 						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
-						<CheckBox Content="탭 자동선택"
+						<CheckBox Content="タブの自動選択"
 								  IsChecked="{Binding AutoSelectTab}"
 								  Margin="5,0,5,0" />
 						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
-						<CheckBox Content="귀환시 종합탭 선택"
+						<CheckBox Content="帰還時総合タブを選択"
 								  IsChecked="{Binding AutoBackTab}"
 								  Margin="5,0,5,0" />
 					</StackPanel>
@@ -384,25 +384,25 @@
 					<StackPanel Margin="2"
 								Orientation="Horizontal">
 						<TextBlock Margin="0,0,4,0"
-								   Text="알림:" />
+								   Text="通知:" />
 
-						<CheckBox Content="비활성화때만"
+						<CheckBox Content="非アクティブ時のみ"
 								  IsChecked="{Binding IsNotifyOnlyWhenInactive}"
 								  Margin="5,0,5,0" />
 						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
-						<CheckBox Content="전투종료"
+						<CheckBox Content="戦闘終了"
 								  IsChecked="{Binding IsNotifierEnabled}"
 								  Margin="5,0,5,0" />
 						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
-						<CheckBox Content="야전선택"
+						<CheckBox Content="夜戦選択"
 								  IsChecked="{Binding IsPursuitEnabled}"
 								  Margin="5,0,5,0" />
 						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
-						<CheckBox Content="대파"
+						<CheckBox Content="大破通知"
 								  IsChecked="{Binding IsCriticalNotiEnabled}"
 								  Margin="5,0,5,0" />
 						<Border Width="1" Margin="2" Background="#60FFFFFF"/>
-						<CheckBox Content="대파알림 항상"
+						<CheckBox Content="常に大破通知"
 								  IsChecked="{Binding IsCriticalAlways}"
 								  Margin="5,0,5,0" />
 					</StackPanel>

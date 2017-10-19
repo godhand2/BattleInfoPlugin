@@ -237,7 +237,7 @@ namespace BattleInfoPlugin.Models
 		#endregion
 
 		#region FriendAirSupremacy変更通知プロパティ
-		private AirSupremacy _FriendAirSupremacy = AirSupremacy.항공전없음;
+		private AirSupremacy _FriendAirSupremacy = AirSupremacy.航空戦なし;
 
 		public AirSupremacy FriendAirSupremacy
 		{
@@ -424,7 +424,7 @@ namespace BattleInfoPlugin.Models
 			proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => this.ResultClear(x.Data));
 			#endregion
 
-			#region 통상 - 주간전 / 연습 - 주간전
+			#region 通常 - 昼戦 / 練習 - 昼戦
 			proxy.api_req_sortie_battle
 				.TryParse<sortie_battle>().Subscribe(x => this.Update(x.Data, ApiTypes.sortie_battle));
 
@@ -432,7 +432,7 @@ namespace BattleInfoPlugin.Models
 				.TryParse<practice_battle>().Subscribe(x => this.Update(x.Data, ApiTypes.practice_battle));
 			#endregion
 
-			#region 통상 - 야전 / 통상 - 개막야전 / 연습 - 야전
+			#region 通常 - 夜戦 / 通常 - 開幕夜戦 / 練習 - 夜戦
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_battle_midnight/battle")
 				.TryParse<battle_midnight_battle>().Subscribe(x => this.Update(x.Data, ApiTypes.battle_midnight_battle));
 
@@ -443,7 +443,7 @@ namespace BattleInfoPlugin.Models
 				.TryParse<practice_midnight_battle>().Subscribe(x => this.Update(x.Data, ApiTypes.practice_midnight_battle));
 			#endregion
 
-			#region 항공전 - 주간전 / 공습전 - 주간전
+			#region 航空戦 - 昼戦 / 空襲戦 - 昼戦
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_sortie/airbattle")
 				.TryParse<sortie_airbattle>().Subscribe(x => this.Update(x.Data, ApiTypes.sortie_airbattle));
 
@@ -451,7 +451,7 @@ namespace BattleInfoPlugin.Models
 				.TryParse<sortie_ld_airbattle>().Subscribe(x => this.Update(x.Data, ApiTypes.sortie_ld_airbattle));
 			#endregion
 
-			#region 연합함대 - 주간전
+			#region 連合艦隊 - 昼戦
 			proxy.api_req_combined_battle_battle
 				.TryParse<combined_battle_battle>().Subscribe(x => this.Update(x.Data, ApiTypes.combined_battle_battle));
 
@@ -459,7 +459,7 @@ namespace BattleInfoPlugin.Models
 				.TryParse<combined_battle_battle_water>().Subscribe(x => this.Update(x.Data, ApiTypes.combined_battle_battle_water));
 			#endregion
 
-			#region 연합vs연합 - 주간전
+			#region 連合vs連合 - 昼戦
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_battle")
 				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, ApiTypes.combined_battle_ec_battle));
 
@@ -470,7 +470,7 @@ namespace BattleInfoPlugin.Models
 				.TryParse<combined_battle_each_battle>().Subscribe(x => this.Update(x.Data, ApiTypes.combined_battle_each_battle_water));
 			#endregion
 
-			#region 연합함대 - 항공전 / 공습전
+			#region 連合艦隊 - 航空戦 / 空襲戦
 			proxy.api_req_combined_battle_airbattle
 				.TryParse<combined_battle_airbattle>().Subscribe(x => this.Update(x.Data, ApiTypes.combined_battle_airbattle));
 
@@ -478,7 +478,7 @@ namespace BattleInfoPlugin.Models
 				.TryParse<combined_battle_ld_airbattle>().Subscribe(x => this.Update(x.Data, ApiTypes.combined_battle_ld_airbattle));
 			#endregion
 
-			#region 연합함대 - 야전
+			#region 連合艦隊 - 夜戦
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/midnight_battle")
 				.TryParse<combined_battle_midnight_battle>().Subscribe(x => this.Update(x.Data, ApiTypes.combined_battle_midnight_battle));
 
@@ -486,12 +486,12 @@ namespace BattleInfoPlugin.Models
 				.TryParse<combined_battle_sp_midnight>().Subscribe(x => this.Update(x.Data, ApiTypes.combined_battle_sp_midnight));
 			#endregion
 
-			#region 연합vs연합 - 야전
+			#region 連合vs連合 - 夜戦
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_combined_battle/ec_midnight_battle")
 				.TryParse<combined_battle_ec_midnight_battle>().Subscribe(x => this.Update(x.Data, ApiTypes.combined_battle_ec_midnight_battle));
 			#endregion
 
-			#region 결과
+			#region 結果
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_practice/battle_result")
 				.TryParse<battle_result>().Subscribe(x => this.Update(x.Data));
 
@@ -540,14 +540,14 @@ namespace BattleInfoPlugin.Models
 			switch (apiType)
 			{
 				case ApiTypes.sortie_battle:
-					this.Name = "통상 - 주간전";
+					this.Name = "通常 - 昼戦";
 					break;
 				case ApiTypes.practice_battle:
-					this.Name = "연습 - 주간전";
+					this.Name = "練習 - 昼戦";
 
 					this.Clear();
 
-					this.CellEvent = (int)CellType.연습전;
+					this.CellEvent = (int)CellType.演習;
 					this.Cells.Clear();
 
 					this.Cells.ForEach(x => x.IsOld = true);
@@ -555,7 +555,7 @@ namespace BattleInfoPlugin.Models
 					{
 						CellName = "",
 						CellEvent = this.CellEvent.ToString(),
-						CellText = "연습전",
+						CellText = "演習",
 						IsOld = false
 					});
 					this.RaisePropertyChanged(nameof(this.Cells));
@@ -635,13 +635,13 @@ namespace BattleInfoPlugin.Models
 			switch (apiType)
 			{
 				case ApiTypes.battle_midnight_battle:
-					this.Name = "통상 - 야전";
+					this.Name = "通常 - 夜戦";
 					break;
 				case ApiTypes.battle_midnight_sp_midnight:
-					this.Name = "통상 - 개막야전";
+					this.Name = "通常 - 開幕夜戦";
 					break;
 				case ApiTypes.practice_midnight_battle:
-					this.Name = "연습 - 야전";
+					this.Name = "練習 - 夜戦";
 					break;
 			}
 
@@ -686,7 +686,7 @@ namespace BattleInfoPlugin.Models
 			switch (apiType)
 			{
 				case ApiTypes.sortie_airbattle:
-					this.Name = "항공전 - 주간전";
+					this.Name = "航空戦 - 昼戦";
 
 					this.UpdateUsedFlag(
 						data.api_kouku?.api_stage2?.api_air_fire,
@@ -694,7 +694,7 @@ namespace BattleInfoPlugin.Models
 					);
 					break;
 				case ApiTypes.sortie_ld_airbattle:
-					this.Name = "공습전 - 주간전";
+					this.Name = "空襲戦 - 昼戦";
 					this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 					break;
 			}
@@ -738,7 +738,7 @@ namespace BattleInfoPlugin.Models
 				this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
 				this.AirRankResult = this.CalcLDAirRank();
-				this.RankResult = Rank.공습전;
+				this.RankResult = Rank.空襲戦;
 			}
 		}
 
@@ -749,10 +749,10 @@ namespace BattleInfoPlugin.Models
 			switch (apiType)
 			{
 				case ApiTypes.combined_battle_battle:
-					this.Name = "연합함대 - 기동부대 - 주간전";
+					this.Name = "連合艦隊 - 機動部隊 - 昼戦";
 					break;
 				case ApiTypes.combined_battle_battle_water:
-					this.Name = "연합함대 - 수상부대 - 주간전";
+					this.Name = "連合艦隊 - 水上部隊 - 昼戦";
 					break;
 			}
 
@@ -829,13 +829,13 @@ namespace BattleInfoPlugin.Models
 			switch (apiType)
 			{
 				case ApiTypes.combined_battle_ec_battle:
-					this.Name = "심해연합 - 주간전";
+					this.Name = "深海連合 - 昼戦";
 					break;
 				case ApiTypes.combined_battle_each_battle:
-					this.Name = "기동부대vs심해연합 - 주간전";
+					this.Name = "機動部隊vs深海連合 - 昼戦";
 					break;
 				case ApiTypes.combined_battle_each_battle_water:
-					this.Name = "수상부대vs심해연합 - 주간전";
+					this.Name = "水上部隊vs深海連合 - 昼戦";
 					break;
 			}
 
@@ -850,10 +850,10 @@ namespace BattleInfoPlugin.Models
 				.Update(data, apiType != ApiTypes.combined_battle_ec_battle);
 			UpdateMVP(mvpOracle.MVP1, mvpOracle.MVP2);
 
-			#region 연합 vs 심해연합
+			#region 連合 vs 深海連合
 			if (apiType != ApiTypes.combined_battle_ec_battle)
 			{
-				// 기동부대
+				// 機動部隊
 				if (apiType == ApiTypes.combined_battle_each_battle)
 				{
 					this.FirstFleet.CalcDamages(
@@ -901,7 +901,7 @@ namespace BattleInfoPlugin.Models
 					);
 				}
 
-				// 수상부대
+				// 水上部隊
 				else if (apiType == ApiTypes.combined_battle_each_battle_water)
 				{
 					this.FirstFleet.CalcDamages(
@@ -952,7 +952,7 @@ namespace BattleInfoPlugin.Models
 			}
 			#endregion
 
-			#region 단일 vs 심해연합
+			#region シングル vs 深海連合
 			else
 			{
 				this.FirstFleet.CalcDamages(
@@ -1006,14 +1006,14 @@ namespace BattleInfoPlugin.Models
 			switch (apiType)
 			{
 				case ApiTypes.combined_battle_airbattle:
-					this.Name = "연합함대 - 항공전 - 주간";
+					this.Name = "連合艦隊 - 航空戦 - 昼戦";
 					this.UpdateUsedFlag(
 						data.api_kouku?.api_stage2?.api_air_fire,
 						data.api_kouku2?.api_stage2?.api_air_fire
 					);
 					break;
 				case ApiTypes.combined_battle_ld_airbattle:
-					this.Name = "연합함대 - 공습전 - 주간";
+					this.Name = "連合艦隊 - 空襲戦 - 昼戦";
 					this.UpdateUsedFlag(data.api_kouku?.api_stage2?.api_air_fire);
 					break;
 			}
@@ -1055,8 +1055,8 @@ namespace BattleInfoPlugin.Models
 			{
 				case ApiTypes.combined_battle_airbattle:
 					this.AirCombatResults = data.api_air_base_attack.ToResult()
-							.Concat(data.api_kouku.ToResult("1회차/"))
-							.Concat(data.api_kouku2.ToResult("2회차/"))
+							.Concat(data.api_kouku.ToResult("1回目/"))
+							.Concat(data.api_kouku2.ToResult("2回目/"))
 							.ToArray();
 					this.RankResult = this.CalcRank(true);
 					break;
@@ -1064,7 +1064,7 @@ namespace BattleInfoPlugin.Models
 					this.AirCombatResults = data.api_air_base_attack.ToResult().Concat(data.api_kouku.ToResult()).ToArray();
 
 					this.AirRankResult = this.CalcLDAirRank(true);
-					this.RankResult = Rank.공습전;
+					this.RankResult = Rank.空襲戦;
 					break;
 			}
 		}
@@ -1076,24 +1076,24 @@ namespace BattleInfoPlugin.Models
 			switch (apiType)
 			{
 				case ApiTypes.combined_battle_midnight_battle:
-					this.Name = "연합함대 - 야전";
+					this.Name = "連合艦隊 - 夜戦";
 					break;
 				case ApiTypes.combined_battle_sp_midnight:
-					this.Name = "연합함대 - 개막야전";
-					this.FriendAirSupremacy = AirSupremacy.항공전없음;
+					this.Name = "連合艦隊 - 開幕夜戦";
+					this.FriendAirSupremacy = AirSupremacy.航空戦なし;
 					break;
 			}
 
 			int BeforedayBattleHP = this.FirstFleet.Ships
 				.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
-				.Sum(x => x.BeforeNowHP);//리스트 갱신하기전에 아군 HP최대값을 저장
+				.Sum(x => x.BeforeNowHP);//リスト更新する前に、味方HP最大値を保存
 
 			int EnemyBeforedayBattle = this.Enemies.Ships.Sum(x => x.BeforeNowHP);
 			BeforedayBattleHP += this.SecondFleet.Ships
 				.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
-				.Sum(x => x.BeforeNowHP);//리스트 갱신하기전에 아군 HP최대값을 저장
+				.Sum(x => x.BeforeNowHP);//リスト更新する前に、味方HP最大値を保存
 
-			// HP가 초기화되는 문제가 있어서..
+			// HPが初期化される問題が発生。
 			if (apiType == ApiTypes.combined_battle_sp_midnight)
 			{
 				this.UpdateFleets(data.api_deck_id, data);
@@ -1126,14 +1126,14 @@ namespace BattleInfoPlugin.Models
 		private void Update(combined_battle_ec_midnight_battle data, ApiTypes apiType)
 		{
 			AutoSelectTab();
-			this.Name = "연합vs연합 - 야전";
+			this.Name = "連合vs連合 - 夜戦";
 
 			int BeforedayBattleHP = this.FirstFleet.Ships
 				.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
-				.Sum(x => x.BeforeNowHP); // 리스트 갱신하기전에 아군 HP최대값을 저장
+				.Sum(x => x.BeforeNowHP); // リスト更新する前に、味方HP最大値を保存
 			BeforedayBattleHP += this.SecondFleet.Ships
 				.Where(x => !x.Situation.HasFlag(ShipSituation.Tow) && !x.Situation.HasFlag(ShipSituation.Evacuation))
-				.Sum(x => x.BeforeNowHP); // 리스트 갱신하기전에 아군 HP최대값을 저장
+				.Sum(x => x.BeforeNowHP); // リスト更新する前に、味方HP最大値を保存
 
 			int EnemyBeforedayBattle = this.Enemies.Ships.Sum(x => x.BeforeNowHP);
 			EnemyBeforedayBattle += this.SecondEnemies.Ships.Sum(x => x.BeforeNowHP);
@@ -1165,14 +1165,14 @@ namespace BattleInfoPlugin.Models
 				.SingleOrDefault(x => x.Value.Id == data.api_get_ship?.api_ship_id).Value
 				?.Name;
 
-			if (this.RankResult != Rank.완전승리S)
+			if (this.RankResult != Rank.完全勝利S)
 			{
 				var rank = RankExtension.ConvertRank(data.api_win_rank);
-				if (rank != Rank.에러)
+				if (rank != Rank.エラー)
 				{
-					if (this.RankResult == Rank.공습전)
-						this.AirRankResult = rank == Rank.S승리
-							? Rank.완전승리S : rank;
+					if (this.RankResult == Rank.空襲戦)
+						this.AirRankResult = rank == Rank.S勝利
+							? Rank.完全勝利S : rank;
 
 					else
 						this.RankResult = rank;
@@ -1208,8 +1208,8 @@ namespace BattleInfoPlugin.Models
 
 			this.CurrentMap = getMapText(startNext);
 
-			this.RankResult = Rank.없음;
-			this.AirRankResult = Rank.없음;
+			this.RankResult = Rank.なし;
+			this.AirRankResult = Rank.なし;
 
 			if (!isNext)
 			{
@@ -1252,7 +1252,7 @@ namespace BattleInfoPlugin.Models
 			if (this.Enemies != null) eTotal = this.Enemies.TotalDamaged;
 			this.Enemies = new FleetData(
 				data.ToMastersShipDataArray(),
-				this.Enemies?.Formation ?? Formation.없음,
+				this.Enemies?.Formation ?? Formation.なし,
 				this.Enemies?.Name ?? "",
 				FleetType.Enemy,
 				this.Enemies?.Rank);
@@ -1260,7 +1260,7 @@ namespace BattleInfoPlugin.Models
 
 			this.SecondEnemies = new FleetData(
 				new MembersShipData[0],
-				Formation.없음,
+				Formation.なし,
 				"",
 				FleetType.SecondEnemy,
 				this.SecondEnemies?.Rank
@@ -1285,7 +1285,7 @@ namespace BattleInfoPlugin.Models
 			if (this.Enemies != null) eTotal = this.Enemies.TotalDamaged;
 			this.Enemies = new FleetData(
 				data.ToMastersShipDataArray(),
-				this.Enemies?.Formation ?? Formation.없음,
+				this.Enemies?.Formation ?? Formation.なし,
 				this.Enemies?.Name ?? "",
 				FleetType.Enemy,
 				this.Enemies?.Rank);
@@ -1295,7 +1295,7 @@ namespace BattleInfoPlugin.Models
 			if (this.SecondEnemies != null) eTotal = this.SecondEnemies.TotalDamaged;
 			this.SecondEnemies = new FleetData(
 				data.ToMastersSecondShipDataArray(),
-				this.SecondEnemies?.Formation ?? Formation.없음,
+				this.SecondEnemies?.Formation ?? Formation.なし,
 				this.SecondEnemies?.Name ?? "",
 				FleetType.SecondEnemy,
 				this.SecondEnemies?.Rank);
@@ -1326,7 +1326,7 @@ namespace BattleInfoPlugin.Models
 
 			this.FirstFleet = new FleetData(
 				organization.Fleets[deckID].Ships.Select(s => new MembersShipData(s)).ToArray(),
-				this.FirstFleet?.Formation ?? Formation.없음,
+				this.FirstFleet?.Formation ?? Formation.なし,
 				organization.Fleets[deckID].Name,
 				FleetType.First
 			);
@@ -1336,7 +1336,7 @@ namespace BattleInfoPlugin.Models
 				organization.Combined && deckID == 1
 					? organization.Fleets[2].Ships.Select(s => new MembersShipData(s)).ToArray()
 					: new MembersShipData[0],
-				this.SecondFleet?.Formation ?? Formation.없음,
+				this.SecondFleet?.Formation ?? Formation.なし,
 				organization.Fleets[2].Name,
 				FleetType.Second
 			);
@@ -1394,10 +1394,10 @@ namespace BattleInfoPlugin.Models
 			this.AntiAirFired = AirFireFlag.Unset;
 			this.SupportUsed = UsedSupport.Unset;
 
-			this.BattleSituation = BattleSituation.없음;
-			this.FriendAirSupremacy = AirSupremacy.항공전없음;
+			this.BattleSituation = BattleSituation.なし;
+			this.FriendAirSupremacy = AirSupremacy.航空戦なし;
 			this.AirCombatResults = new AirCombatResult[0];
-			if (this.FirstFleet != null) this.FirstFleet.Formation = Formation.없음;
+			if (this.FirstFleet != null) this.FirstFleet.Formation = Formation.なし;
 			this.Enemies = new FleetData();
 			this.SecondEnemies = new FleetData();
 
@@ -1488,29 +1488,29 @@ namespace BattleInfoPlugin.Models
 				else damageType = 0;
 
 				if (AliasTotalDamaged == 0 && EnemyTotalDamaged == 0)
-					return Rank.D패배;
+					return Rank.D敗北;
 
 				else if (EnemyDamagedRate < 0.0005m)
-					return Rank.D패배;
+					return Rank.D敗北;
 
 				else if (IsShipSink)
 				{
 					if (EnemyFlag.NowHP <= 0)
 					{
-						if (IsOverKill) return Rank.B승리;
-						else return Rank.D패배;
+						if (IsOverKill) return Rank.B勝利;
+						else return Rank.D敗北;
 					}
 					else if ((damageType &1)== 1) // Mid Damage
-						return Rank.C패배;
+						return Rank.C敗北;
 
 					else
 					{
-						if (IsOverKilled) return Rank.E패배;
+						if (IsOverKilled) return Rank.E敗北;
 						else
 						{
-							if (!IsOverKill && (damageType & 4) == 4) return Rank.B승리; // x3 damage (With sinked ship)
-							if (IsOverKill && (damageType & 2) == 2) return Rank.B승리; // Over damage (x2.5)
-							return Rank.C패배;
+							if (!IsOverKill && (damageType & 4) == 4) return Rank.B勝利; // x3 damage (With sinked ship)
+							if (IsOverKill && (damageType & 2) == 2) return Rank.B勝利; // Over damage (x2.5)
+							return Rank.C敗北;
 						}
 					}
 				}
@@ -1521,23 +1521,23 @@ namespace BattleInfoPlugin.Models
 					{
 						if (EnemyMaxCount == this.Enemies.SinkCount)
 						{
-							if (AliasTotalDamaged > 0) return Rank.S승리;
-							else return Rank.완전승리S;
+							if (AliasTotalDamaged > 0) return Rank.S勝利;
+							else return Rank.完全勝利S;
 						}
 						else
 						{
-							if (IsOverKill) return Rank.A승리;
-							else return Rank.B승리;
+							if (IsOverKill) return Rank.A勝利;
+							else return Rank.B勝利;
 						}
 					}
 					else
 					{
-						if (IsOverKill) return Rank.A승리;
+						if (IsOverKill) return Rank.A勝利;
 
-						if ((damageType & 2) == 2) return Rank.B승리;
-						else if ((damageType & 1) == 1) return Rank.C패배;
-						else if (damageType == 0) return Rank.D패배;
-						else return Rank.D패배;
+						if ((damageType & 2) == 2) return Rank.B勝利;
+						else if ((damageType & 1) == 1) return Rank.C敗北;
+						else if (damageType == 0) return Rank.D敗北;
+						else return Rank.D敗北;
 					}
 				}
 
@@ -1584,24 +1584,24 @@ namespace BattleInfoPlugin.Models
 					else IsOverDamage = true; // 아군피해 0인 경우
 				}
 
-				if (AliasTotalDamaged == 0 && EnemyTotalDamaged == 0) return Rank.D패배;//d
-				if (EnemyDamagedPercent < 0.0005m) return Rank.D패배;//d
+				if (AliasTotalDamaged == 0 && EnemyTotalDamaged == 0) return Rank.D敗北;//d
+				if (EnemyDamagedPercent < 0.0005m) return Rank.D敗北;//d
 				else if (IsShipSink)
 				{
 					if (EnemyFlag.NowHP <= 0)
 					{
-						if (IsOverKill) return Rank.B승리;
-						else return Rank.D패배;//d
+						if (IsOverKill) return Rank.B勝利;
+						else return Rank.D敗北;//d
 					}
-					else if (IsMidDamage) return Rank.C패배;//c
+					else if (IsMidDamage) return Rank.C敗北;//c
 					else
 					{
-						if (IsOverKilled) return Rank.E패배;//e
+						if (IsOverKilled) return Rank.E敗北;//e
 						else
 						{
-							if (!IsOverKill && IsThreeTime) return Rank.B승리;
-							if (IsOverKill && IsOverDamage) return Rank.B승리;
-							else return Rank.C패배;//c
+							if (!IsOverKill && IsThreeTime) return Rank.B勝利;
+							if (IsOverKill && IsOverDamage) return Rank.B勝利;
+							else return Rank.C敗北;//c
 						}
 					}
 				}
@@ -1611,23 +1611,23 @@ namespace BattleInfoPlugin.Models
 					{
 						if (EnemyMaxCount == this.Enemies.SinkCount)
 						{
-							if (AliasTotalDamaged > 0) return Rank.S승리;
-							else return Rank.완전승리S;
+							if (AliasTotalDamaged > 0) return Rank.S勝利;
+							else return Rank.完全勝利S;
 						}
 						else
 						{
-							if (IsOverKill) return Rank.A승리;
-							else return Rank.B승리;
+							if (IsOverKill) return Rank.A勝利;
+							else return Rank.B勝利;
 						}
 					}
 					else
 					{
-						if (IsOverKill) return Rank.A승리;
+						if (IsOverKill) return Rank.A勝利;
 
-						if (IsOverDamage) return Rank.B승리;
-						else if (IsMidDamage) return Rank.C패배;//c
-						else if (IsScratch) return Rank.D패배;//d
-						else return Rank.D패배;//d
+						if (IsOverDamage) return Rank.B勝利;
+						else if (IsMidDamage) return Rank.C敗北;//c
+						else if (IsScratch) return Rank.D敗北;//d
+						else return Rank.D敗北;//d
 					}
 				}
 				*/
@@ -1639,7 +1639,7 @@ namespace BattleInfoPlugin.Models
 				System.IO.File.AppendAllText("battleinfo_error.log", ex.ToString() + Environment.NewLine);
 				Debug.WriteLine(ex);
 
-				return Rank.에러;
+				return Rank.エラー;
 			}
 		}
 		private Rank CalcLDAirRank(bool IsCombined = false)
@@ -1686,14 +1686,14 @@ namespace BattleInfoPlugin.Models
 				{
 					decimal AliasValue = decimal.Floor(AliasDamagedPercent * 100m); // 아군 피격 데미지 비율 (소숫점 제외)
 
-					if (SinkCount > 0) return Rank.E패배;
-					else if (AliasValue == 0) return Rank.A승리;
-					else if (AliasValue > 0 && AliasValue < 10) return Rank.A승리;
-					else if (AliasValue > 10 && AliasValue < 20) return Rank.B승리;
-					else if (AliasValue > 20 && AliasValue < 50) return Rank.C패배;
-					else return Rank.D패배;
+					if (SinkCount > 0) return Rank.E敗北;
+					else if (AliasValue == 0) return Rank.A勝利;
+					else if (AliasValue > 0 && AliasValue < 10) return Rank.A勝利;
+					else if (AliasValue > 10 && AliasValue < 20) return Rank.B勝利;
+					else if (AliasValue > 20 && AliasValue < 50) return Rank.C敗北;
+					else return Rank.D敗北;
 				}
-				else return Rank.완전승리S;
+				else return Rank.完全勝利S;
 			}
 			catch (Exception ex)
 			{
@@ -1701,7 +1701,7 @@ namespace BattleInfoPlugin.Models
 				System.IO.File.AppendAllText("battleinfo_error.log", ex.ToString() + Environment.NewLine);
 				Debug.WriteLine(ex);
 
-				return Rank.에러;
+				return Rank.エラー;
 			}
 		}
 
@@ -1794,26 +1794,26 @@ namespace BattleInfoPlugin.Models
 		{
 			Dictionary<int, string> resources = new Dictionary<int, string>()
 			{
-				{  0, "연료" },
-				{  1, "탄약" },
-				{  2, "강재" },
-				{  3, "보크사이트" },
-				{  4, "고속건조재" },
-				{  5, "고속수복재" },
-				{  6, "개발자재" },
-				{  7, "개수자재" },
-				{  9, "가구함(소)" },
-				{ 10, "가구함(중)" },
-				{ 11, "가구함(대)" },
+				{  0, "燃料" },
+				{  1, "弾薬" },
+				{  2, "鋼材" },
+				{  3, "ボーキサイト" },
+				{  4, "高速建造材" },
+				{  5, "高速修復材" },
+				{  6, "開発資材" },
+				{  7, "改修資材" },
+				{  9, "家具箱(小)" },
+				{ 10, "家具箱(中)" },
+				{ 11, "家具箱(大)" },
 			};
 
 			int eventId = data.api_event_id;
 
 			switch (eventId)
 			{
-				case 2: // 일반 자원획득
+				case 2: // 일반 資源獲得
 					if (data.api_itemget == null)
-						return "자원획득";
+						return "資源獲得";
 
 					return string.Join(
 						" ",
@@ -1831,7 +1831,7 @@ namespace BattleInfoPlugin.Models
 					);
 				case 3:
 					if (data.api_happening == null || data.api_happening.api_count == 0)
-						return "소용돌이";
+						return "渦潮";
 
 					{
 						var resname = resources.ContainsKey(data.api_happening.api_mst_id - 1)
@@ -1846,36 +1846,36 @@ namespace BattleInfoPlugin.Models
 				case 4:
 				case 31:
 					switch (data.api_event_kind) {
-						case 1: return "적군조우";
-						case 2: return "개막야전";
-						case 3: return "야전>주간전";
-						case 4: return "항공전";
-						case 5: return "심해연합";
-						case 6: return "공습전";
+						case 1: return "敵遭遇";
+						case 2: return "開幕夜戦";
+						case 3: return "夜戦>昼戦";
+						case 4: return "航空戦";
+						case 5: return "深海連合";
+						case 6: return "空襲戦";
 					}
 					break;
 
 				case 5:
 					switch (data.api_event_kind)
 					{
-						case 2: return "보스 (개막야전)";
-						case 3: return "보스 (야전>주간전)";
-						case 5: return "보스 (심해연합)";
+						case 2: return "ボス(開幕夜戦)";
+						case 3: return "ボス(夜戦>昼戦)";
+						case 5: return "ボス(深海連合)";
 					}
-					return "보스전";
+					return "ボス戦";
 
 				case 6:
-					if(data.api_select_route == null) return "기분탓";
-					return "능동분기";
-				case 7: // 항공정찰 자원획득
+					if(data.api_select_route == null) return "気のせい";
+					return "能動分岐";
+				case 7: // 항공정찰 資源獲得
 					if (data.api_event_kind == 0)
 					{
 						SvData<map_start_next2> svdata;
 						if (!SvData.TryParse<map_start_next2>(session, out svdata))
-							return "정찰실패";
+							return "偵察失敗";
 
 						var data2 = svdata.Data;
-						if (data2.api_itemget == null) return "정찰실패";
+						if (data2.api_itemget == null) return "偵察失敗";
 
 						var resname = resources.ContainsKey(data2.api_itemget.api_id - 1)
 							? resources[data2.api_itemget.api_id - 1]
@@ -1885,13 +1885,13 @@ namespace BattleInfoPlugin.Models
 							? string.Format("{0}+{1}", resname, data2.api_itemget.api_getcount)
 							: resname;
 					}
-					else return "항공전";
+					else return "航空戰";
 
 				case 8: // EO (1-6)
 					{
 						var x = data.api_itemget_eo_comment;
 						if (x == null)
-							return "자원획득";
+							return "資源獲得";
 
 						var resname = resources.ContainsKey(x.api_id - 1)
 							? resources[x.api_id - 1]
@@ -1902,9 +1902,9 @@ namespace BattleInfoPlugin.Models
 							: resname;
 					}
 				case 9: // TP
-					return "수송지점";
+					return "輸送ポイント";
 				case 10:
-					return "공습전";
+					return "空襲戦";
 			}
 			return "?";
 		}

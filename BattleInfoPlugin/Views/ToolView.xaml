@@ -48,7 +48,7 @@
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="120" />
+							<ColumnDefinition Width="150" />
 						</Grid.ColumnDefinitions>
 
 						<StackPanel Margin="0,0,10,0">
@@ -72,7 +72,7 @@
 							</TextBlock>
 						</StackPanel>
 						<StackPanel Grid.Column="1"
-									MinWidth="144">
+									MinWidth="150">
 							<TextBlock Style="{DynamicResource DefaultTextStyleKey}">
 								<Run Text="更新日時:"/>
 								<Run Text="{Binding UpdatedTime, Mode=OneWay}"

@@ -582,12 +582,15 @@ namespace BattleInfoPlugin.Models
 				.Where(s => s.Equipped)
 				.Select(s => new ShipSlotData(s))
 				.ToArray();
-			this.ExSlot =
-				this.Source.ExSlotExists && this.Source.ExSlot.Equipped
-				? new ShipSlotData(this.Source.ExSlot)
-				: null;
 
-			this.Condition = this.Source.Condition;
+            // resolve build error due to ExSlotExists not exists in original KCV
+            //this.ExSlot =
+            //	this.Source.ExSlotExists && this.Source.ExSlot.Equipped
+            //	? new ShipSlotData(this.Source.ExSlot)
+            //	: null;
+            this.ExSlot = new ShipSlotData(this.Source.ExSlot);
+
+            this.Condition = this.Source.Condition;
 			this.ConditionType = this.Source.ConditionType;
 
 			this.Firepower = this.Source.Firepower.Current;
@@ -596,7 +599,8 @@ namespace BattleInfoPlugin.Models
 			this.Armer = this.Source.Armer.Current;
 			this.Luck = this.Source.Luck.Current;
 
-			this.ASW = this.Source.ASW.Current;
+            // resolve build error due to ASW.Current has different define in original KCV
+			//this.ASW = this.Source.ASW.Current;
 			this.Evade = this.Source.RawData.api_kaihi[0];
 		}
 	}
@@ -639,10 +643,13 @@ namespace BattleInfoPlugin.Models
 
 			var isEnemyID = this.Source?.Id > 1500;
 			this.AdditionalName = isEnemyID ? this.Source?.RawData.api_yomi : "";
-			this.ShipSpeed = this.Source?.Speed ?? ShipSpeed.Immovable;
-			this.TypeName = this.Source?.Speed == ShipSpeed.Immovable
-				? "육상기지"
-				: this.Source?.ShipType.Name;
-		}
+
+            // resolve build error due to "Speed" define not exists in original KCV
+            //this.ShipSpeed = this.Source?.Speed ?? ShipSpeed.Immovable;
+            //this.TypeName = this.Source?.Speed == ShipSpeed.Immovable
+            //	? "육상기지"
+            //	: this.Source?.ShipType.Name;
+            this.TypeName = this.Source.ShipType.Name;
+        }
 	}
 }

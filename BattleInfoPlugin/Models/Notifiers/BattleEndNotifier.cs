@@ -136,8 +136,9 @@ namespace BattleInfoPlugin.Models.Notifiers
 			{
 				if(settings.EnableColorChange)
 				{
-					ThemeService.Current.ChangeAccent(Accent.Red);
-					ThemeService.Current.ChangeTheme(Theme.CritialRed);
+                    //to resolve Accent.Red and ThemeCritialRed build error, but lost the ability to change color when critical state ships exists
+					//ThemeService.Current.ChangeAccent(Accent.Red);
+					//ThemeService.Current.ChangeTheme(Theme.CritialRed);
 				}
 				this.plugin.InvokeNotifyRequested(new NotifyEventArgs(type, title, message)
 				{

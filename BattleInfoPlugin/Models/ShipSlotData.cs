@@ -92,7 +92,8 @@ namespace BattleInfoPlugin.Models
 
 		public Type2 Type2 => (Type2)this.Source?.RawData.api_type[1];
 
-		public string ToolTip => this.Source?.ToolTipData;
+        //resolve build error due to ToolTipData not exists in original KCV
+		//public string ToolTip => this.Source?.ToolTipData;
 
 		public ShipSlotData(SlotItemInfo item, int maximum = -1, int current = -1, int level = 0, int proficiency = 0)
 		{

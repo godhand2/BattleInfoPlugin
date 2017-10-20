@@ -588,7 +588,7 @@ namespace BattleInfoPlugin.Models
             //	this.Source.ExSlotExists && this.Source.ExSlot.Equipped
             //	? new ShipSlotData(this.Source.ExSlot)
             //	: null;
-            this.ExSlot = new ShipSlotData(this.Source.ExSlot);
+            this.ExSlot = this.Source.ExSlot.Equipped ? new ShipSlotData(this.Source.ExSlot) : null;
 
             this.Condition = this.Source.Condition;
 			this.ConditionType = this.Source.ConditionType;

@@ -166,7 +166,7 @@
 										<RowDefinition Height="Auto" />
 									</Grid.RowDefinitions>
 
-									<TextBlock Grid.Column="0" Grid.Row="0" Text="화력" />
+                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="火力" />
 									<TextBlock Grid.Column="1" Grid.Row="0">
 										<Run Text="{Binding SumFirepower, Mode=OneWay, Converter={StaticResource UnknownValueConverter}}"
 											 Style="{DynamicResource EmphaticTextElementStyleKey}"

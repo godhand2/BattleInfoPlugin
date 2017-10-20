@@ -469,6 +469,9 @@ namespace BattleInfoPlugin.Models
             : this.HasScout() && this.Count(Type2.主砲) == 1 && this.Count(Type2.副砲) == 1 && this.Count(Type2.電探) == 1 ? AttackType.カットイン主電
             : this.HasScout() && this.Count(Type2.主砲) >= 1 && this.Count(Type2.副砲) >= 1 ? AttackType.カットイン主副
             : this.HasScout() && this.Count(Type2.主砲) >= 2 ? AttackType.連撃
+            : this.CountFighter() >= 1 && this.CountDiveBomber() >= 1 && this.CountTorpedoBomber() >= 1 ? AttackType.カットイン艦戦艦爆艦攻
+            : this.CountDiveBomber() >= 2 && this.CountTorpedoBomber() >= 1 ? AttackType.カットイン艦爆艦爆艦攻
+            : this.CountDiveBomber() >= 1 && this.CountTorpedoBomber() >= 1 ? AttackType.カットイン艦爆艦攻
             : AttackType.通常;
 
 		public AttackType NightAttackType
@@ -532,7 +535,19 @@ namespace BattleInfoPlugin.Models
 			return data.Slots.Count(x => LateModelTorpedos.Contains(x.Source.Id))
 				+ (LateModelTorpedos.Contains(data.ExSlot?.Source.Id ?? 0) ? 1 : 0);
 		}
-	}
+        public static int CountFighter(this ShipData data)
+        {
+            return data.Slots.Count(x => x.Source.Type == SlotItemType.艦上戦闘機);
+        }
+        public static int CountDiveBomber(this ShipData data)
+        {
+            return data.Slots.Count(x => x.Source.Type == SlotItemType.艦上爆撃機);
+        }
+        public static int CountTorpedoBomber(this ShipData data)
+        {
+            return data.Slots.Count(x => x.Source.Type == SlotItemType.艦上攻撃機);
+        }
+    }
 
 	public class MembersShipData : ShipData
 	{

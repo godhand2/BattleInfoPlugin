@@ -38,6 +38,12 @@ namespace BattleInfoPlugin.Views.Converters
 					return "カットイン (x1.75 x2)";
 				case AttackType.カットイン後期魚雷:
 					return "カットイン (x1.6 x2)";
+				case AttackType.カットイン艦戦艦爆艦攻:
+					return "カットイン (1.25)";
+				case AttackType.カットイン艦爆艦爆艦攻:
+					return "カットイン (1.2)";
+				case AttackType.カットイン艦爆艦攻:
+					return "カットイン (1.15)";
 				default:
 					return "通常";
 			}

@@ -114,8 +114,8 @@ namespace BattleInfoPlugin.Models.Raw
 		{
 			return attacks != null && Settings.Default.DetailKouku
 				? attacks.SelectMany(x => new[] {
-					x.api_stage1.ToResult($"제 {x.api_base_id}陸基 空対空"),
-					x.api_stage2.ToResult($"제 {x.api_base_id}陸基 空対艦")
+					x.api_stage1.ToResult($"第 {x.api_base_id}陸基 空対空"),
+					x.api_stage2.ToResult($"第 {x.api_base_id}陸基 空対艦")
 				}).ToArray()
 				: new AirCombatResult[0];
 		}

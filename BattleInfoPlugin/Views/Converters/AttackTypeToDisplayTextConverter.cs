@@ -44,7 +44,11 @@ namespace BattleInfoPlugin.Views.Converters
 					return "カットイン (1.2)";
 				case AttackType.カットイン艦爆艦攻:
 					return "カットイン (1.15)";
-				default:
+                case AttackType.カットイン夜戦夜攻:
+                    return "カットイン (1.25)";
+                case AttackType.カットイン夜戦夜攻2:
+                    return "カットイン (1.2)";
+                default:
 					return "通常";
 			}
 		}

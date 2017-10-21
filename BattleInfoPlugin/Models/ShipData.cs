@@ -485,7 +485,9 @@ namespace BattleInfoPlugin.Models
 			: this.Count(Type2.主砲) == 2 && this.Count(Type2.副砲) == 0 && this.Count(Type2.魚雷) == 0 ? AttackType.連撃
 			: this.Count(Type2.主砲) == 1 && this.Count(Type2.副砲) >= 1 && this.Count(Type2.魚雷) == 0 ? AttackType.連撃
 			: this.Count(Type2.主砲) == 0 && this.Count(Type2.副砲) >= 2 && this.Count(Type2.魚雷) <= 1 ? AttackType.連撃
-			: AttackType.通常;
+            : this.NightAerialAttack() == 2 ? AttackType.カットイン夜戦夜攻
+            : this.NightAerialAttack() == 1 ? AttackType.カットイン夜戦夜攻2
+            : AttackType.通常;
 
 		public ShipData()
 		{
@@ -546,6 +548,54 @@ namespace BattleInfoPlugin.Models
         public static int CountTorpedoBomber(this ShipData data)
         {
             return data.Slots.Count(x => x.Source.Type == SlotItemType.艦上攻撃機);
+        }
+        public static int NightAerialAttack(this ShipData data)
+        {
+            var NightFighter = new int[]
+            {
+                // 夜戦
+                254, // F6F-3N
+				255, // F6F-5N
+			};
+            var NightStriker = new int[]
+            {
+                // 夜攻
+                257, // TBM-3D
+			};
+            var NightStriker2 = new int[]
+            {
+                // 夜攻2
+                152, // 零戦62型(爆戦/岩井隊)
+                242, // Swordfish
+                243, // Swordfish Mk.II(熟練)
+                244, // Swordfish Mk.III(熟練)
+			};
+            var NightOperationAviationPersonnel = new int[]
+            {
+                258, // 夜間作戦航空要員
+				259, // 夜間作戦航空要員＋熟練甲板員
+			};
+            var NightOperationCarrier = new int[]
+            {
+                345, // Saratoga Mk.II
+			};
+            if (NightOperationCarrier.Contains(data.MasterId))
+            {
+                //case for special night operational CV, only Saratoga Mk.II now 
+                return data.Slots.Count(x => NightFighter.Contains(x.Source.Id)) >= 2 && data.Slots.Count(x => NightStriker.Contains(x.Source.Id)) >= 1 ? 2 // 夜戦 + 夜戦 + 夜攻 = 1.25
+                    : data.Slots.Count(x => NightFighter.Contains(x.Source.Id)) >= 2 && data.Slots.Count(x => NightStriker2.Contains(x.Source.Id)) >= 1 ? 1 // 夜戦 + 夜戦 + 夜攻2 = 1.2
+                    : data.Slots.Count(x => NightFighter.Contains(x.Source.Id)) == 1 && data.Slots.Count(x => NightStriker.Contains(x.Source.Id)) >= 1 ? 1  // 夜戦  + 夜攻 = 1.2
+                    : data.Slots.Count(x => NightFighter.Contains(x.Source.Id)) == 1 && data.Slots.Count(x => NightStriker2.Contains(x.Source.Id)) >= 2 ? 1 // 夜戦  + 夜攻2 + 夜攻2 =  x 1.2
+                    : 0;
+            } else if (data.Slots.Count(x => NightOperationAviationPersonnel.Contains(x.Source.Id)) > 0)
+            {
+                return data.Slots.Count(x => NightFighter.Contains(x.Source.Id)) >= 2 && data.Slots.Count(x => NightStriker.Contains(x.Source.Id)) >= 1 ? 2 // 夜戦 + 夜戦 + 夜攻 = 1.25
+                    : data.Slots.Count(x => NightFighter.Contains(x.Source.Id)) >= 2 && data.Slots.Count(x => NightStriker2.Contains(x.Source.Id)) >= 1 ? 1 // 夜戦 + 夜戦 + 夜攻2 = 1.2
+                    : data.Slots.Count(x => NightFighter.Contains(x.Source.Id)) == 1 && data.Slots.Count(x => NightStriker.Contains(x.Source.Id)) >= 1 ? 1  // 夜戦  + 夜攻 = 1.2
+                    : data.Slots.Count(x => NightFighter.Contains(x.Source.Id)) == 1 && data.Slots.Count(x => NightStriker2.Contains(x.Source.Id)) >= 2 ? 1 // 夜戦  + 夜攻2 + 夜攻2 =  x 1.2
+                    : 0;
+            }
+            return 0;
         }
     }
 

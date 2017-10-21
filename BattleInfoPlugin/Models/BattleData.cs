@@ -727,8 +727,8 @@ namespace BattleInfoPlugin.Models
 			if (apiType == ApiTypes.sortie_airbattle)
 			{
 				this.AirCombatResults = data.api_air_base_attack.ToResult()
-										.Concat(data.api_kouku.ToResult("1회차/"))
-										.Concat(data.api_kouku2.ToResult("2회차/"))
+										.Concat(data.api_kouku.ToResult("1回目/"))
+										.Concat(data.api_kouku2.ToResult("2回目/"))
 										.ToArray();
 
 				this.RankResult = this.CalcRank();
